@@ -1,0 +1,66 @@
+\hypertarget{classlibap2p_1_1network}{\section{libap2p\-:\-:network Class Reference}
+\label{classlibap2p_1_1network}\index{libap2p\-::network@{libap2p\-::network}}
+}
+
+
+{\ttfamily \#include $<$network.\-hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classlibap2p_1_1network_a0cf3ffa14a7fbad863b3db1d07382353}{connect} ()
+\item 
+\hypertarget{classlibap2p_1_1network_a721b9df35da2eb2797bd2262e5525b14}{void {\bfseries add\-\_\-node} (\hyperlink{classlibap2p_1_1node}{node} $\ast$)}\label{classlibap2p_1_1network_a721b9df35da2eb2797bd2262e5525b14}
+
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const connection\-\_\-status \& \hyperlink{classlibap2p_1_1network_abfb873c8068ef8b200c89cc6fb7bb372}{status}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The main class which gives access to the whole network. 
+
+Definition at line 30 of file network.\-hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classlibap2p_1_1network_a0cf3ffa14a7fbad863b3db1d07382353}{\index{libap2p\-::network@{libap2p\-::network}!connect@{connect}}
+\index{connect@{connect}!libap2p::network@{libap2p\-::network}}
+\subsubsection[{connect}]{\setlength{\rightskip}{0pt plus 5cm}void libap2p\-::network\-::connect (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classlibap2p_1_1network_a0cf3ffa14a7fbad863b3db1d07382353}
+Called to connect to the ap2p network. When called, ap2p connects to other nodes specified with add\-\_\-node() and fetches more from them. It will async build up connections. The progress can be followed in \hyperlink{classlibap2p_1_1network_abfb873c8068ef8b200c89cc6fb7bb372}{network\-::status}. \begin{DoxyWarning}{Warning}
+An initial node must be added with add\-\_\-node first! 
+\end{DoxyWarning}
+
+
+Definition at line 23 of file network.\-cpp.
+
+
+\begin{DoxyCode}
+\{
+        this->\_connection\_status = CONNECTING;
+\}
+\end{DoxyCode}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classlibap2p_1_1network_abfb873c8068ef8b200c89cc6fb7bb372}{\index{libap2p\-::network@{libap2p\-::network}!status@{status}}
+\index{status@{status}!libap2p::network@{libap2p\-::network}}
+\subsubsection[{status}]{\setlength{\rightskip}{0pt plus 5cm}const connection\-\_\-status\& libap2p\-::network\-::status}}\label{classlibap2p_1_1network_abfb873c8068ef8b200c89cc6fb7bb372}
+Used to check the current connection status. Can be libap2p\{connection\-\_\-status \{C\-O\-N\-N\-E\-C\-T\-E\-D, C\-O\-N\-N\-E\-C\-T\-I\-N\-G, D\-I\-S\-C\-O\-N\-N\-E\-C\-T\-E\-D or E\-R\-R\-O\-R\}\}; 
+
+Definition at line 49 of file network.\-hpp.
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+include/network/network.\-hpp\item 
+src/network/network.\-cpp\end{DoxyCompactItemize}
