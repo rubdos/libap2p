@@ -1,2 +1,4 @@
 #write include_directories() statements here
-include_directories(ap2p)
+add_subdirectory(node)
+add_subdirectory(network)
+add_subdirectory(DHT)
