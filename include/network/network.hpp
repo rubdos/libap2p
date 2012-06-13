@@ -15,6 +15,9 @@
 * 
 */
 
+#ifndef CLASS_NETWORK
+#define CLASS_NETWORK
+
 #include "node/node.hpp"
 
 #include <vector>
@@ -44,3 +47,4 @@ private:
 	connection_status _connection_status;
 };
 }
+#endif

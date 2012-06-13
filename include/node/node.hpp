@@ -15,9 +15,23 @@
 * 
 */
 
+#ifndef CLASS_NODE
+#define CLASS_NODE
+
+#include "network/node_connection.hpp"
+#include "network/server_node_connection.hpp"
+#include "network/client_node_connection.hpp"
+
+#include <stdlib.h>
+
 namespace libap2p
 {
 class node
 {
+public:
+	node();
+private:
+	node_connection *_node_connection;
 };
 }
+#endif

@@ -15,20 +15,16 @@
 * 
 */
 
-#ifndef CLASS_DHT
-#define CLASS_DHT
+#ifndef CLASS_CLIENT_NODE_CONNECTION
+#define CLASS_CLIENT_NODE_CONNECTION
 
-#include "DHT/dht_entry.hpp"
-
-#include <string>
+#include "network/node_connection.hpp"
 
 namespace libap2p
 {
-class DHT
+class client_node_connection : node_connection
 {
-public:
-	DHT();
-	dht_entry* fetch();
 };
 }
+
 #endif

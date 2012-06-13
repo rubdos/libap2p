@@ -17,5 +17,11 @@
 #include "node/node.hpp"
 namespace libap2p
 {
-
+/** Constructor. Initializes node object
+  *
+  */
+node::node()
+{
+	this->_node_connection = NULL;
+}
 }

@@ -15,6 +15,9 @@
 * 
 */
 
+#ifndef CLASS_DHT_ENTRY
+#define CLASS_DHT_ENTRY
+
 #include <string>
 
 namespace libap2p
@@ -25,3 +28,5 @@ public:
 	dht_entry(std::string);
 };
 }
+
+#endif
