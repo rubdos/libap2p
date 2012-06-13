@@ -38,4 +38,12 @@ void network::connect()
 	this->_connection_status = CONNECTING;
 }
 
+/** Function to close the network. Whenever the connection should be closed, 
+  * this is to be called.
+  */
+void network::close()
+{
+	this->_connection_status = DISCONNECTED;
+}
+
 }

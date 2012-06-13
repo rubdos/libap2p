@@ -32,6 +32,7 @@ class network
 public:
 	network();
 	void connect();
+	void close();
 
 	void add_node(node*);
 /** Used to check the current connection status. Can be libap2p{connection_status
