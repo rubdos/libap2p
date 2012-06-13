@@ -3,13 +3,43 @@
 }
 
 
-\subsection{Detailed Description}
+{\ttfamily \#include $<$node.\-hpp$>$}
 
-
-Definition at line 20 of file node.\-hpp.
-
-
-
-The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
 \item 
-include/node/node.\-hpp\end{DoxyCompactItemize}
+\hyperlink{classlibap2p_1_1node_ae75928811247397aa11c692ead20e6ec}{node} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Represents a peer in the \hyperlink{classlibap2p_1_1network}{libap2p\-::network}. Used to send \hyperlink{classlibap2p_1_1message}{libap2p\-::message} objects, receiving them and other communication. 
+
+Definition at line 32 of file node.\-hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classlibap2p_1_1node_ae75928811247397aa11c692ead20e6ec}{\index{libap2p\-::node@{libap2p\-::node}!node@{node}}
+\index{node@{node}!libap2p::node@{libap2p\-::node}}
+\subsubsection[{node}]{\setlength{\rightskip}{0pt plus 5cm}libap2p\-::node\-::node (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classlibap2p_1_1node_ae75928811247397aa11c692ead20e6ec}
+Constructor. Initializes node object 
+
+Definition at line 23 of file node.\-cpp.
+
+
+\begin{DoxyCode}
+\{
+        this->\_node\_connection = NULL;
+\}
+\end{DoxyCode}
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+include/node/node.\-hpp\item 
+src/node/node.\-cpp\end{DoxyCompactItemize}
