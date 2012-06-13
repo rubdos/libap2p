@@ -30,23 +30,15 @@ enum connection_status { CONNECTED, CONNECTING, DISCONNECTED, ERROR};
 class network
 {
 public:
-	
-/** Called to connect to the ap2p network. When called, ap2p connects to other
-  * nodes specified with add_node() and fetches more from them. It will async
-  * build up connections. The progress can be followed in network::status.
-  * @warning An initial node must be added with add_node first!
-  */
+	network();
 	void connect();
 
 	void add_node(node*);
-
-	network(): status(_connection_status){}
-
-/** Used to check the current connection status. Can be libap2p{connection_status 
+/** Used to check the current connection status. Can be libap2p{connection_status
   * {CONNECTED, CONNECTING, DISCONNECTED or ERROR}};
   *
   */
-	const connection_status &status;
+	connection_status status() const {return this->_connection_status;};
 private:
 	connection_status _connection_status;
 };

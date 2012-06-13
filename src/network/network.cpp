@@ -20,6 +20,19 @@
 
 namespace libap2p
 {
+
+/** Constructor. Initializes network structure
+ *
+ */
+network::network()
+{
+	this->_connection_status = DISCONNECTED;
+}
+/** Called to connect to the ap2p network. When called, ap2p connects to other
+  * nodes specified with add_node() and fetches more from them. It will async
+  * build up connections. The progress can be followed in network::status.
+  * @warning An initial node is to be added with add_node or new network is created
+  */
 void network::connect()
 {
 	this->_connection_status = CONNECTING;
