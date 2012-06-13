@@ -26,6 +26,9 @@
 
 namespace libap2p
 {
+/** Represents a peer in the libap2p::network. Used to send libap2p::message
+  * objects, receiving them and other communication.
+  */
 class node
 {
 public:
