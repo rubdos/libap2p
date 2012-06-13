@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<title>libap2p: Member List</title>
+<title>libap2p: include/network/node_connection.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -38,8 +38,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
-      <li><a href="files.html"><span>Files</span></a></li>
+      <li><a href="annotated.html"><span>Classes</span></a></li>
+      <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -60,9 +60,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </div>
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
-      <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
-      <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
-      <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
+      <li><a href="files.html"><span>File&#160;List</span></a></li>
     </ul>
   </div>
 <!-- window showing the filter options -->
@@ -81,23 +79,32 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><b>libap2p</b></li><li class="navelem"><a class="el" href="classlibap2p_1_1network.html">network</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_dafb25a37831a87d2e2e8b780f24e872.html">network</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">libap2p::network Member List</div>  </div>
+<div class="title">node_connection.hpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-
-<p>This is the complete list of members for <a class="el" href="classlibap2p_1_1network.html">libap2p::network</a>, including all inherited members.</p>
-<table class="directory">
-  <tr bgcolor="#f0f0f0"class="even"><td class="entry"><b>add_node</b>(node *) (defined in <a class="el" href="classlibap2p_1_1network.html">libap2p::network</a>)</td><td class="entry"><a class="el" href="classlibap2p_1_1network.html">libap2p::network</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="classlibap2p_1_1network.html#a256421d58621e89fbf15a3cdc3f91ae6">close</a>()</td><td class="entry"><a class="el" href="classlibap2p_1_1network.html">libap2p::network</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classlibap2p_1_1network.html#a0cf3ffa14a7fbad863b3db1d07382353">connect</a>()</td><td class="entry"><a class="el" href="classlibap2p_1_1network.html">libap2p::network</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="classlibap2p_1_1network.html#a8ddd2d62c50c2ab85cb1ab884847748e">network</a>()</td><td class="entry"><a class="el" href="classlibap2p_1_1network.html">libap2p::network</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classlibap2p_1_1network.html#aa01d40a45f84bb50a8210673e2a6b454">status</a>() const </td><td class="entry"><a class="el" href="classlibap2p_1_1network.html">libap2p::network</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-</table></div><!-- contents -->
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* Copyright (C) </span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">* 2012 - Ruben De Smet</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">* This program is free software; you can redistribute it and/or</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">* modify it under the terms of the GNU General Public License</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">* as published by the Free Software Foundation; either version 3</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">* of the License, or (at your option) any later version.</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">* </span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">* This program is distributed in the hope that it will be useful,</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">* but WITHOUT ANY WARRANTY; without even the implied warranty of</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">* GNU General Public License for more details.</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment">* </span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment">* You should have received a copy of the GNU General Public License</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">* along with this program; if not, see &lt;http://gnu.org/licenses/&gt;</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">* </span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">*/</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
+</div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated on Wed Jun 13 2012 14:15:03 for libap2p by &#160;<a href="http://www.doxygen.org/index.html">

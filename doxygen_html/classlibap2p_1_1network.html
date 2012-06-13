@@ -70,7 +70,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -86,8 +86,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a>  </div>
+<a href="#pub-methods">Public Member Functions</a>  </div>
   <div class="headertitle">
 <div class="title">libap2p::network Class Reference</div>  </div>
 </div><!--header-->
@@ -99,19 +98,61 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a8ddd2d62c50c2ab85cb1ab884847748e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlibap2p_1_1network.html#a8ddd2d62c50c2ab85cb1ab884847748e">network</a> ()</td></tr>
 <tr class="memitem:a0cf3ffa14a7fbad863b3db1d07382353"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlibap2p_1_1network.html#a0cf3ffa14a7fbad863b3db1d07382353">connect</a> ()</td></tr>
+<tr class="memitem:a256421d58621e89fbf15a3cdc3f91ae6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlibap2p_1_1network.html#a256421d58621e89fbf15a3cdc3f91ae6">close</a> ()</td></tr>
 <tr class="memitem:a721b9df35da2eb2797bd2262e5525b14"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a721b9df35da2eb2797bd2262e5525b14"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>add_node</b> (<a class="el" href="classlibap2p_1_1node.html">node</a> *)</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2><a name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:abfb873c8068ef8b200c89cc6fb7bb372"><td class="memItemLeft" align="right" valign="top">const connection_status &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlibap2p_1_1network.html#abfb873c8068ef8b200c89cc6fb7bb372">status</a></td></tr>
+<tr class="memitem:aa01d40a45f84bb50a8210673e2a6b454"><td class="memItemLeft" align="right" valign="top">connection_status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlibap2p_1_1network.html#aa01d40a45f84bb50a8210673e2a6b454">status</a> () const </td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>The main class which gives access to the whole network. </p>
 
 <p>Definition at line <a class="el" href="network_8hpp_source.html#l00030">30</a> of file <a class="el" href="network_8hpp_source.html">network.hpp</a>.</p>
-</div><hr/><h2>Member Function Documentation</h2>
+</div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="a8ddd2d62c50c2ab85cb1ab884847748e"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">libap2p::network::network </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Constructor. Initializes network structure </p>
+
+<p>Definition at line <a class="el" href="network_8cpp_source.html#l00027">27</a> of file <a class="el" href="network_8cpp_source.html">network.cpp</a>.</p>
+<div class="fragment"><div class="line">{</div>
+<div class="line">        this-&gt;_connection_status = DISCONNECTED;</div>
+<div class="line">}</div>
+</div><!-- fragment -->
+</div>
+</div>
+<hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="a256421d58621e89fbf15a3cdc3f91ae6"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void libap2p::network::close </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Function to close the network. Whenever the connection should be closed, this is to be called. </p>
+
+<p>Definition at line <a class="el" href="network_8cpp_source.html#l00044">44</a> of file <a class="el" href="network_8cpp_source.html">network.cpp</a>.</p>
+<div class="fragment"><div class="line">{</div>
+<div class="line">        this-&gt;_connection_status = DISCONNECTED;</div>
+<div class="line">}</div>
+</div><!-- fragment -->
+</div>
+</div>
 <a class="anchor" id="a0cf3ffa14a7fbad863b3db1d07382353"></a>
 <div class="memitem">
 <div class="memproto">
@@ -124,30 +165,41 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Called to connect to the ap2p network. When called, ap2p connects to other nodes specified with add_node() and fetches more from them. It will async build up connections. The progress can be followed in <a class="el" href="classlibap2p_1_1network.html#abfb873c8068ef8b200c89cc6fb7bb372">network::status</a>. </p>
-<dl class="section warning"><dt>Warning:</dt><dd>An initial node must be added with add_node first! </dd></dl>
+<p>Called to connect to the ap2p network. When called, ap2p connects to other nodes specified with add_node() and fetches more from them. It will async build up connections. The progress can be followed in <a class="el" href="classlibap2p_1_1network.html#aa01d40a45f84bb50a8210673e2a6b454">network::status</a>. </p>
+<dl class="section warning"><dt>Warning:</dt><dd>An initial node is to be added with add_node or new network is created </dd></dl>
 
-<p>Definition at line <a class="el" href="network_8cpp_source.html#l00023">23</a> of file <a class="el" href="network_8cpp_source.html">network.cpp</a>.</p>
+<p>Definition at line <a class="el" href="network_8cpp_source.html#l00036">36</a> of file <a class="el" href="network_8cpp_source.html">network.cpp</a>.</p>
 <div class="fragment"><div class="line">{</div>
 <div class="line">        this-&gt;_connection_status = CONNECTING;</div>
 <div class="line">}</div>
 </div><!-- fragment -->
 </div>
 </div>
-<hr/><h2>Member Data Documentation</h2>
-<a class="anchor" id="abfb873c8068ef8b200c89cc6fb7bb372"></a>
+<a class="anchor" id="aa01d40a45f84bb50a8210673e2a6b454"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const connection_status&amp; libap2p::network::status</td>
+          <td class="memname">connection_status libap2p::network::status </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 <p>Used to check the current connection status. Can be libap2p{connection_status {CONNECTED, CONNECTING, DISCONNECTED or ERROR}}; </p>
 
-<p>Definition at line <a class="el" href="network_8hpp_source.html#l00049">49</a> of file <a class="el" href="network_8hpp_source.html">network.hpp</a>.</p>
-
+<p>Definition at line <a class="el" href="network_8hpp_source.html#l00042">42</a> of file <a class="el" href="network_8hpp_source.html">network.hpp</a>.</p>
+<div class="fragment"><div class="line">{<span class="keywordflow">return</span> this-&gt;_connection_status;};</div>
+</div><!-- fragment -->
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
@@ -157,7 +209,7 @@ Public Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jun 12 2012 17:51:38 for libap2p by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Jun 13 2012 14:15:03 for libap2p by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.1
 </small></address>

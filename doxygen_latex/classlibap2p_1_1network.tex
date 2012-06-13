@@ -8,15 +8,16 @@
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
+\hyperlink{classlibap2p_1_1network_a8ddd2d62c50c2ab85cb1ab884847748e}{network} ()
+\item 
 void \hyperlink{classlibap2p_1_1network_a0cf3ffa14a7fbad863b3db1d07382353}{connect} ()
+\item 
+void \hyperlink{classlibap2p_1_1network_a256421d58621e89fbf15a3cdc3f91ae6}{close} ()
 \item 
 \hypertarget{classlibap2p_1_1network_a721b9df35da2eb2797bd2262e5525b14}{void {\bfseries add\-\_\-node} (\hyperlink{classlibap2p_1_1node}{node} $\ast$)}\label{classlibap2p_1_1network_a721b9df35da2eb2797bd2262e5525b14}
 
-\end{DoxyCompactItemize}
-\subsection*{Public Attributes}
-\begin{DoxyCompactItemize}
 \item 
-const connection\-\_\-status \& \hyperlink{classlibap2p_1_1network_abfb873c8068ef8b200c89cc6fb7bb372}{status}
+connection\-\_\-status \hyperlink{classlibap2p_1_1network_aa01d40a45f84bb50a8210673e2a6b454}{status} () const 
 \end{DoxyCompactItemize}
 
 
@@ -27,7 +28,44 @@ Definition at line 30 of file network.\-hpp.
 
 
 
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classlibap2p_1_1network_a8ddd2d62c50c2ab85cb1ab884847748e}{\index{libap2p\-::network@{libap2p\-::network}!network@{network}}
+\index{network@{network}!libap2p::network@{libap2p\-::network}}
+\subsubsection[{network}]{\setlength{\rightskip}{0pt plus 5cm}libap2p\-::network\-::network (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classlibap2p_1_1network_a8ddd2d62c50c2ab85cb1ab884847748e}
+Constructor. Initializes network structure 
+
+Definition at line 27 of file network.\-cpp.
+
+
+\begin{DoxyCode}
+\{
+        this->\_connection\_status = DISCONNECTED;
+\}
+\end{DoxyCode}
+
+
 \subsection{Member Function Documentation}
+\hypertarget{classlibap2p_1_1network_a256421d58621e89fbf15a3cdc3f91ae6}{\index{libap2p\-::network@{libap2p\-::network}!close@{close}}
+\index{close@{close}!libap2p::network@{libap2p\-::network}}
+\subsubsection[{close}]{\setlength{\rightskip}{0pt plus 5cm}void libap2p\-::network\-::close (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classlibap2p_1_1network_a256421d58621e89fbf15a3cdc3f91ae6}
+Function to close the network. Whenever the connection should be closed, this is to be called. 
+
+Definition at line 44 of file network.\-cpp.
+
+
+\begin{DoxyCode}
+\{
+        this->\_connection\_status = DISCONNECTED;
+\}
+\end{DoxyCode}
 \hypertarget{classlibap2p_1_1network_a0cf3ffa14a7fbad863b3db1d07382353}{\index{libap2p\-::network@{libap2p\-::network}!connect@{connect}}
 \index{connect@{connect}!libap2p::network@{libap2p\-::network}}
 \subsubsection[{connect}]{\setlength{\rightskip}{0pt plus 5cm}void libap2p\-::network\-::connect (
@@ -35,12 +73,12 @@ Definition at line 30 of file network.\-hpp.
 {}
 \end{DoxyParamCaption}
 )}}\label{classlibap2p_1_1network_a0cf3ffa14a7fbad863b3db1d07382353}
-Called to connect to the ap2p network. When called, ap2p connects to other nodes specified with add\-\_\-node() and fetches more from them. It will async build up connections. The progress can be followed in \hyperlink{classlibap2p_1_1network_abfb873c8068ef8b200c89cc6fb7bb372}{network\-::status}. \begin{DoxyWarning}{Warning}
-An initial node must be added with add\-\_\-node first! 
+Called to connect to the ap2p network. When called, ap2p connects to other nodes specified with add\-\_\-node() and fetches more from them. It will async build up connections. The progress can be followed in \hyperlink{classlibap2p_1_1network_aa01d40a45f84bb50a8210673e2a6b454}{network\-::status}. \begin{DoxyWarning}{Warning}
+An initial node is to be added with add\-\_\-node or new network is created 
 \end{DoxyWarning}
 
 
-Definition at line 23 of file network.\-cpp.
+Definition at line 36 of file network.\-cpp.
 
 
 \begin{DoxyCode}
@@ -48,16 +86,21 @@ Definition at line 23 of file network.\-cpp.
         this->\_connection\_status = CONNECTING;
 \}
 \end{DoxyCode}
-
-
-\subsection{Member Data Documentation}
-\hypertarget{classlibap2p_1_1network_abfb873c8068ef8b200c89cc6fb7bb372}{\index{libap2p\-::network@{libap2p\-::network}!status@{status}}
+\hypertarget{classlibap2p_1_1network_aa01d40a45f84bb50a8210673e2a6b454}{\index{libap2p\-::network@{libap2p\-::network}!status@{status}}
 \index{status@{status}!libap2p::network@{libap2p\-::network}}
-\subsubsection[{status}]{\setlength{\rightskip}{0pt plus 5cm}const connection\-\_\-status\& libap2p\-::network\-::status}}\label{classlibap2p_1_1network_abfb873c8068ef8b200c89cc6fb7bb372}
+\subsubsection[{status}]{\setlength{\rightskip}{0pt plus 5cm}connection\-\_\-status libap2p\-::network\-::status (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{classlibap2p_1_1network_aa01d40a45f84bb50a8210673e2a6b454}
 Used to check the current connection status. Can be libap2p\{connection\-\_\-status \{C\-O\-N\-N\-E\-C\-T\-E\-D, C\-O\-N\-N\-E\-C\-T\-I\-N\-G, D\-I\-S\-C\-O\-N\-N\-E\-C\-T\-E\-D or E\-R\-R\-O\-R\}\}; 
 
-Definition at line 49 of file network.\-hpp.
+Definition at line 42 of file network.\-hpp.
 
+
+\begin{DoxyCode}
+\{\textcolor{keywordflow}{return} this->\_connection\_status;\};
+\end{DoxyCode}
 
 
 The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
