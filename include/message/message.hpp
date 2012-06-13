@@ -15,18 +15,12 @@
 * 
 */
 
-#include "DHT/dht_entry.hpp"
-
+#ifndef CLASS_MESSAGE
+#define CLASS_MESSAGE
 namespace libap2p
 {
-
-/**
-* @brief Constructor.
-*
-* @param std::string as local filename for dht_entry to load.
-*/
-dht_entry::dht_entry(std::string filename)
+class message
 {
+};
 }
-
-}
+#endif

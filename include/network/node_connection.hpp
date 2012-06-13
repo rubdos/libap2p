@@ -18,11 +18,16 @@
 #ifndef CLASS_NODE_CONNECTION
 #define CLASS_NODE_CONNECTION
 
+#include "message/message.hpp"
+
 namespace libap2p
 {
+/**  Abstract class providing the connection with a node. Implemented
+  *  by server_node_connection or client_node_connection.
+  */
 class node_connection
 {
-	
+	virtual void send_message(message * ) const = 0;
 };
 }
 #endif

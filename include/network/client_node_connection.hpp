@@ -19,11 +19,14 @@
 #define CLASS_CLIENT_NODE_CONNECTION
 
 #include "network/node_connection.hpp"
+#include "message/message.hpp"
 
 namespace libap2p
 {
 class client_node_connection : node_connection
 {
+public:
+	void send_message(message*);
 };
 }
 

@@ -15,18 +15,12 @@
 * 
 */
 
-#include "DHT/dht_entry.hpp"
+#include "network/node_connection.hpp"
+#include "network/client_node_connection.hpp"
 
 namespace libap2p
 {
-
-/**
-* @brief Constructor.
-*
-* @param std::string as local filename for dht_entry to load.
-*/
-dht_entry::dht_entry(std::string filename)
-{
-}
-
+	void client_node_connection::send_message(message* msg)
+	{
+	}
 }
