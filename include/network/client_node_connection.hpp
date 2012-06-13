@@ -23,6 +23,9 @@
 
 namespace libap2p
 {
+/** Implementation of connecting node_connection.
+  *
+ */
 class client_node_connection : node_connection
 {
 public:

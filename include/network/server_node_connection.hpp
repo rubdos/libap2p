@@ -19,11 +19,18 @@
 #define CLASS_SERVER_NODE_CONNECTION
 
 #include "network/node_connection.hpp"
+#include "message/message.hpp"
+
 
 namespace libap2p
 {
+
+/** Implementation of listening node_connection.
+  *
+  */
 class server_node_connection : node_connection
 {
+	void send_message(message*);
 };
 }
 
