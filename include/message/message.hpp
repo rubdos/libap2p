@@ -17,10 +17,19 @@
 
 #ifndef CLASS_MESSAGE
 #define CLASS_MESSAGE
+
+#include <string>
+
 namespace libap2p
 {
 class message
 {
+public:
+	message();
+	message(unsigned int /* message type */, std::string /* data */);
+private:
+	unsigned int _message_type;
+	std::string _data;
 };
 }
 #endif
