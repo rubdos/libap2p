@@ -27,6 +27,8 @@ class message
 public:
 	message();
 	message(unsigned int /* message type */, std::string /* data */);
+	
+	std::string get_xml();
 private:
 	unsigned int _message_type;
 	std::string _data;

@@ -38,4 +38,10 @@ message::message(unsigned int messagetype, std::string data)
 	this->_message_type = messagetype;
 	this->_data = data;
 }
+
+std::string message::get_xml()
+{
+	/** @todo Stub, to complete! */
+	return "";
+}
 }
