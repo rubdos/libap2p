@@ -15,6 +15,12 @@
 * 
 */
 
+#ifndef CLASS_SERVER
+#define CLASS_SERVER
+
+#include <boost/asio.hpp>
+#include <boost/bind.hpp>
+
 namespace libap2p
 {
 /**
@@ -24,6 +30,13 @@ namespace libap2p
 class server
 {
 public:
-	server(unsigned int port);
+	server(unsigned short port);
+	void run();
+private:
+	void handle_accept(boost::asio::ip::tcp::socket, const boost::system::error_code&);
+	
+	boost::asio::io_service io;
+	unsigned short _port;
 };
 }
+#endif
