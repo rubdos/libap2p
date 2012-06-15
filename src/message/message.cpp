@@ -17,6 +17,13 @@
 
 #include "message/message.hpp"
 
+#include <iostream>
+#include <sstream>
+#include <string>
+
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/xml_parser.hpp>
+
 namespace libap2p
 {
 
@@ -25,23 +32,70 @@ namespace libap2p
 */
 message::message()
 {
+	this->_init();
 }
 
 /**
-* @brief Constructor with data
+* @brief Constructor with data.
 * Used to prepare a message to be send 
 * @param messagetype 	Message type. Can be any uint. Will be send through the socket
-* @param data		The data to send. Easy construction by boost::asio::buffer([anything here]);
+* @param messagedata	The data to send. Easy construction by boost::asio::buffer([anything here]);
 */
-message::message(unsigned int messagetype, std::string data)
+message::message(unsigned int messagetype, std::string messagedata)
 {
+	this->_init();
 	this->_message_type = messagetype;
-	this->_data = data;
+	this->_message_data = messagedata;
 }
 
+/**
+* @brief Constructor from XML content
+* @param xml_str an std::string with xml contents.
+*/
+message::message(std::string xml_str)
+{
+	this->_init();
+
+	std::stringstream in;
+	in << xml_str;
+
+	boost::property_tree::ptree pt;
+
+	read_xml(in, pt);
+
+	this->_message_version = pt.get<std::string>("libap2p.version");
+	this->_message_data = pt.get<std::string>("libap2p.message.data");
+	this->_message_type = pt.get<unsigned int>("libap2p.message.type");
+	this->_message_signature = pt.get<std::string>("libap2p.signature.signature");
+	this->_message_signature_type = pt.get<std::string>("libap2p.signature.type");
+}
+
+void message::_init()
+{
+        this->_message_signature = "";
+        this->_message_signature_type = "";
+        this->_message_type = 0;
+        this->_message_data = "";
+}
+
+/**
+* @brief Get the xml text for the message
+* Internally used
+* @return The xml-structure of the message.
+*/
 std::string message::get_xml()
 {
-	/** @todo Stub, to complete! */
-	return "";
+	boost::property_tree::ptree pt;
+	std::stringstream out;
+
+	pt.put("libap2p.version", "0.0.1");
+	pt.put("libap2p.message.type", this->_message_type);
+	pt.put("libap2p.message.data", this->_message_data);
+	pt.put("libap2p.signature.signature", this->_message_signature); //!todo: Check signature before sending?
+	pt.put("libap2p.signature.type", this->_message_signature_type);
+	
+	write_xml(out, pt);
+	
+	return out.str();
 }
 }
