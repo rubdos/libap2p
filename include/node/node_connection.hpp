@@ -15,32 +15,24 @@
 * 
 */
 
-#ifndef CLASS_NODE
-#define CLASS_NODE
+#ifndef CLASS_NODE_CONNECTION
+#define CLASS_NODE_CONNECTION
 
-#include "node/node_connection.hpp"
-#include "node/server_node_connection.hpp"
-#include "node/client_node_connection.hpp"
 #include "message/message.hpp"
-
-#include <stdlib.h>
-#include <iostream>
 
 namespace libap2p
 {
-/**
-* @brief:Represents a peer in the libap2p::network.
-* Used to send libap2p::message
-* objects, receiving them and other communication.
-*/
-class node
+/**  Abstract class providing the connection with a node. Implemented
+  *  by server_node_connection or client_node_connection.
+  */
+class node_connection
 {
-public:
-	node();
-	bool connect();
-	void send_message(message*);
-private:
-	node_connection *_node_connection;
+	/*
+	* @brief: Send a message object. 
+	*
+	*
+	*/
+	virtual void send_message(message * ) const = 0;
 };
 }
 #endif
