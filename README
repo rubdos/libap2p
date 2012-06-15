@@ -22,7 +22,12 @@ LaTeX doxygen: http://rubdos.github.com/libap2p/doxygen_latex
 
 CAUTION: not usable yet!
 
-Compiling:
-mkdir build && cd build
-cmake ..
-make #(or make -j[threadcount])
+*Requirements:
+	-boost libraries
+	-cmake
+	-make compatible
+	-g++ compiler or compatible (mingw...)
+*Compiling:
+	$> mkdir build && cd build
+	$> cmake ..
+	$> make #(or make -j[threadcount])
