@@ -15,12 +15,15 @@
 * 
 */
 
-#include "network/node_connection.hpp"
-#include "network/client_node_connection.hpp"
-
 namespace libap2p
 {
-void client_node_connection::send_message(message* msg)
+/**
+* @brief: Main p2p listening class
+* Internally called.
+*/
+class server
 {
-}
+public:
+	server(unsigned int port);
+};
 }

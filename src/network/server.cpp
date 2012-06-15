@@ -15,12 +15,11 @@
 * 
 */
 
-#include "network/node_connection.hpp"
-#include "network/server_node_connection.hpp"
+#include "network/server.hpp"
 
 namespace libap2p
 {
-	void server_node_connection::send_message(message* msg)
-	{
-	}
+server::server(unsigned int port)
+{
+}
 }
