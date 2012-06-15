@@ -21,18 +21,24 @@
 #include "network/node_connection.hpp"
 #include "network/server_node_connection.hpp"
 #include "network/client_node_connection.hpp"
+#include "message/message.hpp"
 
 #include <stdlib.h>
+#include <iostream>
 
 namespace libap2p
 {
-/** Represents a peer in the libap2p::network. Used to send libap2p::message
-  * objects, receiving them and other communication.
-  */
+/**
+* @brief:Represents a peer in the libap2p::network.
+* Used to send libap2p::message
+* objects, receiving them and other communication.
+*/
 class node
 {
 public:
 	node();
+	bool connect();
+	void send_message(message*);
 private:
 	node_connection *_node_connection;
 };

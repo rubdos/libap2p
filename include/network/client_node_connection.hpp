@@ -23,10 +23,11 @@
 
 namespace libap2p
 {
-/** Implementation of connecting node_connection.
-  *
- */
-class client_node_connection : node_connection
+/*
+* @brief: Implementation of connecting node_connection.
+*
+*/
+class client_node_connection : public node_connection
 {
 public:
 	void send_message(message*);

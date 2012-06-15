@@ -17,11 +17,31 @@
 #include "node/node.hpp"
 namespace libap2p
 {
-/** Constructor. Initializes node object
-  *
-  */
+/**
+* @brief: Constructor. Initializes node object
+*
+*/
 node::node()
 {
 	this->_node_connection = NULL;
+}
+
+bool node::connect()
+{
+	//!\todo: insert connection stuff here.
+	return false; //stub
+}
+
+/**
+* @brief: Send a libap2p::message object to another node
+* @throws: 
+*/
+void node::send_message(message* msg)
+{
+	if(this->connect())
+	{
+		
+	}
+	
 }
 }

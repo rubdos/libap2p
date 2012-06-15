@@ -20,7 +20,7 @@
 
 namespace libap2p
 {
-	void client_node_connection::send_message(message* msg)
-	{
-	}
+void client_node_connection::send_message(message* msg)
+{
+}
 }

@@ -27,10 +27,11 @@ namespace libap2p
   */
 class node_connection
 {
-	/** Send a message object. 
-	  *
-	  *
-	 */
+	/*
+	* @brief: Send a message object. 
+	*
+	*
+	*/
 	virtual void send_message(message * ) const = 0;
 };
 }
