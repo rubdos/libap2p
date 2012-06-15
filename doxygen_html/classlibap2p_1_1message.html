@@ -86,20 +86,159 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div>
 </div><!-- top -->
 <div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a>  </div>
   <div class="headertitle">
 <div class="title">libap2p::message Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><a href="classlibap2p_1_1message-members.html">List of all members.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a433fa67765f72a86c6a022aa35ff06b7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a433fa67765f72a86c6a022aa35ff06b7"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlibap2p_1_1message.html#a433fa67765f72a86c6a022aa35ff06b7">message</a> ()</td></tr>
+<tr class="memdesc:a433fa67765f72a86c6a022aa35ff06b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. <br/></td></tr>
+<tr class="memitem:a6609bf74f5cc5e2ea353751abcff149a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlibap2p_1_1message.html#a6609bf74f5cc5e2ea353751abcff149a">message</a> (unsigned int, std::string)</td></tr>
+<tr class="memdesc:a6609bf74f5cc5e2ea353751abcff149a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor with data. Used to prepare a message to be send.  <a href="#a6609bf74f5cc5e2ea353751abcff149a"></a><br/></td></tr>
+<tr class="memitem:ab1c39ec5721f3520eed6735df2f335ef"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlibap2p_1_1message.html#ab1c39ec5721f3520eed6735df2f335ef">message</a> (std::string)</td></tr>
+<tr class="memdesc:ab1c39ec5721f3520eed6735df2f335ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor from XML content.  <a href="#ab1c39ec5721f3520eed6735df2f335ef"></a><br/></td></tr>
+<tr class="memitem:a9fbf46058138df50dff71e53d04ad383"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlibap2p_1_1message.html#a9fbf46058138df50dff71e53d04ad383">get_xml</a> ()</td></tr>
+<tr class="memdesc:a9fbf46058138df50dff71e53d04ad383"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the xml text for the message Internally used.  <a href="#a9fbf46058138df50dff71e53d04ad383"></a><br/></td></tr>
+</table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock">
-<p>Definition at line <a class="el" href="message_8hpp_source.html#l00022">22</a> of file <a class="el" href="message_8hpp_source.html">message.hpp</a>.</p>
-</div><hr/>The documentation for this class was generated from the following file:<ul>
+<p>Definition at line <a class="el" href="message_8hpp_source.html#l00027">27</a> of file <a class="el" href="message_8hpp_source.html">message.hpp</a>.</p>
+</div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="a6609bf74f5cc5e2ea353751abcff149a"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">libap2p::message::message </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>messagetype</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>messagedata</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Constructor with data. Used to prepare a message to be send. </p>
+<dl class="params"><dt>Parameters:</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">messagetype</td><td>Message type. Can be any uint. Will be send through the socket </td></tr>
+    <tr><td class="paramname">messagedata</td><td>The data to send. Easy construction by boost::asio::buffer([anything here]); </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="message_8cpp_source.html#l00044">44</a> of file <a class="el" href="message_8cpp_source.html">message.cpp</a>.</p>
+<div class="fragment"><div class="line">{</div>
+<div class="line">        this-&gt;_init();</div>
+<div class="line">        this-&gt;_message_type = messagetype;</div>
+<div class="line">        this-&gt;_message_data = messagedata;</div>
+<div class="line">}</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="ab1c39ec5721f3520eed6735df2f335ef"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">libap2p::message::message </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>xml_str</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Constructor from XML content. </p>
+<dl class="params"><dt>Parameters:</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">xml_str</td><td>an std::string with xml contents. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="message_8cpp_source.html#l00055">55</a> of file <a class="el" href="message_8cpp_source.html">message.cpp</a>.</p>
+<div class="fragment"><div class="line">{</div>
+<div class="line">        this-&gt;_init();</div>
+<div class="line"></div>
+<div class="line">        std::stringstream in;</div>
+<div class="line">        in &lt;&lt; xml_str;</div>
+<div class="line"></div>
+<div class="line">        boost::property_tree::ptree pt;</div>
+<div class="line"></div>
+<div class="line">        read_xml(in, pt);</div>
+<div class="line"></div>
+<div class="line">        this-&gt;_message_version = pt.get&lt;std::string&gt;(<span class="stringliteral">&quot;libap2p.version&quot;</span>);</div>
+<div class="line">        this-&gt;_message_data = pt.get&lt;std::string&gt;(<span class="stringliteral">&quot;libap2p.message.data&quot;</span>);</div>
+<div class="line">        this-&gt;_message_type = pt.get&lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>&gt;(<span class="stringliteral">&quot;libap2p.message.type&quot;</span>);</div>
+<div class="line">        this-&gt;_message_signature = pt.get&lt;std::string&gt;(<span class="stringliteral">&quot;libap2p.signature.signature&quot;</span>);</div>
+<div class="line">        this-&gt;_message_signature_type = pt.get&lt;std::string&gt;(<span class="stringliteral">&quot;libap2p.signature.type&quot;</span>);</div>
+<div class="line">}</div>
+</div><!-- fragment -->
+</div>
+</div>
+<hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="a9fbf46058138df50dff71e53d04ad383"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string libap2p::message::get_xml </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get the xml text for the message Internally used. </p>
+<dl class="section return"><dt>Returns:</dt><dd>The xml-structure of the message. </dd></dl>
+<p>todo: Check signature before sending? </p>
+
+<p>Definition at line <a class="el" href="message_8cpp_source.html#l00086">86</a> of file <a class="el" href="message_8cpp_source.html">message.cpp</a>.</p>
+<div class="fragment"><div class="line">{</div>
+<div class="line">        boost::property_tree::ptree pt;</div>
+<div class="line">        std::stringstream out;</div>
+<div class="line"></div>
+<div class="line">        pt.put(<span class="stringliteral">&quot;libap2p.version&quot;</span>, <span class="stringliteral">&quot;0.0.1&quot;</span>);</div>
+<div class="line">        pt.put(<span class="stringliteral">&quot;libap2p.message.type&quot;</span>, this-&gt;_message_type);</div>
+<div class="line">        pt.put(<span class="stringliteral">&quot;libap2p.message.data&quot;</span>, this-&gt;_message_data);</div>
+<div class="line">        pt.put(<span class="stringliteral">&quot;libap2p.signature.signature&quot;</span>, this-&gt;_message_signature); </div>
+<div class="line">        pt.put(<span class="stringliteral">&quot;libap2p.signature.type&quot;</span>, this-&gt;_message_signature_type);</div>
+<div class="line">        </div>
+<div class="line">        write_xml(out, pt);</div>
+<div class="line">        </div>
+<div class="line">        <span class="keywordflow">return</span> out.str();</div>
+<div class="line">}</div>
+</div><!-- fragment -->
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>include/message/<a class="el" href="message_8hpp_source.html">message.hpp</a></li>
+<li>src/message/<a class="el" href="message_8cpp_source.html">message.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 13 2012 21:01:39 for libap2p by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Jun 15 2012 16:19:39 for libap2p by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.1
 </small></address>
