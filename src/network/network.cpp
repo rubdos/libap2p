@@ -15,7 +15,7 @@
 * 
 */
 
-
+#include "network/server.hpp"
 #include "network/network.hpp"
 
 namespace libap2p
@@ -36,6 +36,13 @@ network::network()
 void network::connect()
 {
 	this->_connection_status = CONNECTING;
+	this->_server = new server(this, 12011);
+	if(this->_nodes.size() == 0)
+	{
+		// No nodes added, just start the server. Networks can be joined togheter later on.
+		this->_connection_status = CONNECTED;
+	}
+	this->_server->run();
 }
 
 /** Function to close the network. Whenever the connection should be closed, 
@@ -45,5 +52,8 @@ void network::close()
 {
 	this->_connection_status = DISCONNECTED;
 }
-
+void network::add_node(node* _node)
+{
+	this->_nodes.push_back(_node);
+}
 }

@@ -15,14 +15,15 @@
 * 
 */
 
-#ifndef CLASS_SERVER
-#define CLASS_SERVER
+#ifndef CLASS_LIBAP2P_SERVER
+#define CLASS_LIBAP2P_SERVER
 
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
 
 namespace libap2p
 {
+class network;
 /**
 * @brief: Main p2p listening class
 * Internally called.
@@ -30,13 +31,16 @@ namespace libap2p
 class server
 {
 public:
-	server(unsigned short port);
+	server();
+	server(libap2p::network*, unsigned short);
 	void run();
 private:
 	void handle_accept(boost::asio::ip::tcp::socket, const boost::system::error_code&);
 	
 	boost::asio::io_service io;
 	unsigned short _port;
+
+	libap2p::network* _network;
 };
 }
 #endif

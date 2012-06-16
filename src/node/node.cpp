@@ -14,7 +14,10 @@
 * along with this program; if not, see <http://gnu.org/licenses/>
 * 
 */
+
 #include "node/node.hpp"
+#include "node/node_connection.hpp"
+
 namespace libap2p
 {
 /**
@@ -25,7 +28,10 @@ node::node()
 {
 	this->_node_connection = NULL;
 }
-
+node::node(node_connection* nc)
+{
+	this->_node_connection = nc;
+}
 bool node::connect()
 {
 	//!\todo: insert connection stuff here.

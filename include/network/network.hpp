@@ -24,6 +24,7 @@
 
 namespace libap2p
 {
+class server;
 enum connection_status { CONNECTED, CONNECTING, DISCONNECTED, ERROR};
 
 
@@ -45,6 +46,10 @@ public:
 	connection_status status() const {return this->_connection_status;};
 private:
 	connection_status _connection_status;
+
+	libap2p::server* _server;
+
+	std::vector<node*> _nodes;
 };
 }
 #endif

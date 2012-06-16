@@ -18,9 +18,17 @@
 #include "node/node_connection.hpp"
 #include "node/server_node_connection.hpp"
 
+#include <boost/asio.hpp>
+
 namespace libap2p
 {
-	void server_node_connection::send_message(message* msg)
-	{
-	}
+server_node_connection::server_node_connection(boost::asio::ip::tcp::socket* sock)
+{
+	this->_socket = sock;
+}
+
+void server_node_connection::send_message(message* msg)
+{
+}
+
 }

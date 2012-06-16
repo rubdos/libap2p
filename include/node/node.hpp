@@ -37,6 +37,7 @@ class node
 {
 public:
 	node();
+	node(node_connection*);
 	bool connect();
 	void send_message(message*);
 private:

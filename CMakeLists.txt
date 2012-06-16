@@ -1,7 +1,7 @@
-cmake_minimum_required (VERSION 2.6)
+cmake_minimum_required (VERSION 2.8.8)
 project (libap2p)
 set(CMAKE_COLOR_MAKEFILE ON)
-set(AP2P_LIBS node DHT message server)
+set(AP2P_LIBS node node_connection DHT message)
 
 # ---------- Setup output Directories -------------------------
 SET (CMAKE_LIBRARY_OUTPUT_DIRECTORY
@@ -27,14 +27,18 @@ SET (CMAKE_ARCHIVE_OUTPUT_DIRECTORY
 set(Boost_USE_STATIC_LIBS OFF)
 set(Boost_USE_MULTITHREADED ON) 
 set(Boost_USE_STATIC_RUNTIME OFF)
-find_package(Boost 1.45.0 COMPONENTS filesystem asio ptree)
+find_package(Boost REQUIRED COMPONENTS filesystem system)
 
 if(${Boost_FOUND})
-    include_directories(${Boost_INCLUDE_DIRS)
+    include_directories(${Boost_INCLUDE_DIRS})
 endif()
 
-
+find_package (Threads)
 
 include_directories ("${PROJECT_SOURCE_DIR}/include")
 add_subdirectory(src)
 add_subdirectory(tests)
+
+IF( CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64" )
+  SET_TARGET_PROPERTIES(${AP2P_LIBS} PROPERTIES COMPILE_FLAGS "-fPIC")
+ENDIF( CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64" )

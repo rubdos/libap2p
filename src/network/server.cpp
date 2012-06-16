@@ -16,14 +16,21 @@
 */
 
 #include "network/server.hpp"
+#include "network/network.hpp"
+
+#include "iostream"
 
 using namespace boost::asio;
 using namespace boost::asio::ip;
 
 namespace libap2p
 {
-server::server(unsigned short port)
+server::server()
 {
+}
+server::server(network * nw, unsigned short port)
+{
+	this->_network = nw;
 	this->_port = port;
 }
 void server::run()
@@ -32,9 +39,11 @@ void server::run()
 	{
 		tcp::acceptor acceptor(this->io, tcp::endpoint(tcp::v4(), this->_port));
 	
-		tcp::socket sock(this->io);
+		tcp::socket * sock = new tcp::socket(this->io);
 	
-		acceptor.accept(sock);
+		acceptor.accept(*sock);
+
+		this->_network->add_node(new node(new server_node_connection(sock)));
 	}
 }
 }
