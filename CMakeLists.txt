@@ -38,6 +38,7 @@ find_package (Threads REQUIRED)
 find_package (CryptoPP REQUIRED)
 
 include_directories ("${PROJECT_SOURCE_DIR}/include")
+include_directories ("${CRYPTOPP_INCLUDE_DIRS}")
 add_subdirectory(src)
 add_subdirectory(tests)
 
