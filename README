@@ -23,6 +23,7 @@ LaTeX doxygen: http://rubdos.github.com/libap2p/doxygen_latex
 CAUTION: not usable yet!
 
 *Requirements:
+    -cryptopp
 	-boost libraries
 	-cmake
 	-make compatible

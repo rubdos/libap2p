@@ -1,5 +1,6 @@
 cmake_minimum_required (VERSION 2.6)
 project (libap2p)
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMakeModules")
 set(CMAKE_COLOR_MAKEFILE ON)
 set(AP2P_LIBS identity node node_connection DHT message)
 
@@ -31,9 +32,10 @@ find_package(Boost REQUIRED COMPONENTS filesystem system)
 
 if(${Boost_FOUND})
     include_directories(${Boost_INCLUDE_DIRS})
-endif()
+endif(${Boost_FOUND})
 
-find_package (Threads)
+find_package (Threads REQUIRED)
+find_package (CryptoPP REQUIRED)
 
 include_directories ("${PROJECT_SOURCE_DIR}/include")
 add_subdirectory(src)
