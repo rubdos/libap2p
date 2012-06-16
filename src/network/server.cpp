@@ -28,22 +28,29 @@ namespace libap2p
 server::server()
 {
 }
+/** Constructs a libap2p::server with specified network and port.
+ *  @param nw   The libap2p::network object where the server will report to.
+ *  @param port The uint TCP port where the server will listen on.
+ */
 server::server(network * nw, unsigned short port)
 {
-	this->_network = nw;
-	this->_port = port;
+    this->_network = nw;
+    this->_port = port;
 }
+/** Starts the server. Can be run in a separate thread.
+ *  
+ */
 void server::run()
 {
-	for(;;)
-	{
-		tcp::acceptor acceptor(this->io, tcp::endpoint(tcp::v4(), this->_port));
-	
-		tcp::socket * sock = new tcp::socket(this->io);
-	
-		acceptor.accept(*sock);
+    for(;;)
+    {
+        tcp::acceptor acceptor(this->io, tcp::endpoint(tcp::v4(), this->_port));
+    
+        tcp::socket * sock = new tcp::socket(this->io);
+    
+        acceptor.accept(*sock);
 
-		this->_network->add_node(new node(new server_node_connection(sock)));
-	}
+        this->_network->add_node(new node(new server_node_connection(sock)));
+    }
 }
 }

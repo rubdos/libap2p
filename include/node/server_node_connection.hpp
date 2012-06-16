@@ -32,10 +32,10 @@ namespace libap2p
 class server_node_connection : public node_connection
 {
 public:
-	server_node_connection(boost::asio::ip::tcp::socket*);
-	void send_message(message*);
+    server_node_connection(boost::asio::ip::tcp::socket*);
+    void send_message(message*);
 private:
-	boost::asio::ip::tcp::socket* _socket;
+    boost::asio::ip::tcp::socket* _socket;
 };
 }
 

@@ -22,7 +22,8 @@ namespace libap2p
 {
 class identity
 {
-	identity();
+    identity();
+    void load_local();
 };
 }
 

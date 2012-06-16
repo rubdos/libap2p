@@ -18,6 +18,7 @@
 #ifndef CLASS_NETWORK
 #define CLASS_NETWORK
 
+#include "identity/identity.hpp"
 #include "node/node.hpp"
 
 #include <vector>
@@ -34,22 +35,23 @@ enum connection_status { CONNECTED, CONNECTING, DISCONNECTED, ERROR};
 class network
 {
 public:
-	network();
-	void connect();
-	void close();
+    network();
+    void connect();
+    void close();
 
-	void add_node(node*);
+    void add_node(node*);
 /** Used to check the current connection status. Can be libap2p{connection_status
   * {CONNECTED, CONNECTING, DISCONNECTED or ERROR}};
   *
   */
-	connection_status status() const {return this->_connection_status;};
+    connection_status status() const {return this->_connection_status;};
 private:
-	connection_status _connection_status;
+    connection_status _connection_status;
 
-	libap2p::server* _server;
+    libap2p::server* _server;
 
-	std::vector<node*> _nodes;
+    std::vector<node*> _nodes;
+    identity* _local_identity;
 };
 }
 #endif

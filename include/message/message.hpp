@@ -27,20 +27,20 @@ namespace libap2p
 class message
 {
 public:
-	message();
-	message(unsigned int /* message type */, std::string /* data */);
-	message(std::string /* xml */);
-	
-	std::string get_xml();
+    message();
+    message(unsigned int /* message type */, std::string /* data */);
+    message(std::string /* xml */);
+    
+    std::string get_xml();
 private:
-	void _init();
+    void _init();
 
-	std::string _message_version;
+    std::string _message_version;
 
-	unsigned int _message_type;
-	std::string _message_data;
-	std::string _message_signature;
-	std::string _message_signature_type;
+    unsigned int _message_type;
+    std::string _message_data;
+    std::string _message_signature;
+    std::string _message_signature_type;
 };
 }
 #endif

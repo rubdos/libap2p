@@ -36,12 +36,12 @@ namespace libap2p
 class node
 {
 public:
-	node();
-	node(node_connection*);
-	bool connect();
-	void send_message(message*);
+    node();
+    node(node_connection*);
+    bool connect();
+    void send_message(message*);
 private:
-	node_connection *_node_connection;
+    node_connection *_node_connection;
 };
 }
 #endif

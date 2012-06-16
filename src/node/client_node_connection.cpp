@@ -20,6 +20,9 @@
 
 namespace libap2p
 {
+/** Sends a message to this node_connection.
+ *
+ */
 void client_node_connection::send_message(message* msg)
 {
 }

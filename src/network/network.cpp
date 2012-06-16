@@ -26,7 +26,9 @@ namespace libap2p
  */
 network::network()
 {
-	this->_connection_status = DISCONNECTED;
+    this->_connection_status = DISCONNECTED;
+    this->_local_identity = new identity();
+    this->_local_identity->load_local();
 }
 /** Called to connect to the ap2p network. When called, ap2p connects to other
   * nodes specified with add_node() and fetches more from them. It will async
@@ -35,14 +37,17 @@ network::network()
   */
 void network::connect()
 {
-	this->_connection_status = CONNECTING;
-	this->_server = new server(this, 12011);
-	if(this->_nodes.size() == 0)
-	{
-		// No nodes added, just start the server. Networks can be joined togheter later on.
-		this->_connection_status = CONNECTED;
-	}
-	this->_server->run();
+    // Set status to connecting...
+    this->_connection_status = CONNECTING;
+    // Construct the libap2p::server object
+    this->_server = new server(this, 12011);
+    if(this->_nodes.size() == 0)
+    {
+        // No nodes added, just start the server. Networks can be joined togheter later on.
+        this->_connection_status = CONNECTED;
+    }
+    // Start the server
+    this->_server->run();
 }
 
 /** Function to close the network. Whenever the connection should be closed, 
@@ -50,10 +55,14 @@ void network::connect()
   */
 void network::close()
 {
-	this->_connection_status = DISCONNECTED;
+    this->_connection_status = DISCONNECTED;
 }
+/** Add a node to the network. Called from the server or can be an initial node
+ *  or one that's found on p2p manner in a client_node_connection way.
+ *  @param _node    A libap2p::node object to add to the network.
+ */
 void network::add_node(node* _node)
 {
-	this->_nodes.push_back(_node);
+    this->_nodes.push_back(_node);
 }
 }

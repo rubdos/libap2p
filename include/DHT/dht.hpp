@@ -27,8 +27,8 @@ namespace libap2p
 class DHT
 {
 public:
-	DHT();
-	dht_entry* fetch();
+    DHT();
+    dht_entry* fetch();
 };
 }
 #endif

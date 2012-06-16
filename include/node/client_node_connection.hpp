@@ -30,7 +30,7 @@ namespace libap2p
 class client_node_connection : public node_connection
 {
 public:
-	void send_message(message*);
+    void send_message(message*);
 };
 }
 

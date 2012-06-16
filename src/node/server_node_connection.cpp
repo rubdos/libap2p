@@ -24,9 +24,11 @@ namespace libap2p
 {
 server_node_connection::server_node_connection(boost::asio::ip::tcp::socket* sock)
 {
-	this->_socket = sock;
+    this->_socket = sock;
 }
-
+/** Sends a message to this node_connection.
+ *
+ */
 void server_node_connection::send_message(message* msg)
 {
 }

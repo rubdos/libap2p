@@ -25,7 +25,7 @@ namespace libap2p
 class dht_entry
 {
 public:
-	dht_entry(std::string);
+    dht_entry(std::string);
 };
 }
 

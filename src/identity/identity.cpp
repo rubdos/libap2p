@@ -21,7 +21,15 @@ namespace libap2p
 {
 identity::identity()
 {
-	//Load from default file
-	//!todo: stub
+    
+    //!todo: stub
+}
+/** Loads a locally stored identity.
+ * Will load the identity stored on the default place on the harddisk
+ *
+ */
+identity::load_local()
+{
+    
 }
 }

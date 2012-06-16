@@ -31,16 +31,16 @@ class network;
 class server
 {
 public:
-	server();
-	server(libap2p::network*, unsigned short);
-	void run();
+    server();
+    server(libap2p::network*, unsigned short);
+    void run();
 private:
-	void handle_accept(boost::asio::ip::tcp::socket, const boost::system::error_code&);
-	
-	boost::asio::io_service io;
-	unsigned short _port;
+    void handle_accept(boost::asio::ip::tcp::socket, const boost::system::error_code&);
+    
+    boost::asio::io_service io;
+    unsigned short _port;
 
-	libap2p::network* _network;
+    libap2p::network* _network;
 };
 }
 #endif

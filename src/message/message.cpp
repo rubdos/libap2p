@@ -32,20 +32,20 @@ namespace libap2p
 */
 message::message()
 {
-	this->_init();
+    this->_init();
 }
 
 /**
 * @brief Constructor with data.
 * Used to prepare a message to be send 
-* @param messagetype 	Message type. Can be any uint. Will be send through the socket
-* @param messagedata	The data to send. Easy construction by boost::asio::buffer([anything here]);
+* @param messagetype    Message type. Can be any uint. Will be send through the socket
+* @param messagedata    The data to send. Easy construction by boost::asio::buffer([anything here]);
 */
 message::message(unsigned int messagetype, std::string messagedata)
 {
-	this->_init();
-	this->_message_type = messagetype;
-	this->_message_data = messagedata;
+    this->_init();
+    this->_message_type = messagetype;
+    this->_message_data = messagedata;
 }
 
 /**
@@ -54,22 +54,25 @@ message::message(unsigned int messagetype, std::string messagedata)
 */
 message::message(std::string xml_str)
 {
-	this->_init();
+    this->_init();
 
-	std::stringstream in;
-	in << xml_str;
+    std::stringstream in;
+    in << xml_str;
 
-	boost::property_tree::ptree pt;
+    boost::property_tree::ptree pt;
 
-	read_xml(in, pt);
+    read_xml(in, pt);
 
-	this->_message_version = pt.get<std::string>("libap2p.version");
-	this->_message_data = pt.get<std::string>("libap2p.message.data");
-	this->_message_type = pt.get<unsigned int>("libap2p.message.type");
-	this->_message_signature = pt.get<std::string>("libap2p.signature.signature");
-	this->_message_signature_type = pt.get<std::string>("libap2p.signature.type");
+    this->_message_version = pt.get<std::string>("libap2p.version");
+    this->_message_data = pt.get<std::string>("libap2p.message.data");
+    this->_message_type = pt.get<unsigned int>("libap2p.message.type");
+    this->_message_signature = pt.get<std::string>("libap2p.signature.signature");
+    this->_message_signature_type = pt.get<std::string>("libap2p.signature.type");
 }
 
+/** Initializes the message with default values. Internally and privately called
+ *
+ */
 void message::_init()
 {
         this->_message_signature = "";
@@ -85,17 +88,17 @@ void message::_init()
 */
 std::string message::get_xml()
 {
-	boost::property_tree::ptree pt;
-	std::stringstream out;
+    boost::property_tree::ptree pt;
+    std::stringstream out;
 
-	pt.put("libap2p.version", "0.0.1");
-	pt.put("libap2p.message.type", this->_message_type);
-	pt.put("libap2p.message.data", this->_message_data);
-	pt.put("libap2p.signature.signature", this->_message_signature); //!todo: Check signature before sending?
-	pt.put("libap2p.signature.type", this->_message_signature_type);
-	
-	write_xml(out, pt);
-	
-	return out.str();
+    pt.put("libap2p.version", "0.0.1");
+    pt.put("libap2p.message.type", this->_message_type);
+    pt.put("libap2p.message.data", this->_message_data);
+    pt.put("libap2p.signature.signature", this->_message_signature); //!todo: Check signature before sending?
+    pt.put("libap2p.signature.type", this->_message_signature_type);
+    
+    write_xml(out, pt);
+    
+    return out.str();
 }
 }

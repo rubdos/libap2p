@@ -20,34 +20,38 @@
 
 namespace libap2p
 {
-/**
-* @brief: Constructor. Initializes node object
-*
-*/
+/* Constructor, initializes a node object.
+ *
+ */
 node::node()
 {
-	this->_node_connection = NULL;
+    this->_node_connection = NULL;
 }
+/** Constructs a new node with a known connection.
+ *  @param nc   A node connection.
+ */
 node::node(node_connection* nc)
 {
-	this->_node_connection = nc;
+    this->_node_connection = nc;
 }
+/** To be implemented
+ *
+ */
 bool node::connect()
 {
-	//!\todo: insert connection stuff here.
-	return false; //stub
+    //!\todo: insert connection stuff here.
+    return false; //stub
 }
 
-/**
-* @brief: Send a libap2p::message object to another node
-* @throws: 
-*/
+/** Send a libap2p::message object to another node.
+ *  @param msg  A message object to be send
+ */
 void node::send_message(message* msg)
 {
-	if(this->connect())
-	{
-		
-	}
-	
+    if(this->connect())
+    {
+        
+    }
+    
 }
 }
