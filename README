@@ -24,11 +24,11 @@ CAUTION: not usable yet!
 
 *Requirements:
     -cryptopp
-	-boost libraries
-	-cmake
-	-make compatible
-	-g++ compiler or compatible (mingw...)
+    -boost libraries
+    -cmake
+    -make compatible
+    -g++ compiler or compatible (mingw...)
 *Compiling:
-	$> mkdir build && cd build
-	$> cmake ..
-	$> make #(or make -j[threadcount])
+    $> mkdir build && cd build
+    $> cmake ..
+    $> make #(or make -j[threadcount])
