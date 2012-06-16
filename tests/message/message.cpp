@@ -22,15 +22,15 @@
 
 int main()
 {
-	// Create a new message
-	libap2p::message* msg = new libap2p::message(MESSAGETESTTYPE, "Test content<as>you see, xml content can be set as data!</as>");
-	// Print the XML data constructed in the message
-	std::cout << "XML:" << std::endl << msg->get_xml() << std::endl << std::endl;
+    // Create a new message
+    libap2p::message* msg = new libap2p::message(MESSAGETESTTYPE, "Test content<as>you see, xml content can be set as data!</as>");
+    // Print the XML data constructed in the message
+    std::cout << "XML:" << std::endl << msg->get_xml() << std::endl << std::endl;
 
-	// Construct a new message from the XML data
-	std::cout << "Constructing new message from XML:" << std::endl;
-	libap2p::message* from_xml = new libap2p::message(msg->get_xml());
-	// And print the new message to the terminal
-	std::cout << from_xml->get_xml() << std::endl << std::endl;
-	return 0;
+    // Construct a new message from the XML data
+    std::cout << "Constructing new message from XML:" << std::endl;
+    libap2p::message* from_xml = new libap2p::message(msg->get_xml());
+    // And print the new message to the terminal
+    std::cout << from_xml->get_xml() << std::endl << std::endl;
+    return 0;
 }
