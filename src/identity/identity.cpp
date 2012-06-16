@@ -28,7 +28,7 @@ identity::identity()
  * Will load the identity stored on the default place on the harddisk
  *
  */
-identity::load_local()
+void identity::load_local()
 {
     
 }
