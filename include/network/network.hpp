@@ -30,8 +30,8 @@ enum connection_status { CONNECTED, CONNECTING, DISCONNECTED, ERROR};
 
 
 /** The main class which gives access to the whole network.
-* 
-*/
+ * 
+ */
 class network
 {
 public:
