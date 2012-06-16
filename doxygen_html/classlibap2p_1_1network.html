@@ -38,6 +38,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -71,7 +72,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -109,7 +110,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>add_node</b> (<a clas
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>The main class which gives access to the whole network. </p>
 
-<p>Definition at line <a class="el" href="network_8hpp_source.html#l00033">33</a> of file <a class="el" href="network_8hpp_source.html">network.hpp</a>.</p>
+<p>Definition at line <a class="el" href="network_8hpp_source.html#l00034">34</a> of file <a class="el" href="network_8hpp_source.html">network.hpp</a>.</p>
 </div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a8ddd2d62c50c2ab85cb1ab884847748e"></a>
 <div class="memitem">
@@ -147,7 +148,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>add_node</b> (<a clas
 </div><div class="memdoc">
 <p>Function to close the network. Whenever the connection should be closed, this is to be called. </p>
 
-<p>Definition at line <a class="el" href="network_8cpp_source.html#l00044">44</a> of file <a class="el" href="network_8cpp_source.html">network.cpp</a>.</p>
+<p>Definition at line <a class="el" href="network_8cpp_source.html#l00051">51</a> of file <a class="el" href="network_8cpp_source.html">network.cpp</a>.</p>
 <div class="fragment"><div class="line">{</div>
 <div class="line">        this-&gt;_connection_status = DISCONNECTED;</div>
 <div class="line">}</div>
@@ -172,6 +173,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>add_node</b> (<a clas
 <p>Definition at line <a class="el" href="network_8cpp_source.html#l00036">36</a> of file <a class="el" href="network_8cpp_source.html">network.cpp</a>.</p>
 <div class="fragment"><div class="line">{</div>
 <div class="line">        this-&gt;_connection_status = CONNECTING;</div>
+<div class="line">        this-&gt;_server = <span class="keyword">new</span> server(<span class="keyword">this</span>, 12011);</div>
+<div class="line">        <span class="keywordflow">if</span>(this-&gt;_nodes.size() == 0)</div>
+<div class="line">        {</div>
+<div class="line">                <span class="comment">// No nodes added, just start the server. Networks can be joined togheter later on.</span></div>
+<div class="line">                this-&gt;_connection_status = CONNECTED;</div>
+<div class="line">        }</div>
+<div class="line">        this-&gt;_server-&gt;run();</div>
 <div class="line">}</div>
 </div><!-- fragment -->
 </div>
@@ -198,7 +206,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>add_node</b> (<a clas
 </div><div class="memdoc">
 <p>Used to check the current connection status. Can be libap2p{connection_status {CONNECTED, CONNECTING, DISCONNECTED or ERROR}}; </p>
 
-<p>Definition at line <a class="el" href="network_8hpp_source.html#l00045">45</a> of file <a class="el" href="network_8hpp_source.html">network.hpp</a>.</p>
+<p>Definition at line <a class="el" href="network_8hpp_source.html#l00046">46</a> of file <a class="el" href="network_8hpp_source.html">network.hpp</a>.</p>
 <div class="fragment"><div class="line">{<span class="keywordflow">return</span> this-&gt;_connection_status;};</div>
 </div><!-- fragment -->
 </div>
@@ -210,7 +218,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>add_node</b> (<a clas
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Jun 15 2012 16:19:40 for libap2p by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Jun 16 2012 17:37:23 for libap2p by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.1
 </small></address>

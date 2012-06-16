@@ -24,7 +24,7 @@ connection\-\_\-status \hyperlink{classlibap2p_1_1network_aa01d40a45f84bb50a8210
 \subsection{Detailed Description}
 The main class which gives access to the whole network. 
 
-Definition at line 33 of file network.\-hpp.
+Definition at line 34 of file network.\-hpp.
 
 
 
@@ -58,7 +58,7 @@ Definition at line 27 of file network.\-cpp.
 )}}\label{classlibap2p_1_1network_a256421d58621e89fbf15a3cdc3f91ae6}
 Function to close the network. Whenever the connection should be closed, this is to be called. 
 
-Definition at line 44 of file network.\-cpp.
+Definition at line 51 of file network.\-cpp.
 
 
 \begin{DoxyCode}
@@ -84,6 +84,14 @@ Definition at line 36 of file network.\-cpp.
 \begin{DoxyCode}
 \{
         this->\_connection\_status = CONNECTING;
+        this->\_server = \textcolor{keyword}{new} server(\textcolor{keyword}{this}, 12011);
+        \textcolor{keywordflow}{if}(this->\_nodes.size() == 0)
+        \{
+                \textcolor{comment}{// No nodes added, just start the server. Networks can be
+       joined togheter later on.}
+                this->\_connection\_status = CONNECTED;
+        \}
+        this->\_server->run();
 \}
 \end{DoxyCode}
 \hypertarget{classlibap2p_1_1network_aa01d40a45f84bb50a8210673e2a6b454}{\index{libap2p\-::network@{libap2p\-::network}!status@{status}}
@@ -95,7 +103,7 @@ Definition at line 36 of file network.\-cpp.
 ) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{classlibap2p_1_1network_aa01d40a45f84bb50a8210673e2a6b454}
 Used to check the current connection status. Can be libap2p\{connection\-\_\-status \{C\-O\-N\-N\-E\-C\-T\-E\-D, C\-O\-N\-N\-E\-C\-T\-I\-N\-G, D\-I\-S\-C\-O\-N\-N\-E\-C\-T\-E\-D or E\-R\-R\-O\-R\}\}; 
 
-Definition at line 45 of file network.\-hpp.
+Definition at line 46 of file network.\-hpp.
 
 
 \begin{DoxyCode}

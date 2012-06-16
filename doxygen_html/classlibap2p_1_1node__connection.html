@@ -38,6 +38,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -71,7 +72,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -86,6 +87,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div>
 </div><!-- top -->
 <div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a>  </div>
   <div class="headertitle">
 <div class="title">libap2p::node_connection Class Reference</div>  </div>
 </div><!--header-->
@@ -99,22 +102,28 @@ Inheritance diagram for libap2p::node_connection:</div>
   <img src="classlibap2p_1_1node__connection.png" usemap="#libap2p::node_connection_map" alt=""/>
   <map id="libap2p::node_connection_map" name="libap2p::node_connection_map">
 <area href="classlibap2p_1_1client__node__connection.html" alt="libap2p::client_node_connection" shape="rect" coords="0,56,200,80"/>
-<area href="classlibap2p_1_1server__node__connection.html" alt="libap2p::server_node_connection" shape="rect" coords="210,56,410,80"/>
+<area href="classlibap2p_1_1server__node__connection.html" title="Implementation of listening node_connection." alt="libap2p::server_node_connection" shape="rect" coords="210,56,410,80"/>
 </map>
  </div></div>
 
 <p><a href="classlibap2p_1_1node__connection-members.html">List of all members.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:ad880fcd549c6e831ff97861cf1bf6f43"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad880fcd549c6e831ff97861cf1bf6f43"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>send_message</b> (<a class="el" href="classlibap2p_1_1message.html">message</a> *)=0</td></tr>
+</table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
-<div class="textblock"><p>Abstract class providing the connection with a node. Implemented by <a class="el" href="classlibap2p_1_1server__node__connection.html">server_node_connection</a> or <a class="el" href="classlibap2p_1_1client__node__connection.html">client_node_connection</a>. </p>
+<div class="textblock"><p>Abstract class providing the connection with a node. Implemented by <a class="el" href="classlibap2p_1_1server__node__connection.html" title="Implementation of listening node_connection.">server_node_connection</a> or <a class="el" href="classlibap2p_1_1client__node__connection.html">client_node_connection</a>. </p>
 
 <p>Definition at line <a class="el" href="node__connection_8hpp_source.html#l00028">28</a> of file <a class="el" href="node__connection_8hpp_source.html">node_connection.hpp</a>.</p>
 </div><hr/>The documentation for this class was generated from the following file:<ul>
-<li>include/network/<a class="el" href="node__connection_8hpp_source.html">node_connection.hpp</a></li>
+<li>include/node/<a class="el" href="node__connection_8hpp_source.html">node_connection.hpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Jun 15 2012 16:19:40 for libap2p by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Jun 16 2012 17:37:24 for libap2p by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.1
 </small></address>
