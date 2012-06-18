@@ -18,13 +18,26 @@
 #ifndef CLASS_CONFIGURATION
 #define CLASS_CONFIGURATION
 
+#include <boost/bind.hpp>
+
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
+
+#include <string>
 
 namespace libap2p
 {
 class configuration : public boost::property_tree::ptree
 {
+public:
+    void load_file();
+    void load_file(std::string);
+
+private:
+    void merge(boost::property_tree::ptree);
+    void merge(boost::property_tree::ptree, std::string);
+
+    std::string last_filename;
 };
 }
 

@@ -2,7 +2,7 @@ cmake_minimum_required (VERSION 2.6)
 project (libap2p)
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMakeModules")
 set(CMAKE_COLOR_MAKEFILE ON)
-set(AP2P_LIBS identity node node_connection DHT message)
+set(AP2P_LIBS identity node node_connection DHT message configuration)
 
 # ---------- Setup output Directories -------------------------
 SET (CMAKE_LIBRARY_OUTPUT_DIRECTORY
