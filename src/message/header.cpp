@@ -15,35 +15,9 @@
 * 
 */
 
-#include "node/node_connection.hpp"
-#include "node/server_node_connection.hpp"
-#include "message/message.hpp"
 #include "message/header.hpp"
-
-#include <boost/asio.hpp>
 
 namespace libap2p
 {
-/** Creates a new node_connection based on a server sided socket.
- *  @param sock A socket pointer.
- */
-server_node_connection::server_node_connection(boost::asio::ip::tcp::socket* sock)
-{
-    this->_socket = sock;
-}
-
-message* server_node_connection::fetch_message()
-{
-    header hdr;
-    return NULL; //@todo: Implement
-}
-
-/** Sends a message to this node_connection.
- *
- */
-void server_node_connection::send_message(message* msg)
-{
-    
-}
 
 }

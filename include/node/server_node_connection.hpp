@@ -22,6 +22,7 @@
 #include "message/message.hpp"
 
 #include <boost/asio.hpp>
+#include <boost/thread.hpp>
 
 namespace libap2p
 {
@@ -33,6 +34,7 @@ class server_node_connection : public node_connection
 {
 public:
     server_node_connection(boost::asio::ip::tcp::socket*);
+    message* fetch_message();
     void send_message(message*);
 private:
     boost::asio::ip::tcp::socket* _socket;
