@@ -28,5 +28,13 @@ int main()
     std::cout << "Appended configuration.xml" << std::endl;
     write_xml(std::cout, (boost::property_tree::ptree)(*cnf));
     std::cout << std::endl << std::endl;
+
+    // Now add some stuff. Let's say bullshit.
+    cnf->put("server.foo", "bar");
+    std::cout << "Appended some foobar" << std::endl;
+    write_xml(std::cout, (boost::property_tree::ptree)(*cnf));
+    std::cout << std::endl << std::endl << "And saving to configuration.edit.xml" << std::endl;;
+
+    cnf->save_file("configuration.edit.xml");
     return 0;
 }

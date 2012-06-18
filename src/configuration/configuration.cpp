@@ -26,7 +26,15 @@ namespace libap2p
  */
 void configuration::load_file()
 {
-    return; //@todo: Add default configuration file here.
+    //this->
+    return;
+    /*@todo: Add default configuration file here.
+     *       filepath should be chosed on OS type:
+     *       Unix:    .libap2p folder in home directory
+     *       Windows: %APPDATA%/libap2p (though, who uses
+     *                windows these days
+     *       Mac:     Don't know. Hints?)
+     */
 }
 
 /** Loads a configuration file specified by filename.
@@ -42,6 +50,24 @@ void configuration::load_file(std::string filename)
     read_xml(filename, cfg_file_pt);
 
     this->merge(cfg_file_pt);
+}
+
+/** Saves the configuration to a file.
+ *  Saves the configuration to the last loaded file in
+ *  libap2p::configuration::load_file
+ */
+void configuration::save_file()
+{
+    this->save_file(this->last_filename);
+}
+
+/** Saves the configuration to the specified file
+ *  @param filename an std::string with the path to the
+ *         writable filename to write to.
+ */
+void configuration::save_file(std::string filename)
+{
+    boost::property_tree::xml_parser::write_xml(filename, *dynamic_cast<boost::property_tree::ptree*>(this));
 }
 
 

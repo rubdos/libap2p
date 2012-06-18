@@ -33,6 +33,8 @@ public:
     void load_file();
     void load_file(std::string);
 
+    void save_file();
+    void save_file(std::string);
 private:
     void merge(boost::property_tree::ptree);
     void merge(boost::property_tree::ptree, std::string);
