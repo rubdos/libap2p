@@ -24,8 +24,9 @@ namespace libap2p
 /** Constructor. Initializes network structure
  *
  */
-network::network()
+network::network(configuration* cfg)
 {
+    this->_cfg = cfg;
     this->_connection_status = DISCONNECTED;
     this->_local_identity = new identity();
     this->_local_identity->load_local();
@@ -40,7 +41,7 @@ void network::connect()
     // Set status to connecting...
     this->_connection_status = CONNECTING;
     // Construct the libap2p::server object
-    this->_server = new server(this, 12011);
+    this->_server = new server(this, this->_cfg);
     if(this->_nodes.size() == 0)
     {
         // No nodes added, just start the server. Networks can be joined togheter later on.

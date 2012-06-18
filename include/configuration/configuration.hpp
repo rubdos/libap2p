@@ -15,34 +15,17 @@
 * 
 */
 
-#ifndef CLASS_LIBAP2P_SERVER
-#define CLASS_LIBAP2P_SERVER
+#ifndef CLASS_CONFIGURATION
+#define CLASS_CONFIGURATION
 
-#include "configuration/configuration.hpp"
-
-#include <boost/asio.hpp>
-#include <boost/bind.hpp>
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/xml_parser.hpp>
 
 namespace libap2p
 {
-class network;
-/** Main p2p listening class.
- *  Internally called.
- */
-class server
+class configuration : public boost::property_tree::ptree
 {
-public:
-    server();
-    server(libap2p::network*, configuration* cfg);
-    void run();
-private:
-    void handle_accept(boost::asio::ip::tcp::socket, const boost::system::error_code&);
-    
-    boost::asio::io_service io;
-    unsigned short _port;
-
-    network* _network;
-    configuration* _cfg;
 };
 }
+
 #endif

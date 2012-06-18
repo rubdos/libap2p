@@ -30,12 +30,13 @@ server::server()
 }
 /** Constructs a libap2p::server with specified network and port.
  *  @param nw   The libap2p::network object where the server will report to.
- *  @param port The uint TCP port where the server will listen on.
+ *  @param cfg  The configuration details object.
  */
-server::server(network * nw, unsigned short port)
+server::server(network * nw, configuration* cfg)
 {
     this->_network = nw;
-    this->_port = port;
+    this->_port = cfg->get<unsigned int>("server.port", 12011);
+    this->_cfg = cfg;
 }
 /** Starts the server. Can be run in a separate thread.
  *  

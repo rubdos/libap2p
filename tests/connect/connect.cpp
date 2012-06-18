@@ -6,8 +6,11 @@ using namespace std;
 
 int main()
 {
+    // Open a basic configuration class with defaults (server port on 12011
+    libap2p::configuration * conf = new libap2p::configuration();
+
     // Create a network and print its status
-    libap2p::network *conn = new libap2p::network();
+    libap2p::network *conn = new libap2p::network(conf);
     cout << "initial network::connection_status: " <<  conn->status() << endl;
 
     // Connect to the network and print its status

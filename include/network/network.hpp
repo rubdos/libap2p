@@ -20,6 +20,7 @@
 
 #include "identity/identity.hpp"
 #include "node/node.hpp"
+#include "configuration/configuration.hpp"
 
 #include <vector>
 
@@ -35,7 +36,7 @@ enum connection_status { CONNECTED, CONNECTING, DISCONNECTED, ERROR};
 class network
 {
 public:
-    network();
+    network(configuration*);
     void connect();
     void close();
 
@@ -52,6 +53,7 @@ private:
 
     std::vector<node*> _nodes;
     identity* _local_identity;
+    configuration* _cfg;
 };
 }
 #endif
