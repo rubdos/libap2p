@@ -29,7 +29,9 @@ header::header()
 {
     this->compression_flags = COMPRESSION_NONE;
 }
-
+/** Header constructor from an int64_t received header.
+ *  
+ */
 header::header(int64_t str_header)
 {
     int8_t flags1, flags2, flags3, _compression_flags;
