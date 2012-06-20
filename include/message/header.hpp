@@ -37,7 +37,7 @@ public:
     int64_t get_encoded();
 
     int32_t message_length;
-    unsigned char compression_flags;
+    int8_t compression_flags;
 private:
     int get_flags1();
     int get_flags2();

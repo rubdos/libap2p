@@ -32,6 +32,22 @@ header::header()
 
 header::header(int64_t str_header)
 {
+    int8_t flags1, flags2, flags3, _compression_flags;
+
+    _compression_flags = (int8_t) str_header;
+    this->compression_flags = _compression_flags;
+    
+    str_header >>= 8;
+    flags3 = str_header;
+    
+    str_header >>=8;
+    flags2 = str_header;
+    
+    str_header >>=8;
+    flags1 = str_header;
+    
+    str_header >>=8;
+    this->message_length = str_header;
 }
 
 /** Encodes the message header for postal.
