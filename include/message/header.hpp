@@ -25,6 +25,10 @@ namespace libap2p
  */
 class header
 {
+public:
+    header(const char *);
+private:
+    bool get_bit(unsigned char, unsigned char);
 };
 }
 

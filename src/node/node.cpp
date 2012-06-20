@@ -43,6 +43,21 @@ bool node::connect()
     return false; //stub
 }
 
+/** Runs the node connections.
+ *  Will start separate thread.
+ */
+void node::run()
+{
+    
+}
+/** Actual runner.
+ *  Runs in thread started by node::run();
+ */
+void node::_run()
+{
+    
+}
+
 /** Send a libap2p::message object to another node.
  *  @param msg  A message object to be send
  */

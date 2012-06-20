@@ -40,7 +40,11 @@ public:
     node(node_connection*);
     bool connect();
     void send_message(message*);
+
+    void run();
 private:
+    void _run();
+    
     node_connection *_node_connection;
 };
 }

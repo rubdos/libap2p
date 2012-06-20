@@ -19,5 +19,21 @@
 
 namespace libap2p
 {
+// Public
 
+header::header(const char* str_header)
+{
+}
+
+
+// Private
+
+/** Gets a single bit state of a byte.
+ *  @param number   The char of which the bit is taken
+ *  @param position The position where the bit is taken
+ */
+bool header::get_bit(unsigned char number, unsigned char position) {
+    unsigned char bitmask = 1 << position;
+    return (number & bitmask) ? true : false;
+}
 }
