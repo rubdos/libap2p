@@ -27,7 +27,7 @@ namespace libap2p
 
 header::header()
 {
-    this->compression_flags = NO_COMPRESSION;
+    this->compression_flags = COMPRESSION_NONE;
 }
 
 header::header(int64_t str_header)

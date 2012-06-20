@@ -23,8 +23,8 @@
 namespace libap2p
 {
 enum compression_flags {
-    NO_COMPRESSION = 0,
-    GZIP = 1
+    COMPRESSION_NONE = 0,
+    COMPRESSION_GZIP = 1
 };
 /** Represents the message header.
  *  Internally called.

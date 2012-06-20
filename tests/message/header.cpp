@@ -26,7 +26,7 @@ int main()
     std::cout << "Preparing header with message_length of 1KB, compression GZIP, flags all 0" << std::endl;
     libap2p::header* hdr = new libap2p::header();
     hdr->message_length = 1024; // Lets set message length to be a kilobyte.
-    hdr->compression_flags = libap2p::GZIP; // And lets try GZIP
+    hdr->compression_flags = libap2p::COMPRESSION_GZIP; // And lets try GZIP
     std::cout << "Header (try to read the binary form ;) ): ";
     int64_t enc = hdr->get_encoded();
 
