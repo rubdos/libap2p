@@ -17,16 +17,67 @@
 
 #include "message/header.hpp"
 
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+
 namespace libap2p
 {
 // Public
 
-header::header(const char* str_header)
+header::header()
 {
+    this->compression_flags = NO_COMPRESSION;
+}
+
+header::header(int64_t str_header)
+{
+}
+
+/** Encodes the message header for postal.
+ *  @return An unsigned char array 7 bytes long. First four bytes
+ *          are message length. Then flags 1 and flags 2 and
+ *          compression flags. See wiki/protocol specification.
+ */
+int64_t header::get_encoded()
+{
+    int64_t encoded = (int64_t) this->message_length;    
+    encoded <<= 8; // sizeof flag is 8 bits
+    encoded += this->get_flags1();
+    encoded <<= 8;
+    encoded += this->get_flags2();
+    encoded <<= 8;
+    encoded += this->get_flags3();
+    encoded <<= 8;
+    encoded += this->compression_flags;
+    
+    return encoded ;
 }
 
 
 // Private
+
+/**
+ *
+ */
+int header::get_flags1()
+{
+    return 0;
+}
+/**
+ *
+ */
+int header::get_flags2()
+{
+    return 0;
+}
+/**
+ *
+ */
+int header::get_flags3()
+{
+    return 0;
+}
 
 /** Gets a single bit state of a byte.
  *  @param number   The char of which the bit is taken

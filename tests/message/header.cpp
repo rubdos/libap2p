@@ -15,35 +15,17 @@
 * 
 */
 
-#ifndef CLASS_HEADER
-#define CLASS_HEADER
+#include "message/header.hpp"
+#include <stdio.h>
+#include <iostream>
 
-#include <stdint.h>
 
-namespace libap2p
+int main()
 {
-enum compression_flags {
-    NO_COMPRESSION = 0,
-    GZIP = 1
-};
-/** Represents the message header.
- *  Internally called.
- */
-class header
-{
-public:
-    header();
-    header(int64_t);
-    int64_t get_encoded();
+    libap2p::header* hdr = new libap2p::header();
+    hdr->message_length = 1024; // Lets set message length to be a kilobyte.
+    hdr->compression_flags = libap2p::GZIP; // And lets try GZIP
 
-    int32_t message_length;
-    unsigned char compression_flags;
-private:
-    int get_flags1();
-    int get_flags2();
-    int get_flags3();
-    bool get_bit(unsigned char, unsigned char);
-};
+    std::cout << hdr->get_encoded() << std::endl;
+    return 0;
 }
-
-#endif
