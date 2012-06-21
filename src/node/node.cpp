@@ -40,15 +40,28 @@ node::node(node_connection* nc)
  */
 void node::run()
 {
-    message* init_msg = new message(0, "data =D");
+    message* init_msg = new message(MESSAGE_IDENTIFY, ""); //@todo: add identification params (pubid)
     this->send_message(init_msg);
+
+    this->runner = new boost::thread(boost::bind(&libap2p::node::_run, this)); 
 }
 /** Actual runner.
  *  Runs in thread started by node::run();
  */
 void node::_run()
 {
-    
+    while(true)
+    {
+        if(this->_node_connection == NULL)
+        {
+            break;
+        }
+        message* msg = this->_node_connection->fetch_message();
+        if(msg == NULL)
+        {
+            break;
+        }
+    }
 }
 
 /** Send a libap2p::message object to another node.

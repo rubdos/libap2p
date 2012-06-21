@@ -21,6 +21,8 @@
 #include "message/header.hpp"
 
 #include <boost/asio.hpp>
+#include <stdio.h>
+#include <vector>
 
 namespace libap2p
 {
@@ -34,7 +36,20 @@ server_node_connection::server_node_connection(boost::asio::ip::tcp::socket* soc
 
 message* server_node_connection::fetch_message()
 {
-    header hdr;
+    // Read header to determine message length. Header is 8 bytes long.
+    int64_t *hdr_int = new int64_t();
+    boost::asio::read(*(this->_socket), boost::asio::buffer(hdr_int, 8), boost::asio::transfer_exactly(8));
+    
+    header *hdr = new header(*hdr_int);
+    
+    // Prepare message retrieval
+    boost::asio::streambuf message_raw; 
+    size_t bytes = boost::asio::read( *(this->_socket), message_raw, boost::asio::transfer_exactly(hdr->message_length));
+
+    message_raw.commit(bytes);
+
+    // Make up message object and return
+
     return NULL; //@todo: Implement
 }
 

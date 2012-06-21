@@ -25,6 +25,8 @@
 
 #include <stdlib.h>
 #include <iostream>
+#include <boost/thread.hpp>
+#include <boost/bind.hpp>
 
 namespace libap2p
 {
@@ -44,6 +46,8 @@ public:
     void _run();
 private:    
     node_connection *_node_connection;
+
+    boost::thread *runner;
 };
 }
 #endif

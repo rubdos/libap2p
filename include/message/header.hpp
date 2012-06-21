@@ -26,6 +26,12 @@ enum compression_flags {
     COMPRESSION_NONE = 0,
     COMPRESSION_GZIP = 1
 };
+
+enum message_types
+{
+    MESSAGE_IDENTIFY = 0
+
+};
 /** Represents the message header.
  *  Internally called.
  */
