@@ -40,7 +40,8 @@ node::node(node_connection* nc)
  */
 void node::run()
 {
-    
+    message* init_msg = new message(0, "data =D");
+    this->send_message(init_msg);
 }
 /** Actual runner.
  *  Runs in thread started by node::run();

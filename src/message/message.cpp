@@ -23,6 +23,10 @@
 
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
+#include <iostream>
+#include <boost/iostreams/filtering_streambuf.hpp>
+#include <boost/iostreams/copy.hpp>
+#include <boost/iostreams/filter/gzip.hpp>
 
 namespace libap2p
 {
@@ -100,5 +104,41 @@ std::string message::get_xml()
     write_xml(out, pt);
     
     return out.str();
+}
+
+void message::prepare()
+{
+    this->_compress();
+}
+
+void message::_compress()
+{
+    std::stringstream xml, compressedxml;
+    xml << this->get_xml();
+
+    boost::iostreams::filtering_streambuf<boost::iostreams::input> in;
+    in.push(boost::iostreams::gzip_compressor());
+    in.push(xml);
+    boost::iostreams::copy(in, this->_compressed);
+}
+
+header* message::get_header()
+{
+    header *hdr = new header();
+
+    // Search message length:
+    this->_compressed.seekp(0, std::ios::end);
+    hdr->message_length = this->_compressed.tellp();
+    this->_compressed.seekp(0, std::ios::beg);
+
+    // Set compression system
+    hdr->compression_flags = 1; //@todo: hardcoded to GZIP, FIXME
+
+    return hdr;
+}
+
+std::string message::get_encoded()
+{
+    return this->_compressed.str();
 }
 }

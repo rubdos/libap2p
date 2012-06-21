@@ -18,9 +18,12 @@
 #ifndef CLASS_MESSAGE
 #define CLASS_MESSAGE
 
+#include <iostream>
 #include <string>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
+
+#include "message/header.hpp"
 
 namespace libap2p
 {
@@ -30,10 +33,17 @@ public:
     message();
     message(unsigned int /* message type */, std::string /* data */);
     message(std::string /* xml */);
+
+    void prepare();
     
     std::string get_xml();
+    header *get_header();
+    std::string get_encoded();
 private:
     void _init();
+    void _compress();
+
+    std::stringstream _compressed;
 
     std::string _message_version;
 

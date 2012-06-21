@@ -43,7 +43,15 @@ message* server_node_connection::fetch_message()
  */
 void server_node_connection::send_message(message* msg)
 {
-    
+    msg->prepare();
+    header *hdr = msg->get_header();
+
+    int64_t l_hdr = hdr->get_encoded();
+
+    boost::system::error_code ignored_error;
+    boost::asio::write(*(this->_socket), boost::asio::buffer(&l_hdr, 8), boost::asio::transfer_all(), ignored_error); // Send message header
+
+    boost::asio::write(*(this->_socket), boost::asio::buffer(msg->get_encoded()), boost::asio::transfer_all(), ignored_error); // Send message itself
 }
 
 }
