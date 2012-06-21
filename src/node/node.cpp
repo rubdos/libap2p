@@ -34,14 +34,6 @@ node::node(node_connection* nc)
 {
     this->_node_connection = nc;
 }
-/** To be implemented
- *
- */
-bool node::connect()
-{
-    //!\todo: insert connection stuff here.
-    return false; //stub
-}
 
 /** Runs the node connections.
  *  Will start separate thread.
@@ -63,10 +55,6 @@ void node::_run()
  */
 void node::send_message(message* msg)
 {
-    if(this->connect())
-    {
-        
-    }
-    
+    this->_node_connection->send_message(msg); // Well, this is simple...
 }
 }

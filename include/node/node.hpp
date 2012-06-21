@@ -38,13 +38,11 @@ class node
 public:
     node();
     node(node_connection*);
-    bool connect();
     void send_message(message*);
 
     void run();
-private:
     void _run();
-    
+private:    
     node_connection *_node_connection;
 };
 }
