@@ -22,6 +22,7 @@
 #include <string>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
+#include <boost/asio.hpp>
 
 #include "message/header.hpp"
 
@@ -33,6 +34,7 @@ public:
     message();
     message(unsigned int /* message type */, std::string /* data */);
     message(std::string /* xml */);
+    message(boost::asio::streambuf* /* message compressed */, header*);
 
     void prepare();
     
@@ -41,6 +43,7 @@ public:
     std::string get_encoded();
 private:
     void _init();
+    void _init(std::string /* xml */);
     void _compress();
 
     std::stringstream _compressed;

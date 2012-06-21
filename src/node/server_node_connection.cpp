@@ -23,6 +23,7 @@
 #include <boost/asio.hpp>
 #include <stdio.h>
 #include <vector>
+#include <iostream>
 
 namespace libap2p
 {
@@ -49,8 +50,7 @@ message* server_node_connection::fetch_message()
     message_raw.commit(bytes);
 
     // Make up message object and return
-
-    return NULL; //@todo: Implement
+    return new message(&message_raw, hdr);
 }
 
 /** Sends a message to this node_connection.

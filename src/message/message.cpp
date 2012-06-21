@@ -52,16 +52,36 @@ message::message(unsigned int messagetype, std::string messagedata)
     this->_message_data = messagedata;
 }
 
-/**
-* @brief Constructor from XML content
-* @param xml_str an std::string with xml contents.
+/** Constructor from XML content.
+*   @param xml_str an std::string with xml contents.
 */
 message::message(std::string xml_str)
 {
-    this->_init();
+    this->_init(xml_str);
+}
 
+/** Constructor from compressed xml data and header.
+ *
+ */
+message::message(boost::asio::streambuf *message_raw, header* hdr)
+{
+    std::stringstream xml;
+
+    boost::iostreams::filtering_streambuf<boost::iostreams::input> in;
+    in.push(boost::iostreams::gzip_decompressor());
+    in.push(*message_raw);
+    boost::iostreams::copy(in, xml);
+    
+    this->_init(xml.str());
+}
+
+/** Initializes from xml data.
+ *
+ */
+void message::_init(std::string xml)
+{
     std::stringstream in;
-    in << xml_str;
+    in << xml;
 
     boost::property_tree::ptree pt;
 
@@ -85,10 +105,9 @@ void message::_init()
         this->_message_data = "";
 }
 
-/**
-* @brief Get the xml text for the message
-* Internally used
-* @return The xml-structure of the message.
+/** Get the xml text for the message.
+*   Internally used
+*   @return The xml-structure of the message.
 */
 std::string message::get_xml()
 {

@@ -61,6 +61,7 @@ void node::_run()
         {
             break;
         }
+        // std::cout << msg->get_xml() << std::endl;
     }
 }
 
