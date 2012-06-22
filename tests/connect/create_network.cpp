@@ -1,5 +1,4 @@
 #include "network/network.hpp"
-#include "node/node.hpp"
 
 #include <iostream>
 
@@ -9,8 +8,6 @@ int main()
 {
     // Open a basic configuration class with defaults (server port on 12011
     libap2p::configuration * conf = new libap2p::configuration();
-    // Make server listen on port 12012, so you can connect to test_create_server
-    conf->put("server.port", 12012);
 
     // Create a network and print its status
     libap2p::network *conn = new libap2p::network(conf);
