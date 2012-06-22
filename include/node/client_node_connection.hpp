@@ -30,6 +30,7 @@ namespace libap2p
 class client_node_connection : public node_connection
 {
 public:
+    client_node_connection(std::string /* IP address*/);
     void send_message(message*);
 };
 }

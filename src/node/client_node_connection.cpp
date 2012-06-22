@@ -20,6 +20,11 @@
 
 namespace libap2p
 {
+client_node_connection::client_node_connection(std::string ip_adress)
+{
+    
+}
+
 /** Sends a message to this node_connection.
  *
  */
