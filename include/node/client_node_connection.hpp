@@ -21,17 +21,21 @@
 #include "node/node_connection.hpp"
 #include "message/message.hpp"
 
+#include <boost/asio.hpp>
+
 namespace libap2p
 {
-/*
-* @brief: Implementation of connecting node_connection.
+/** Implementation of connecting node_connection.
 *
 */
 class client_node_connection : public node_connection
 {
 public:
-    client_node_connection(std::string /* IP address*/);
+    client_node_connection(std::string /* IP address*/, std::string /* port */);
     void send_message(message*);
+private:
+    std::string _server_ip_adress;
+    boost::asio::ip::tcp::resolver::iterator _endpoint_iterator;
 };
 }
 
