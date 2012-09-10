@@ -30,9 +30,9 @@ set(Boost_USE_MULTITHREADED ON)
 set(Boost_USE_STATIC_RUNTIME OFF)
 find_package(Boost REQUIRED COMPONENTS iostreams filesystem system thread)
 
-if(${Boost_FOUND})
+if(Boost_FOUND)
     include_directories(${Boost_INCLUDE_DIRS})
-endif(${Boost_FOUND})
+endif(Boost_FOUND)
 
 find_package (Threads REQUIRED)
 find_package (CryptoPP REQUIRED)
