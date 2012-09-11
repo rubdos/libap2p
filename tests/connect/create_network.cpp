@@ -30,6 +30,11 @@ int main()
             cout << "error connecting to the network";
         }
     }
+    // Start the main loop
+    while(conn->status() == libap2p::CONNECTED)
+    {
+        //nop. This is a test...
+    }
 
     // Close and return
     conn->close();
