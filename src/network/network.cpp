@@ -47,8 +47,8 @@ void network::connect()
         // No nodes added, just start the server. Networks can be joined togheter later on.
         this->_connection_status = CONNECTED;
     }
-    // Start the server
-    this->_server->run();
+    // Start the server in seperate thread
+    this->_runner = new boost::thread(boost::bind(&libap2p::server::run, this->_server));
 }
 
 /** Function to close the network. Whenever the connection should be closed, 

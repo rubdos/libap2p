@@ -53,7 +53,8 @@ client_node_connection::client_node_connection(std::string ip_adress, std::strin
  */
 void client_node_connection::_connect()
 {
-    boost::asio::connect(*(this->_socket), this->_endpoint_iterator);
+    //boost::asio::connect(*(this->_socket), this->_endpoint_iterator);
+    this->_socket->connect(*(this->_endpoint_iterator)); //@FIXME: Will cause null pointer errors!
     this->connected = true;
 }
 

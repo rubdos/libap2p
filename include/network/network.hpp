@@ -54,6 +54,7 @@ private:
     std::vector<node*> _nodes;
     identity* _local_identity;
     configuration* _cfg;
+    boost::thread* _runner;
 };
 }
 #endif
