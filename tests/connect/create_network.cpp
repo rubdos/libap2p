@@ -6,7 +6,7 @@ using namespace std;
 
 int main()
 {
-    // Open a basic configuration class with defaults (server port on 12011
+    // Open a basic configuration class with defaults (server port on 12011)
     libap2p::configuration * conf = new libap2p::configuration();
 
     // Create a network and print its status

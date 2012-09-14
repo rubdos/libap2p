@@ -34,6 +34,7 @@ class client_node_connection : public node_connection
 public:
     client_node_connection(std::string /* IP address*/, std::string /* port */);
     void send_message(message*);
+    message* fetch_message();
 
     void _connect();
 
@@ -41,6 +42,7 @@ public:
 private:
     std::string _server_ip_adress;
     boost::asio::ip::tcp::resolver::iterator _endpoint_iterator;
+    boost::asio::io_service _io_service;
 
     boost::thread *_connector_thread;
     boost::asio::ip::tcp::socket* _socket;

@@ -33,13 +33,11 @@ client_node_connection::client_node_connection(std::string ip_adress, std::strin
     // We didn't yet connect.
     this->connected = false;
 
-    // First we need an io_service object...
-    boost::asio::io_service io_service;
     // Construct a socket using the io_service;
-    this->_socket = new boost::asio::ip::tcp::socket(io_service);
+    this->_socket = new boost::asio::ip::tcp::socket(this->_io_service);
     // Let's search the node...
-    boost::asio::ip::tcp::resolver resolver(io_service);
-    boost::asio::ip::tcp::resolver::query query(ip_adress, port);
+    boost::asio::ip::tcp::resolver resolver(this->_io_service);
+    boost::asio::ip::tcp::resolver::query query(ip_adress, port, boost::asio::ip::tcp::resolver::query::all_matching);
     // Set the iterator by solving the ip_query
     this->_endpoint_iterator = resolver.resolve(query);
     // Connect
@@ -53,9 +51,20 @@ client_node_connection::client_node_connection(std::string ip_adress, std::strin
  */
 void client_node_connection::_connect()
 {
-    //boost::asio::connect(*(this->_socket), this->_endpoint_iterator);
-    this->_socket->connect(*(this->_endpoint_iterator)); //@FIXME: Will cause null pointer errors!
-    this->connected = true;
+    boost::asio::ip::tcp::resolver::iterator end;
+    boost::system::error_code error = boost::asio::error::host_not_found;
+    
+    while(error && this->_endpoint_iterator != end)
+    {
+        this->_socket->close();
+        this->_socket->connect(*(this->_endpoint_iterator++), error);
+        if(error && error != boost::asio::error::host_not_found)
+        {
+            //@TODO: throw some error
+        }
+    }
+    if(!error)
+        this->connected = true;
 }
 
 /** Sends a message to this node_connection.
@@ -76,5 +85,9 @@ void client_node_connection::send_message(message* msg)
 
         boost::asio::write(*(this->_socket), boost::asio::buffer(msg->get_encoded()), boost::asio::transfer_all(), ignored_error); // Send message itself
     }
+}
+message* client_node_connection::fetch_message()
+{
+    return NULL; //@TODO: Stub
 }
 }

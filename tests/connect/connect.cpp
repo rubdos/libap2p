@@ -20,6 +20,12 @@ int main()
     conn->connect();
     cout << "network::connection_status after connect(): " << conn->status() << endl;
 
+    libap2p::client_node_connection* cnc = 
+        new libap2p::client_node_connection("localhost", "12011"); // Construct the node connection
+    libap2p::node* n= new libap2p::node(cnc); // Construct the node using the connection
+
+    conn->add_node(n);
+
 
     if(conn->status() == libap2p::CONNECTING)
     {
