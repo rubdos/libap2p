@@ -65,6 +65,7 @@ void network::close()
 void network::add_node(node* _node)
 {
     _node->run();
+    this->onNodeAdded(_node);
     this->_nodes.push_back(_node);
 }
 }

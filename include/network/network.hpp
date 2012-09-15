@@ -24,6 +24,8 @@
 
 #include <vector>
 
+#include <boost/signals.hpp>
+
 namespace libap2p
 {
 class server;
@@ -46,6 +48,14 @@ public:
   *
   */
     connection_status status() const {return this->_connection_status;};
+
+    // Signals
+
+    /** Signal that is called when a new node is added.
+     *  
+     */
+    boost::signal<void (node*)> onNodeAdded;
+
 private:
     connection_status _connection_status;
 
