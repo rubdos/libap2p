@@ -28,7 +28,7 @@ SET (CMAKE_ARCHIVE_OUTPUT_DIRECTORY
 set(Boost_USE_STATIC_LIBS OFF)
 set(Boost_USE_MULTITHREADED ON) 
 set(Boost_USE_STATIC_RUNTIME OFF)
-find_package(Boost REQUIRED COMPONENTS iostreams filesystem system thread)
+find_package(Boost REQUIRED COMPONENTS iostreams filesystem system thread signals)
 
 if(Boost_FOUND)
     include_directories(${Boost_INCLUDE_DIRS})
