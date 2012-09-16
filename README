@@ -24,7 +24,7 @@ CAUTION: not usable yet!
 
 *Requirements:
     -cryptopp
-    -boost libraries
+    -boost libraries (iostreams, filesystem, system, thread, signals)
     -cmake
     -make compatible
     -g++ compiler or compatible (mingw...)
