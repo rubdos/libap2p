@@ -21,6 +21,7 @@
 #include <boost/asio.hpp>
 #include <boost/thread.hpp>
 #include <boost/bind.hpp>
+#include <boost/iostreams/copy.hpp>
 
 namespace libap2p
 {
@@ -41,9 +42,12 @@ client_node_connection::client_node_connection(std::string ip_adress, std::strin
     // Set the iterator by solving the ip_query
     this->_endpoint_iterator = resolver.resolve(query);
     // Connect
-    this->_connector_thread = new boost::thread(&libap2p::client_node_connection::_connect, this); // Try connecting to the server
 }
 
+void client_node_connection::connect()
+{
+    this->_connector_thread = new boost::thread(&libap2p::client_node_connection::_connect, this); // Try connecting to the server
+}
 
 /** Tries to connect to the server specified in this->_endpoint_iterator.
  *  @note: internally called!
@@ -64,7 +68,10 @@ void client_node_connection::_connect()
         }
     }
     if(!error)
+    {
         this->connected = true;
+        this->onConnected();
+    }
 }
 
 /** Sends a message to this node_connection.
@@ -76,14 +83,18 @@ void client_node_connection::send_message(message* msg)
     {
         //@TODO: same code as in server connected. Should be abstracted in node.cpp 
         msg->prepare();
-        header *hdr = msg->get_header();
+
+        header* hdr = msg->get_header();
 
         int64_t l_hdr = hdr->get_encoded();
 
+        std::cout << hdr->message_length << std::endl;
+
         boost::system::error_code ignored_error;
+
         boost::asio::write(*(this->_socket), boost::asio::buffer(&l_hdr, 8), boost::asio::transfer_all(), ignored_error); // Send message header
 
-        boost::asio::write(*(this->_socket), boost::asio::buffer(msg->get_encoded()), boost::asio::transfer_all(), ignored_error); // Send message itself
+        boost::asio::write(*(this->_socket), msg->get_encoded()->data(), boost::asio::transfer_all(), ignored_error); // Send message itself
     }
 }
 message* client_node_connection::fetch_message()

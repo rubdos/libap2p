@@ -33,6 +33,7 @@ node::node()
 node::node(node_connection* nc)
 {
     this->_node_connection = nc;
+    nc->onConnected.connect(boost::bind(&node::Connected, this));
 }
 
 /** Runs the node connections.
@@ -40,9 +41,6 @@ node::node(node_connection* nc)
  */
 void node::run()
 {
-    message* init_msg = new message(MESSAGE_IDENTIFY, ""); //@todo: add identification params (pubid)
-    this->send_message(init_msg);
-
     this->runner = new boost::thread(boost::bind(&libap2p::node::_run, this)); 
 }
 /** Actual runner.
@@ -59,8 +57,10 @@ void node::_run()
         message* msg = this->_node_connection->fetch_message();
         if(msg == NULL)
         {
+            std::cerr << "fetch_message failed" << std::endl;
             break;
         }
+        this->onReceiveMessage(msg, this /* sender */);
         // std::cout << msg->get_xml() << std::endl;
     }
 }
@@ -71,5 +71,11 @@ void node::_run()
 void node::send_message(message* msg)
 {
     this->_node_connection->send_message(msg); // Well, this is simple...
+}
+
+void node::Connected()
+{
+    message* init_msg = new message(MESSAGE_IDENTIFY, ""); //@todo: add identification params (pubid)
+    this->send_message(init_msg);
 }
 }

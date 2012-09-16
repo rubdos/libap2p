@@ -23,6 +23,7 @@
 
 #include <boost/asio.hpp>
 #include <boost/thread.hpp>
+#include <boost/signals.hpp>
 
 namespace libap2p
 {
@@ -36,10 +37,15 @@ public:
     void send_message(message*);
     message* fetch_message();
 
-    void _connect();
+    /** Connect using the ip/port combination from constructor
+     */
+    void connect();
+
 
     bool connected;
 private:
+    void _connect();
+
     std::string _server_ip_adress;
     boost::asio::ip::tcp::resolver::iterator _endpoint_iterator;
     boost::asio::io_service _io_service;

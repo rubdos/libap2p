@@ -42,13 +42,14 @@ message* server_node_connection::fetch_message()
     boost::asio::read(*(this->_socket), boost::asio::buffer(hdr_int, 8), boost::asio::transfer_at_least(8));
     
     header *hdr = new header(*hdr_int);
+
+    std::cout << hdr->message_length << std::endl;
     
     // Prepare message retrieval
     boost::asio::streambuf message_raw; 
+
     size_t bytes = boost::asio::read( *(this->_socket), message_raw, boost::asio::transfer_at_least(hdr->message_length));
-
-    message_raw.commit(bytes);
-
+    
     // Make up message object and return
     return new message(&message_raw, hdr);
 }
@@ -58,15 +59,17 @@ message* server_node_connection::fetch_message()
  */
 void server_node_connection::send_message(message* msg)
 {
+    //@TODO: same code as in server connected. Should be abstracted in node.cpp 
     msg->prepare();
-    header *hdr = msg->get_header();
-
+    
+    header* hdr = msg->get_header();
+    
     int64_t l_hdr = hdr->get_encoded();
-
+    
     boost::system::error_code ignored_error;
+    
     boost::asio::write(*(this->_socket), boost::asio::buffer(&l_hdr, 8), boost::asio::transfer_all(), ignored_error); // Send message header
-
-    boost::asio::write(*(this->_socket), boost::asio::buffer(msg->get_encoded()), boost::asio::transfer_all(), ignored_error); // Send message itself
+    
+    boost::asio::write(*(this->_socket), msg->get_encoded()->data(), boost::asio::transfer_all(), ignored_error); // Send message itself
 }
-
 }

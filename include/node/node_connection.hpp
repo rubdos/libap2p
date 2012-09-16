@@ -20,6 +20,8 @@
 
 #include "message/message.hpp"
 
+#include <boost/signal.hpp>
+
 namespace libap2p
 {
 /**  Abstract class providing the connection with a node. Implemented
@@ -32,6 +34,8 @@ public:
 	*/
 	virtual void send_message(message * ) = 0;
     virtual message* fetch_message() = 0;
+
+    boost::signal<void ()> onConnected;
 };
 }
 #endif

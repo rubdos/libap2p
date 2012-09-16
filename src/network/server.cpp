@@ -51,7 +51,10 @@ void server::run()
     
         acceptor.accept(*sock);
 
-        this->_network->add_node(new node(new server_node_connection(sock)));
+        node * nd = new node(new server_node_connection(sock));
+
+        this->_network->add_node(nd);
+        this->onNodeConnect(nd);
     }
 }
 }

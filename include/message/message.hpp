@@ -40,13 +40,13 @@ public:
     
     std::string get_xml();
     header *get_header();
-    std::string get_encoded();
+    boost::asio::streambuf* get_encoded();
 private:
     void _init();
     void _init(std::string /* xml */);
     void _compress();
 
-    std::stringstream _compressed;
+    boost::asio::streambuf _compressed_buf;
 
     std::string _message_version;
 

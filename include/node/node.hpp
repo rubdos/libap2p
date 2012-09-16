@@ -25,8 +25,10 @@
 
 #include <stdlib.h>
 #include <iostream>
+
 #include <boost/thread.hpp>
 #include <boost/bind.hpp>
+#include <boost/signals.hpp>
 
 namespace libap2p
 {
@@ -44,6 +46,10 @@ public:
 
     void run();
     void _run();
+
+    boost::signal<void (message*, node*)> onReceiveMessage;
+
+    void Connected();
 private:    
     node_connection *_node_connection;
 

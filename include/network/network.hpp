@@ -55,6 +55,14 @@ public:
      *  
      */
     boost::signal<void (node*)> onNodeAdded;
+    /** Signal called when a new node connects to the network
+     */
+    boost::signal<void (node*)> onNodeConnect;
+
+    boost::signal<void (message*, node*)> onReceiveMessage;
+
+    void ReceivedMessage(message*, node*);
+    void ServerNodeConnected(node *);
 
 private:
     connection_status _connection_status;

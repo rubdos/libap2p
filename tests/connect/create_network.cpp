@@ -4,6 +4,15 @@
 
 using namespace std;
 
+void _receiveMessage(libap2p::message* msg, libap2p::node* nd)
+{
+    std::cout << "Received a message" << std::endl;
+}
+void _nodeConnected(libap2p::node* nd)
+{
+    std::cout << "A node has connected " << std::endl;
+}
+
 int main()
 {
     // Open a basic configuration class with defaults (server port on 12011)
@@ -12,6 +21,10 @@ int main()
     // Create a network and print its status
     libap2p::network *conn = new libap2p::network(conf);
     cout << "initial network::connection_status: " <<  conn->status() << endl;
+
+    // Subscribe to the correct signals
+    conn->onReceiveMessage.connect(_receiveMessage);
+    conn->onNodeConnect.connect(_nodeConnected);
 
     // Connect to the network and print its status
     conn->connect();

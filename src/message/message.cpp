@@ -80,6 +80,7 @@ message::message(boost::asio::streambuf *message_raw, header* hdr)
  */
 void message::_init(std::string xml)
 {
+    this->_init(); // Set default properties/..
     std::stringstream in;
     in << xml;
 
@@ -99,10 +100,10 @@ void message::_init(std::string xml)
  */
 void message::_init()
 {
-        this->_message_signature = "";
-        this->_message_signature_type = "";
-        this->_message_type = 0;
-        this->_message_data = "";
+    this->_message_signature = "";
+    this->_message_signature_type = "";
+    this->_message_type = 0;
+    this->_message_data = "";
 }
 
 /** Get the xml text for the message.
@@ -132,13 +133,14 @@ void message::prepare()
 
 void message::_compress()
 {
-    std::stringstream xml, compressedxml;
+    std::stringstream xml;
+    std::ostream tempstream(&this->_compressed_buf);
     xml << this->get_xml();
 
     boost::iostreams::filtering_streambuf<boost::iostreams::input> in;
     in.push(boost::iostreams::gzip_compressor());
     in.push(xml);
-    boost::iostreams::copy(in, this->_compressed);
+    boost::iostreams::copy(in, tempstream);
 }
 
 header* message::get_header()
@@ -146,9 +148,7 @@ header* message::get_header()
     header *hdr = new header();
 
     // Search message length:
-    this->_compressed.seekp(0, std::ios::end);
-    hdr->message_length = this->_compressed.tellp();
-    this->_compressed.seekp(0, std::ios::beg);
+    hdr->message_length = this->_compressed_buf.size();
 
     // Set compression system
     hdr->compression_flags = 1; //@todo: hardcoded to GZIP, FIXME
@@ -156,8 +156,8 @@ header* message::get_header()
     return hdr;
 }
 
-std::string message::get_encoded()
+boost::asio::streambuf* message::get_encoded()
 {
-    return this->_compressed.str();
+    return &(this->_compressed_buf);
 }
 }

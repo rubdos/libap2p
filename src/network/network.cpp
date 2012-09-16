@@ -42,6 +42,7 @@ void network::connect()
     this->_connection_status = CONNECTING;
     // Construct the libap2p::server object
     this->_server = new server(this, this->_cfg);
+    this->_server->onNodeConnect.connect(boost::bind(&network::ServerNodeConnected, this, _1));
     if(this->_nodes.size() == 0)
     {
         // No nodes added, just start the server. Networks can be joined togheter later on.
@@ -64,8 +65,17 @@ void network::close()
  */
 void network::add_node(node* _node)
 {
+    _node->onReceiveMessage.connect(boost::bind(&network::ReceivedMessage, this, _1, _2));
     _node->run();
     this->onNodeAdded(_node);
     this->_nodes.push_back(_node);
+}
+void network::ReceivedMessage(message* msg, node* sender)
+{
+    this->onReceiveMessage(msg, sender);
+}
+void network::ServerNodeConnected(node* nd)
+{
+    this->onNodeConnect(nd);
 }
 }

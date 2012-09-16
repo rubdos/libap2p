@@ -19,9 +19,11 @@
 #define CLASS_LIBAP2P_SERVER
 
 #include "configuration/configuration.hpp"
+#include "node/node.hpp"
 
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
+#include <boost/signals.hpp>
 
 namespace libap2p
 {
@@ -35,6 +37,8 @@ public:
     server();
     server(libap2p::network*, configuration* cfg);
     void run();
+
+    boost::signal<void (node*)> onNodeConnect;
 private:
     void handle_accept(boost::asio::ip::tcp::socket, const boost::system::error_code&);
     

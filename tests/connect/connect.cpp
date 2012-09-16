@@ -24,6 +24,8 @@ int main()
         new libap2p::client_node_connection("localhost", "12011"); // Construct the node connection
     libap2p::node* n= new libap2p::node(cnc); // Construct the node using the connection
 
+    cnc->connect();
+
     conn->add_node(n);
 
 
