@@ -6,11 +6,16 @@ using namespace std;
 
 void _receiveMessage(libap2p::message* msg, libap2p::node* nd)
 {
-    std::cout << "Received a message" << std::endl;
+    std::cout << std::endl << "Received a message" << std::endl
+        << "------------------------------------------" << std::endl
+        << "XML: " << std::endl
+        << msg->get_xml() << std::endl
+        << "------------------------------------------" << std::endl
+        << "End XML" << std::endl << std::endl;
 }
 void _nodeConnected(libap2p::node* nd)
 {
-    std::cout << "A node has connected " << std::endl;
+    std::cout << "A node has connected" << std::endl;
 }
 
 int main()
