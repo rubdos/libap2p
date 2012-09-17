@@ -5,6 +5,16 @@
 
 using namespace std;
 
+void _receiveMessage(libap2p::message* msg, libap2p::node* nd)
+{
+        std::cout << std::endl << "Received a message" << std::endl
+            << "------------------------------------------" << std::endl
+            << "XML: " << std::endl
+            << msg->get_xml() << std::endl
+            << "------------------------------------------" << std::endl
+            << "End XML" << std::endl << std::endl;
+}
+
 int main()
 {
     // Open a basic configuration class with defaults (server port on 12011
@@ -15,6 +25,9 @@ int main()
     // Create a network and print its status
     libap2p::network *conn = new libap2p::network(conf);
     cout << "initial network::connection_status: " <<  conn->status() << endl;
+
+    // Subscribe to the correct events
+    conn->onReceiveMessage.connect(_receiveMessage);
 
     // Connect to the network and print its status
     conn->connect();
