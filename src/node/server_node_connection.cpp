@@ -42,8 +42,6 @@ message* server_node_connection::fetch_message()
     boost::asio::read(*(this->_socket), boost::asio::buffer(hdr_int, 8), boost::asio::transfer_at_least(8));
     
     header *hdr = new header(*hdr_int);
-
-    std::cout << hdr->message_length << std::endl;
     
     // Prepare message retrieval
     boost::asio::streambuf message_raw; 
