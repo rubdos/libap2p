@@ -33,7 +33,14 @@ node::node()
 node::node(node_connection* nc)
 {
     this->_node_connection = nc;
-    nc->onConnected.connect(boost::bind(&node::Connected, this));
+    if(!nc->Connected)
+    {
+        nc->onConnected.connect(boost::bind(&node::Connected, this));
+    }
+    else
+    {
+        this->Connected();
+    }
 }
 
 /** Runs the node connections.

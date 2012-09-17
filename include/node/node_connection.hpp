@@ -36,6 +36,8 @@ public:
     virtual message* fetch_message() = 0;
 
     boost::signal<void ()> onConnected;
+
+    bool Connected;
 };
 }
 #endif

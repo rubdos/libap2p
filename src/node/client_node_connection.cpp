@@ -32,7 +32,7 @@ namespace libap2p
 client_node_connection::client_node_connection(std::string ip_adress, std::string port)
 {
     // We didn't yet connect.
-    this->connected = false;
+    this->Connected = false;
 
     // Construct a socket using the io_service;
     this->_socket = new boost::asio::ip::tcp::socket(this->_io_service);
@@ -69,7 +69,7 @@ void client_node_connection::_connect()
     }
     if(!error)
     {
-        this->connected = true;
+        this->Connected = true;
         this->onConnected();
     }
 }
@@ -79,7 +79,7 @@ void client_node_connection::_connect()
  */
 void client_node_connection::send_message(message* msg)
 {
-    if(this->connected) // Only send messages if we're connected
+    if(this->Connected) // Only send messages if we're connected
     {
         //@TODO: same code as in server connected. Should be abstracted in node.cpp 
         msg->prepare();
@@ -97,6 +97,18 @@ void client_node_connection::send_message(message* msg)
 }
 message* client_node_connection::fetch_message()
 {
-    return NULL; //@TODO: Stub
+    // Read header to determine message length. Header is 8 bytes long.
+    int64_t *hdr_int = new int64_t();
+    boost::asio::read(*(this->_socket), boost::asio::buffer(hdr_int, 8), boost::asio::transfer_at_least(8));
+    
+    header *hdr = new header(*hdr_int);
+    
+    // Prepare message retrieval
+    boost::asio::streambuf message_raw;
+    
+    size_t bytes = boost::asio::read( *(this->_socket), message_raw, boost::asio::transfer_at_least(hdr->message_length));
+    
+    // Make up message object and return
+    return new message(&message_raw, hdr);
 }
 }

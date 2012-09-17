@@ -33,6 +33,7 @@ namespace libap2p
 server_node_connection::server_node_connection(boost::asio::ip::tcp::socket* sock)
 {
     this->_socket = sock;
+    this->Connected = true;
 }
 
 message* server_node_connection::fetch_message()

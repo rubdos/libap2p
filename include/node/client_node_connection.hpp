@@ -40,9 +40,6 @@ public:
     /** Connect using the ip/port combination from constructor
      */
     void connect();
-
-
-    bool connected;
 private:
     void _connect();
 
