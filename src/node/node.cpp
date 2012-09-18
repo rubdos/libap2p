@@ -59,12 +59,15 @@ void node::_run()
     {
         if(this->_node_connection == NULL)
         {
+            this->onDisconnected(this);
             break;
         }
         message* msg = this->_node_connection->fetch_message();
         if(msg == NULL)
         {
             std::cerr << "fetch_message failed" << std::endl;
+            // Disconnect node for now. @TODO: Try a reconnection.
+            this->onDisconnected(this);
             break;
         }
         this->onReceiveMessage(msg, this /* sender */);
@@ -86,5 +89,11 @@ void node::Connected()
     this->send_message(init_msg);
 
     this->onConnected(this /* Sender */ );
+}
+
+node::~node()
+{
+    delete this->_node_connection;
+    // Runner thread will end and destruct automatically, no need to destroy
 }
 }

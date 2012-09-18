@@ -42,13 +42,20 @@ class node
 public:
     node();
     node(node_connection*);
+
+    /** Default destructor.
+     *
+     */
+    ~node();
+
     void send_message(message*);
 
     void run();
     void _run();
 
-    boost::signal<void (message*, node*)> onReceiveMessage;
+    boost::signal<void (message*, node* /* sender */)> onReceiveMessage;
     boost::signal<void (node* /* sender */)> onConnected;
+    boost::signal<void (node* /* sender */)> onDisconnected;
 
     void Connected();
 private:    
