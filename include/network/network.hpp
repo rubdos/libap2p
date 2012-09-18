@@ -63,6 +63,7 @@ public:
 
     void ReceivedMessage(message*, node*);
     void ServerNodeConnected(node *);
+    void NodeConnected(node *);
 
 private:
     connection_status _connection_status;

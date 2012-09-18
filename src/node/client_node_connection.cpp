@@ -79,34 +79,63 @@ void client_node_connection::_connect()
  */
 void client_node_connection::send_message(message* msg)
 {
-    if(this->Connected) // Only send messages if we're connected
+    if(! this->Connected) // Only send messages if we're connected
     {
-        //@TODO: same code as in server connected. Should be abstracted in node.cpp 
-        msg->prepare();
-
-        header* hdr = msg->get_header();
-
-        int64_t l_hdr = hdr->get_encoded();
-
-        boost::system::error_code ignored_error;
-
-        boost::asio::write(*(this->_socket), boost::asio::buffer(&l_hdr, 8), boost::asio::transfer_all(), ignored_error); // Send message header
-
-        boost::asio::write(*(this->_socket), msg->get_encoded()->data(), boost::asio::transfer_all(), ignored_error); // Send message itself
+        return;
     }
+    //@TODO: same code as in server connected. Should be abstracted in node.cpp 
+    msg->prepare();
+    
+    header* hdr = msg->get_header();
+    
+    int64_t l_hdr = hdr->get_encoded();
+    
+    boost::system::error_code ignored_error;
+    
+    boost::asio::write(*(this->_socket), boost::asio::buffer(&l_hdr, 8), boost::asio::transfer_all(), ignored_error); // Send message header
+    
+    boost::asio::write(*(this->_socket), msg->get_encoded()->data(), boost::asio::transfer_all(), ignored_error); // Send message itself
 }
 message* client_node_connection::fetch_message()
 {
+    // No messages to read when not connected
+    if(! this->Connected )
+    {
+        return NULL;
+    }
+
+    // Prepare error catching
+    boost::system::error_code error;
+
     // Read header to determine message length. Header is 8 bytes long.
     int64_t *hdr_int = new int64_t();
-    boost::asio::read(*(this->_socket), boost::asio::buffer(hdr_int, 8), boost::asio::transfer_at_least(8));
+    boost::asio::read(
+            *(this->_socket), 
+            boost::asio::buffer(hdr_int, 8), 
+            boost::asio::transfer_at_least(8), 
+            error);
+
+    if(error)
+    {
+        this->Connected = false;
+        return NULL;
+    }
     
     header *hdr = new header(*hdr_int);
     
     // Prepare message retrieval
     boost::asio::streambuf message_raw;
     
-    size_t bytes = boost::asio::read( *(this->_socket), message_raw, boost::asio::transfer_at_least(hdr->message_length));
+    size_t bytes = boost::asio::read( 
+            *(this->_socket), 
+            message_raw, 
+            boost::asio::transfer_at_least(hdr->message_length),
+            error);
+    if(error)
+    {
+        this->Connected = false;
+        return NULL;
+    }
     
     // Make up message object and return
     return new message(&message_raw, hdr);

@@ -48,6 +48,7 @@ public:
     void _run();
 
     boost::signal<void (message*, node*)> onReceiveMessage;
+    boost::signal<void (node* /* sender */)> onConnected;
 
     void Connected();
 private:    

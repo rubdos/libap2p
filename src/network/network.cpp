@@ -66,9 +66,13 @@ void network::close()
 void network::add_node(node* _node)
 {
     _node->onReceiveMessage.connect(boost::bind(&network::ReceivedMessage, this, _1, _2));
-    _node->run();
+    _node->onConnected.connect(boost::bind(&network::NodeConnected, this, _1));
     this->onNodeAdded(_node);
     this->_nodes.push_back(_node);
+}
+void network::NodeConnected(node* nd)
+{
+    
 }
 void network::ReceivedMessage(message* msg, node* sender)
 {
