@@ -76,6 +76,12 @@ void network::NodeConnected(node* nd)
 }
 void network::ReceivedMessage(message* msg, node* sender)
 {
+    switch (msg->GetMessageType())
+    {
+        case MESSAGE_HELLO:
+            std::cout << "Received a hello message" << std::endl;
+            break;
+    }
     this->onReceiveMessage(msg, sender);
 }
 void network::ServerNodeConnected(node* nd)

@@ -32,11 +32,13 @@ class message
 {
 public:
     message();
-    message(unsigned int /* message type */, std::string /* data */);
+    message(message_types /* message type */, std::string /* data */);
     message(std::string /* xml */);
     message(boost::asio::streambuf* /* message compressed */, header*);
 
     void prepare();
+
+    message_types GetMessageType();
     
     std::string get_xml();
     header *get_header();
@@ -50,7 +52,7 @@ private:
 
     std::string _message_version;
 
-    unsigned int _message_type;
+    message_types _message_type;
     std::string _message_data;
     std::string _message_signature;
     std::string _message_signature_type;

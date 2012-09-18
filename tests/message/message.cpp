@@ -15,15 +15,14 @@
 * 
 */
 
-#define MESSAGETESTTYPE 123
-
 #include "message/message.hpp"
+#include "message/header.hpp"
 #include "iostream"
 
 int main()
 {
     // Create a new message
-    libap2p::message* msg = new libap2p::message(MESSAGETESTTYPE, "Test content<as>you see, xml content can be set as data!</as>");
+    libap2p::message* msg = new libap2p::message(libap2p::MESSAGE_HELLO, "Test content<as>you see, xml content can be set as data!</as>");
     // Print the XML data constructed in the message
     std::cout << "XML:" << std::endl << msg->get_xml() << std::endl << std::endl;
 

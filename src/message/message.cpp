@@ -45,7 +45,7 @@ message::message()
 * @param messagetype    Message type. Can be any uint. Will be send through the socket
 * @param messagedata    The data to send. Easy construction by boost::asio::buffer([anything here]);
 */
-message::message(unsigned int messagetype, std::string messagedata)
+message::message(message_types messagetype, std::string messagedata)
 {
     this->_init();
     this->_message_type = messagetype;
@@ -90,7 +90,7 @@ void message::_init(std::string xml)
 
     this->_message_version = pt.get<std::string>("libap2p.version");
     this->_message_data = pt.get<std::string>("libap2p.message.data");
-    this->_message_type = pt.get<unsigned int>("libap2p.message.type");
+    this->_message_type = (message_types) pt.get<unsigned int>("libap2p.message.type");
     this->_message_signature = pt.get<std::string>("libap2p.signature.signature");
     this->_message_signature_type = pt.get<std::string>("libap2p.signature.type");
 }
@@ -102,7 +102,7 @@ void message::_init()
 {
     this->_message_signature = "";
     this->_message_signature_type = "";
-    this->_message_type = 0;
+    this->_message_type = MESSAGE_HELLO;
     this->_message_data = "";
 }
 
@@ -124,6 +124,11 @@ std::string message::get_xml()
     write_xml(out, pt);
     
     return out.str();
+}
+
+message_types message::GetMessageType()
+{
+    return this->_message_type;
 }
 
 void message::prepare()
