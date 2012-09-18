@@ -68,7 +68,6 @@ void node::_run()
             break;
         }
         this->onReceiveMessage(msg, this /* sender */);
-        // std::cout << msg->get_xml() << std::endl;
     }
 }
 
