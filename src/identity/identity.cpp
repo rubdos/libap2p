@@ -15,7 +15,7 @@
 * 
 */
 
-#include "identity/identity.hpp"
+#include "libap2p/identity/identity.hpp"
 
 namespace libap2p
 {

@@ -18,9 +18,9 @@
 #ifndef CLASS_NETWORK
 #define CLASS_NETWORK
 
-#include "identity/identity.hpp"
-#include "node/node.hpp"
-#include "configuration/configuration.hpp"
+#include "libap2p/identity/identity.hpp"
+#include "libap2p/node/node.hpp"
+#include "libap2p/configuration/configuration.hpp"
 
 #include <vector>
 

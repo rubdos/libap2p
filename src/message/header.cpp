@@ -15,7 +15,7 @@
 * 
 */
 
-#include "message/header.hpp"
+#include "libap2p/message/header.hpp"
 
 #include <string.h>
 #include <stdio.h>

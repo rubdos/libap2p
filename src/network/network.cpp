@@ -15,8 +15,8 @@
 * 
 */
 
-#include "network/server.hpp"
-#include "network/network.hpp"
+#include "libap2p/network/server.hpp"
+#include "libap2p/network/network.hpp"
 
 namespace libap2p
 {

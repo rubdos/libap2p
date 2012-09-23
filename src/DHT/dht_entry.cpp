@@ -15,7 +15,7 @@
 * 
 */
 
-#include "DHT/dht_entry.hpp"
+#include "libap2p/DHT/dht_entry.hpp"
 
 namespace libap2p
 {

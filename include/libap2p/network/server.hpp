@@ -15,41 +15,38 @@
 * 
 */
 
-#ifndef CLASS_CLIENT_NODE_CONNECTION
-#define CLASS_CLIENT_NODE_CONNECTION
+#ifndef CLASS_LIBAP2P_SERVER
+#define CLASS_LIBAP2P_SERVER
 
-#include "node/node_connection.hpp"
-#include "message/message.hpp"
+#include "libap2p/configuration/configuration.hpp"
+#include "libap2p/node/node.hpp"
 
 #include <boost/asio.hpp>
-#include <boost/thread.hpp>
+#include <boost/bind.hpp>
 #include <boost/signals.hpp>
 
 namespace libap2p
 {
-/** Implementation of connecting node_connection.
-*
-*/
-class client_node_connection : public node_connection
+class network;
+/** Main p2p listening class.
+ *  Internally called.
+ */
+class server
 {
 public:
-    client_node_connection(std::string /* IP address*/, std::string /* port */);
-    void send_message(message*);
-    message* fetch_message();
+    server();
+    server(libap2p::network*, configuration* cfg);
+    void run();
 
-    /** Connect using the ip/port combination from constructor
-     */
-    void connect();
+    boost::signal<void (node*)> onNodeConnect;
 private:
-    void _connect();
+    void handle_accept(boost::asio::ip::tcp::socket, const boost::system::error_code&);
+    
+    boost::asio::io_service io;
+    unsigned short _port;
 
-    std::string _server_ip_adress;
-    boost::asio::ip::tcp::resolver::iterator _endpoint_iterator;
-    boost::asio::io_service _io_service;
-
-    boost::thread *_connector_thread;
-    boost::asio::ip::tcp::socket* _socket;
+    network* _network;
+    configuration* _cfg;
 };
 }
-
 #endif

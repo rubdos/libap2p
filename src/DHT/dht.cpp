@@ -14,7 +14,7 @@
 * along with this program; if not, see <http://gnu.org/licenses/>
 * 
 */
-#include "DHT/dht.hpp"
+#include "libap2p/DHT/dht.hpp"
 namespace libap2p
 {
 }

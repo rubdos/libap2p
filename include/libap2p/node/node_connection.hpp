@@ -18,7 +18,7 @@
 #ifndef CLASS_NODE_CONNECTION
 #define CLASS_NODE_CONNECTION
 
-#include "message/message.hpp"
+#include "libap2p/message/message.hpp"
 
 #include <boost/signal.hpp>
 

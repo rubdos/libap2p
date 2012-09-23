@@ -15,8 +15,8 @@
 * 
 */
 
-#include "node/node_connection.hpp"
-#include "node/client_node_connection.hpp"
+#include "libap2p/node/node_connection.hpp"
+#include "libap2p/node/client_node_connection.hpp"
 
 #include <boost/asio.hpp>
 #include <boost/thread.hpp>

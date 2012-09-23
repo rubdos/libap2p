@@ -18,10 +18,10 @@
 #ifndef CLASS_NODE
 #define CLASS_NODE
 
-#include "node/node_connection.hpp"
-#include "node/server_node_connection.hpp"
-#include "node/client_node_connection.hpp"
-#include "message/message.hpp"
+#include "libap2p/node/node_connection.hpp"
+#include "libap2p/node/server_node_connection.hpp"
+#include "libap2p/node/client_node_connection.hpp"
+#include "libap2p/message/message.hpp"
 
 #include <stdlib.h>
 #include <iostream>

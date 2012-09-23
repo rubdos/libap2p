@@ -15,10 +15,10 @@
 * 
 */
 
-#include "node/node_connection.hpp"
-#include "node/server_node_connection.hpp"
-#include "message/message.hpp"
-#include "message/header.hpp"
+#include "libap2p/node/node_connection.hpp"
+#include "libap2p/node/server_node_connection.hpp"
+#include "libap2p/message/message.hpp"
+#include "libap2p/message/header.hpp"
 
 #include <boost/asio.hpp>
 #include <stdio.h>

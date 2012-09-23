@@ -24,7 +24,7 @@
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/asio.hpp>
 
-#include "message/header.hpp"
+#include "libap2p/message/header.hpp"
 
 namespace libap2p
 {

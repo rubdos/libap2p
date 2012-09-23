@@ -15,7 +15,7 @@
 * 
 */
 
-#include "message/message.hpp"
+#include "libap2p/message/message.hpp"
 
 #include <iostream>
 #include <sstream>

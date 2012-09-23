@@ -15,7 +15,7 @@
 * 
 */
 
-#include "configuration/configuration.hpp"
+#include "libap2p/configuration/configuration.hpp"
 
 namespace libap2p
 {

@@ -15,30 +15,20 @@
 * 
 */
 
-#ifndef CLASS_SERVER_NODE_CONNECTION
-#define CLASS_SERVER_NODE_CONNECTION
+#ifndef CLASS_DHT
+#define CLASS_DHT
 
-#include "node/node_connection.hpp"
-#include "message/message.hpp"
+#include "libap2p/DHT/dht_entry.hpp"
 
-#include <boost/asio.hpp>
-#include <boost/thread.hpp>
+#include <string>
 
 namespace libap2p
 {
-/**
-* @brief Implementation of listening node_connection.
-*
-*/
-class server_node_connection : public node_connection
+class DHT
 {
 public:
-    server_node_connection(boost::asio::ip::tcp::socket*);
-    message* fetch_message();
-    void send_message(message*);
-private:
-    boost::asio::ip::tcp::socket* _socket;
+    DHT();
+    dht_entry* fetch();
 };
 }
-
 #endif

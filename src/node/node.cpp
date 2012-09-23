@@ -15,8 +15,8 @@
 * 
 */
 
-#include "node/node.hpp"
-#include "node/node_connection.hpp"
+#include "libap2p/node/node.hpp"
+#include "libap2p/node/node_connection.hpp"
 
 namespace libap2p
 {

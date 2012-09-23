@@ -1,4 +1,4 @@
-#include "configuration/configuration.hpp"
+#include "libap2p/configuration/configuration.hpp"
 
 #include <iostream>
 

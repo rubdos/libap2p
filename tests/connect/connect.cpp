@@ -1,5 +1,5 @@
-#include "network/network.hpp"
-#include "node/node.hpp"
+#include "libap2p/network/network.hpp"
+#include "libap2p/node/node.hpp"
 
 #include <iostream>
 

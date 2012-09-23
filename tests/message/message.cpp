@@ -15,8 +15,8 @@
 * 
 */
 
-#include "message/message.hpp"
-#include "message/header.hpp"
+#include "libap2p/message/message.hpp"
+#include "libap2p/message/header.hpp"
 #include "iostream"
 
 int main()
