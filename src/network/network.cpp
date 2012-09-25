@@ -24,10 +24,10 @@ namespace libap2p
 /** Constructor. Initializes network structure
  *
  */
-network::network(configuration* cfg)
+Network::Network(Configuration* cfg)
 {
     this->_cfg = cfg;
-    this->_connection_status = DISCONNECTED;
+    this->_connectionStatus = DISCONNECTED;
     this->_localIdentity = new Identity();
     this->_localIdentity->LoadLocal();
 }
@@ -36,45 +36,45 @@ network::network(configuration* cfg)
   * build up connections. The progress can be followed in network::status.
   * @warning An initial node is to be added with add_node or new network is created
   */
-void network::connect()
+void Network::Connect()
 {
     // Set status to connecting...
-    this->_connection_status = CONNECTING;
+    this->_connectionStatus = CONNECTING;
     // Construct the libap2p::server object
-    this->_server = new server(this, this->_cfg);
-    this->_server->onNodeConnect.connect(boost::bind(&network::ServerNodeConnected, this, _1));
+    this->_server = new Server(this, this->_cfg);
+    this->_server->onNodeConnect.connect(boost::bind(&Network::ServerNodeConnected, this, _1));
     if(this->_nodes.size() == 0)
     {
         // No nodes added, just start the server. Networks can be joined togheter later on.
-        this->_connection_status = CONNECTED;
+        this->_connectionStatus = CONNECTED;
     }
     // Start the server in seperate thread
-    this->_runner = new boost::thread(boost::bind(&libap2p::server::run, this->_server));
+    this->_runner = new boost::thread(boost::bind(&Server::Run, this->_server));
 }
 
 /** Function to close the network. Whenever the connection should be closed, 
   * this is to be called.
   */
-void network::close()
+void Network::Close()
 {
-    this->_connection_status = DISCONNECTED;
+    this->_connectionStatus = DISCONNECTED;
 }
 /** Add a node to the network. Called from the server or can be an initial node
  *  or one that's found on p2p manner in a client_node_connection way.
  *  @param _node    A libap2p::node object to add to the network.
  */
-void network::add_node(node* _node)
+void Network::AddNode(Node* _node)
 {
-    _node->onReceiveMessage.connect(boost::bind(&network::ReceivedMessage, this, _1, _2));
-    _node->onConnected.connect(boost::bind(&network::NodeConnected, this, _1));
+    _node->onReceiveMessage.connect(boost::bind(&Network::ReceivedMessage, this, _1, _2));
+    _node->onConnected.connect(boost::bind(&Network::NodeConnected, this, _1));
     this->onNodeAdded(_node);
     this->_nodes.push_back(_node);
 }
-void network::NodeConnected(node* nd)
+void Network::NodeConnected(Node* nd)
 {
     
 }
-void network::ReceivedMessage(message* msg, node* sender)
+void Network::ReceivedMessage(Message* msg, Node* sender)
 {
     switch (msg->GetMessageType())
     {
@@ -84,7 +84,7 @@ void network::ReceivedMessage(message* msg, node* sender)
     }
     this->onReceiveMessage(msg, sender);
 }
-void network::ServerNodeConnected(node* nd)
+void Network::ServerNodeConnected(Node* nd)
 {
     this->onNodeConnect(nd);
 }

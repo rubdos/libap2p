@@ -28,7 +28,7 @@ class DHT
 {
 public:
     DHT();
-    dht_entry* fetch();
+    DHTEntry* Fetch();
 };
 }
 #endif

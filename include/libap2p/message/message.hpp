@@ -28,34 +28,34 @@
 
 namespace libap2p
 {
-class message
+class Message
 {
 public:
-    message();
-    message(message_types /* message type */, std::string /* data */);
-    message(std::string /* xml */);
-    message(boost::asio::streambuf* /* message compressed */, header*);
+    Message();
+    Message(message_types /* message type */, std::string /* data */);
+    Message(std::string /* xml */);
+    Message(boost::asio::streambuf* /* message compressed */, Header*);
 
-    void prepare();
+    void Prepare();
 
     message_types GetMessageType();
     
-    std::string get_xml();
-    header *get_header();
-    boost::asio::streambuf* get_encoded();
+    std::string GetXml();
+    Header *GetHeader();
+    boost::asio::streambuf* GetEncoded();
 private:
-    void _init();
-    void _init(std::string /* xml */);
-    void _compress();
+    void _Init();
+    void _Init(std::string /* xml */);
+    void _Compress();
 
-    boost::asio::streambuf _compressed_buf;
+    boost::asio::streambuf _compressedBuf;
 
-    std::string _message_version;
+    std::string _messageVersion;
 
-    message_types _message_type;
-    std::string _message_data;
-    std::string _message_signature;
-    std::string _message_signature_type;
+    message_types _messageType;
+    std::string _messageData;
+    std::string _messageSignature;
+    std::string _messageSignatureType;
 };
 }
 #endif

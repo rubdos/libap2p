@@ -27,17 +27,17 @@ namespace libap2p
 /**  Abstract class providing the connection with a node. Implemented
   *  by server_node_connection or client_node_connection.
   */
-class node_connection
+class NodeConnection
 {
 public:
     /** Send a message object. 
 	*/
-	virtual void send_message(message * ) = 0;
-    virtual message* fetch_message() = 0;
+	virtual void SendMessage(Message * ) = 0;
+    virtual Message* FetchMessage() = 0;
 
     boost::signal<void ()> onConnected;
 
-    bool Connected;
+    bool connected;
 };
 }
 #endif

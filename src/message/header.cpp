@@ -25,19 +25,19 @@ namespace libap2p
 {
 // Public
 
-header::header()
+Header::Header()
 {
-    this->compression_flags = COMPRESSION_NONE;
+    this->compressionFlags = COMPRESSION_NONE;
 }
 /** Header constructor from an int64_t received header.
  *  
  */
-header::header(int64_t str_header)
+Header::Header(int64_t str_header)
 {
     int8_t flags1, flags2, flags3, _compression_flags;
 
     _compression_flags = (int8_t) str_header;
-    this->compression_flags = _compression_flags;
+    this->compressionFlags = _compression_flags;
     
     str_header >>= 8;
     flags3 = str_header;
@@ -49,7 +49,7 @@ header::header(int64_t str_header)
     flags1 = str_header;
     
     str_header >>=8;
-    this->message_length = str_header;
+    this->messageLength = str_header;
 }
 
 /** Encodes the message header for postal.
@@ -57,19 +57,19 @@ header::header(int64_t str_header)
  *          are message length. Then flags 1 and flags 2 and
  *          compression flags. See wiki/protocol specification.
  */
-int64_t header::get_encoded()
+int64_t Header::GetEncoded()
 {
-    int64_t encoded = (int64_t) this->message_length;    
+    int64_t encoded = (int64_t) this->messageLength;
     encoded <<= 8; // sizeof flag is 8 bits
-    encoded += this->get_flags1();
+    encoded += this->_GetFlags1();
     encoded <<= 8;
-    encoded += this->get_flags2();
+    encoded += this->_GetFlags2();
     encoded <<= 8;
-    encoded += this->get_flags3();
+    encoded += this->_GetFlags3();
     encoded <<= 8;
-    encoded += this->compression_flags;
+    encoded += this->compressionFlags;
     
-    return encoded ;
+    return encoded;
 }
 
 
@@ -78,21 +78,21 @@ int64_t header::get_encoded()
 /**
  *
  */
-int header::get_flags1()
+int Header::_GetFlags1()
 {
     return 0;
 }
 /**
  *
  */
-int header::get_flags2()
+int Header::_GetFlags2()
 {
     return 0;
 }
 /**
  *
  */
-int header::get_flags3()
+int Header::_GetFlags3()
 {
     return 0;
 }
@@ -101,7 +101,7 @@ int header::get_flags3()
  *  @param number   The char of which the bit is taken
  *  @param position The position where the bit is taken
  */
-bool header::get_bit(unsigned char number, unsigned char position) {
+bool Header::GetBit(unsigned char number, unsigned char position) {
     unsigned char bitmask = 1 << position;
     return (number & bitmask) ? true : false;
 }

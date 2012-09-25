@@ -27,19 +27,19 @@
 
 namespace libap2p
 {
-class configuration : public boost::property_tree::ptree
+class Configuration : public boost::property_tree::ptree
 {
 public:
-    void load_file();
-    void load_file(std::string);
+    void LoadFile();
+    void LoadFile(std::string);
 
-    void save_file();
-    void save_file(std::string);
+    void SaveFile();
+    void SaveFile(std::string);
 private:
-    void merge(boost::property_tree::ptree);
-    void merge(boost::property_tree::ptree, std::string);
+    void _Merge(boost::property_tree::ptree);
+    void _Merge(boost::property_tree::ptree, std::string);
 
-    std::string last_filename;
+    std::string _lastFilename;
 };
 }
 

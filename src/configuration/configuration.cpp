@@ -24,7 +24,7 @@ namespace libap2p
 /** Loads the default configuration file(s)
  *  Merges into the configuration.
  */
-void configuration::load_file()
+void Configuration::LoadFile()
 {
     //this->
     return;
@@ -42,30 +42,30 @@ void configuration::load_file()
  *
  *  @throws: xml_parser_error when xml can't be parsed
  */
-void configuration::load_file(std::string filename)
+void Configuration::LoadFile(std::string filename)
 {
-    this->last_filename = filename;
+    this->_lastFilename = filename;
     boost::property_tree::ptree cfg_file_pt;
     
     read_xml(filename, cfg_file_pt);
 
-    this->merge(cfg_file_pt);
+    this->_Merge(cfg_file_pt);
 }
 
 /** Saves the configuration to a file.
  *  Saves the configuration to the last loaded file in
  *  libap2p::configuration::load_file
  */
-void configuration::save_file()
+void Configuration::SaveFile()
 {
-    this->save_file(this->last_filename);
+    this->SaveFile(this->_lastFilename);
 }
 
 /** Saves the configuration to the specified file
  *  @param filename an std::string with the path to the
  *         writable filename to write to.
  */
-void configuration::save_file(std::string filename)
+void Configuration::SaveFile(std::string filename)
 {
     boost::property_tree::xml_parser::write_xml(filename, *dynamic_cast<boost::property_tree::ptree*>(this));
 }
@@ -78,12 +78,12 @@ void configuration::save_file(std::string filename)
  *  @note Internally called.
  */
 
-void configuration::merge(boost::property_tree::ptree pt)
+void Configuration::_Merge(boost::property_tree::ptree pt)
 {
-    this->merge(pt, "");
+    this->_Merge(pt, "");
 }
 
-void configuration::merge(boost::property_tree::ptree pt, std::string prefix)
+void Configuration::_Merge(boost::property_tree::ptree pt, std::string prefix)
 {
     using boost::property_tree::ptree;
     ptree::const_iterator end = pt.end();
@@ -101,7 +101,7 @@ void configuration::merge(boost::property_tree::ptree pt, std::string prefix)
 
         if(pt.get_child(it->first).size() > 0)
         {
-            this->merge(pt.get_child( it->first ), key.str());
+            this->_Merge(pt.get_child( it->first ), key.str());
         }
     }
 }

@@ -25,14 +25,14 @@ using namespace boost::asio::ip;
 
 namespace libap2p
 {
-server::server()
+Server::Server()
 {
 }
 /** Constructs a libap2p::server with specified network and port.
  *  @param nw   The libap2p::network object where the server will report to.
  *  @param cfg  The configuration details object.
  */
-server::server(network * nw, configuration* cfg)
+Server::Server(Network * nw, Configuration* cfg)
 {
     this->_network = nw;
     this->_port = cfg->get<unsigned int>("server.port", 12011);
@@ -41,19 +41,19 @@ server::server(network * nw, configuration* cfg)
 /** Starts the server. Can be run in a separate thread.
  *  
  */
-void server::run()
+void Server::Run()
 {
     for(;;)
     {
-        tcp::acceptor acceptor(this->io, tcp::endpoint(tcp::v4(), this->_port));
+        tcp::acceptor acceptor(this->_io, tcp::endpoint(tcp::v4(), this->_port));
     
-        tcp::socket * sock = new tcp::socket(this->io);
+        tcp::socket * sock = new tcp::socket(this->_io);
     
         acceptor.accept(*sock);
 
-        node * nd = new node(new server_node_connection(sock));
+        Node* nd = new Node(new ServerNodeConnection(sock));
 
-        this->_network->add_node(nd);
+        this->_network->AddNode(nd);
         this->onNodeConnect(nd);
     }
 }

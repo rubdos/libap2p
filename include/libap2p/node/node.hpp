@@ -37,31 +37,31 @@ namespace libap2p
 * Used to send libap2p::message
 * objects, receiving them and other communication.
 */
-class node
+class Node
 {
 public:
-    node();
-    node(node_connection*);
+    Node();
+    Node(NodeConnection*);
 
     /** Default destructor.
      *
      */
-    ~node();
+    ~Node();
 
-    void send_message(message*);
+    void SendMessage(Message*);
 
-    void run();
-    void _run();
+    void Run();
+    void _Run();
 
-    boost::signal<void (message*, node* /* sender */)> onReceiveMessage;
-    boost::signal<void (node* /* sender */)> onConnected;
-    boost::signal<void (node* /* sender */)> onDisconnected;
+    boost::signal<void (Message*, Node* /* sender */)> onReceiveMessage;
+    boost::signal<void (Node* /* sender */)> onConnected;
+    boost::signal<void (Node* /* sender */)> onDisconnected;
 
     void Connected();
 private:    
-    node_connection *_node_connection;
+    NodeConnection* _nodeConnection;
 
-    boost::thread *runner;
+    boost::thread* _runner;
 };
 }
 #endif

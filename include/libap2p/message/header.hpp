@@ -38,20 +38,20 @@ enum message_types
 /** Represents the message header.
  *  Internally called.
  */
-class header
+class Header
 {
 public:
-    header();
-    header(int64_t);
-    int64_t get_encoded();
+    Header();
+    Header(int64_t);
+    int64_t GetEncoded();
 
-    int32_t message_length;
-    int8_t compression_flags;
+    int32_t messageLength;
+    int8_t compressionFlags;
 private:
-    int get_flags1();
-    int get_flags2();
-    int get_flags3();
-    bool get_bit(unsigned char, unsigned char);
+    int _GetFlags1();
+    int _GetFlags2();
+    int _GetFlags3();
+    bool GetBit(unsigned char, unsigned char);
 };
 }
 

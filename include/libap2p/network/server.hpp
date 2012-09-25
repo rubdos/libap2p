@@ -27,26 +27,26 @@
 
 namespace libap2p
 {
-class network;
+class Network;
 /** Main p2p listening class.
  *  Internally called.
  */
-class server
+class Server
 {
 public:
-    server();
-    server(libap2p::network*, configuration* cfg);
-    void run();
+    Server();
+    Server(libap2p::Network*, Configuration* cfg);
+    void Run();
 
-    boost::signal<void (node*)> onNodeConnect;
+    boost::signal<void (Node*)> onNodeConnect;
 private:
-    void handle_accept(boost::asio::ip::tcp::socket, const boost::system::error_code&);
+    void _HandleAccept(boost::asio::ip::tcp::socket, const boost::system::error_code&);
     
-    boost::asio::io_service io;
+    boost::asio::io_service _io;
     unsigned short _port;
 
-    network* _network;
-    configuration* _cfg;
+    Network* _network;
+    Configuration* _cfg;
 };
 }
 #endif

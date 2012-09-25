@@ -30,24 +30,24 @@ namespace libap2p
 /** Implementation of connecting node_connection.
 *
 */
-class client_node_connection : public node_connection
+class ClientNodeConnection : public NodeConnection
 {
 public:
-    client_node_connection(std::string /* IP address*/, std::string /* port */);
-    void send_message(message*);
-    message* fetch_message();
+    ClientNodeConnection(std::string /* IP address*/, std::string /* port */);
+    void SendMessage(Message*);
+    Message* FetchMessage();
 
     /** Connect using the ip/port combination from constructor
      */
-    void connect();
+    void Connect();
 private:
-    void _connect();
+    void _Connect();
 
-    std::string _server_ip_adress;
-    boost::asio::ip::tcp::resolver::iterator _endpoint_iterator;
-    boost::asio::io_service _io_service;
+    std::string _serverIpAdress;
+    boost::asio::ip::tcp::resolver::iterator _endpointIterator;
+    boost::asio::io_service _ioService;
 
-    boost::thread *_connector_thread;
+    boost::thread *_connectorThread;
     boost::asio::ip::tcp::socket* _socket;
 };
 }

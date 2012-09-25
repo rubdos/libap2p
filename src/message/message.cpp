@@ -34,9 +34,9 @@ namespace libap2p
 /**
 * @brief Default constructor
 */
-message::message()
+Message::Message()
 {
-    this->_init();
+    this->_Init();
 }
 
 /**
@@ -45,25 +45,25 @@ message::message()
 * @param messagetype    Message type. Can be any uint. Will be send through the socket
 * @param messagedata    The data to send. Easy construction by boost::asio::buffer([anything here]);
 */
-message::message(message_types messagetype, std::string messagedata)
+Message::Message(message_types messagetype, std::string messagedata)
 {
-    this->_init();
-    this->_message_type = messagetype;
-    this->_message_data = messagedata;
+    this->_Init();
+    this->_messageType = messagetype;
+    this->_messageData = messagedata;
 }
 
 /** Constructor from XML content.
 *   @param xml_str an std::string with xml contents.
 */
-message::message(std::string xml_str)
+Message::Message(std::string xml_str)
 {
-    this->_init(xml_str);
+    this->_Init(xml_str);
 }
 
 /** Constructor from compressed xml data and header.
  *
  */
-message::message(boost::asio::streambuf *message_raw, header* hdr)
+Message::Message(boost::asio::streambuf *message_raw, Header* hdr)
 {
     std::stringstream xml;
 
@@ -72,15 +72,15 @@ message::message(boost::asio::streambuf *message_raw, header* hdr)
     in.push(*message_raw);
     boost::iostreams::copy(in, xml);
     
-    this->_init(xml.str());
+    this->_Init(xml.str());
 }
 
 /** Initializes from xml data.
  *
  */
-void message::_init(std::string xml)
+void Message::_Init(std::string xml)
 {
-    this->_init(); // Set default properties/..
+    this->_Init(); // Set default properties/..
     std::stringstream in;
     in << xml;
 
@@ -88,59 +88,59 @@ void message::_init(std::string xml)
 
     read_xml(in, pt);
 
-    this->_message_version = pt.get<std::string>("libap2p.version");
-    this->_message_data = pt.get<std::string>("libap2p.message.data");
-    this->_message_type = (message_types) pt.get<unsigned int>("libap2p.message.type");
-    this->_message_signature = pt.get<std::string>("libap2p.signature.signature");
-    this->_message_signature_type = pt.get<std::string>("libap2p.signature.type");
+    this->_messageVersion = pt.get<std::string>("libap2p.version");
+    this->_messageData = pt.get<std::string>("libap2p.message.data");
+    this->_messageType = (message_types) pt.get<unsigned int>("libap2p.message.type");
+    this->_messageSignature = pt.get<std::string>("libap2p.signature.signature");
+    this->_messageSignatureType = pt.get<std::string>("libap2p.signature.type");
 }
 
 /** Initializes the message with default values. Internally and privately called
  *
  */
-void message::_init()
+void Message::_Init()
 {
-    this->_message_signature = "";
-    this->_message_signature_type = "";
-    this->_message_type = MESSAGE_HELLO;
-    this->_message_data = "";
+    this->_messageSignature = "";
+    this->_messageSignatureType = "";
+    this->_messageType = MESSAGE_HELLO;
+    this->_messageData = "";
 }
 
 /** Get the xml text for the message.
 *   Internally used
 *   @return The xml-structure of the message.
 */
-std::string message::get_xml()
+std::string Message::GetXml()
 {
     boost::property_tree::ptree pt;
     std::stringstream out;
 
     pt.put("libap2p.version", "0.0.1");
-    pt.put("libap2p.message.type", this->_message_type);
-    pt.put("libap2p.message.data", this->_message_data);
-    pt.put("libap2p.signature.signature", this->_message_signature); //!todo: Check signature before sending?
-    pt.put("libap2p.signature.type", this->_message_signature_type);
+    pt.put("libap2p.message.type", this->_messageType);
+    pt.put("libap2p.message.data", this->_messageData);
+    pt.put("libap2p.signature.signature", this->_messageSignature); //!todo: Check signature before sending?
+    pt.put("libap2p.signature.type", this->_messageSignatureType);
     
     write_xml(out, pt);
     
     return out.str();
 }
 
-message_types message::GetMessageType()
+message_types Message::GetMessageType()
 {
-    return this->_message_type;
+    return this->_messageType;
 }
 
-void message::prepare()
+void Message::Prepare()
 {
-    this->_compress();
+    this->_Compress();
 }
 
-void message::_compress()
+void Message::_Compress()
 {
     std::stringstream xml;
-    std::ostream tempstream(&this->_compressed_buf);
-    xml << this->get_xml();
+    std::ostream tempstream(&this->_compressedBuf);
+    xml << this->GetXml();
 
     boost::iostreams::filtering_streambuf<boost::iostreams::input> in;
     in.push(boost::iostreams::gzip_compressor());
@@ -148,21 +148,21 @@ void message::_compress()
     boost::iostreams::copy(in, tempstream);
 }
 
-header* message::get_header()
+Header* Message::GetHeader()
 {
-    header *hdr = new header();
+    Header *hdr = new Header();
 
     // Search message length:
-    hdr->message_length = this->_compressed_buf.size();
+    hdr->messageLength = this->_compressedBuf.size();
 
     // Set compression system
-    hdr->compression_flags = 1; //@todo: hardcoded to GZIP, FIXME
+    hdr->compressionFlags = 1; //@todo: hardcoded to GZIP, FIXME
 
     return hdr;
 }
 
-boost::asio::streambuf* message::get_encoded()
+boost::asio::streambuf* Message::GetEncoded()
 {
-    return &(this->_compressed_buf);
+    return &(this->_compressedBuf);
 }
 }

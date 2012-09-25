@@ -8,7 +8,7 @@
 int main()
 {
     // Initialize configuration object 
-    libap2p::configuration* cnf = new libap2p::configuration();
+    libap2p::Configuration* cnf = new libap2p::Configuration();
 
     // Print the xml output (cnf is derived from boost::property_tree::ptree):
     std::cout << "Initial empty configuration tree" << std::endl;
@@ -23,7 +23,7 @@ int main()
     std::cout << std::endl << std::endl;
 
     // Append the configuration file
-    cnf->load_file("configuration.xml");
+    cnf->LoadFile("configuration.xml");
     // And print it
     std::cout << "Appended configuration.xml" << std::endl;
     write_xml(std::cout, (boost::property_tree::ptree)(*cnf));
@@ -35,6 +35,6 @@ int main()
     write_xml(std::cout, (boost::property_tree::ptree)(*cnf));
     std::cout << std::endl << std::endl << "And saving to configuration.edit.xml" << std::endl;;
 
-    cnf->save_file("configuration.edit.xml");
+    cnf->SaveFile("configuration.edit.xml");
     return 0;
 }

@@ -30,12 +30,12 @@ namespace libap2p
 * @brief Implementation of listening node_connection.
 *
 */
-class server_node_connection : public node_connection
+class ServerNodeConnection : public NodeConnection
 {
 public:
-    server_node_connection(boost::asio::ip::tcp::socket*);
-    message* fetch_message();
-    void send_message(message*);
+    ServerNodeConnection(boost::asio::ip::tcp::socket*);
+    Message* FetchMessage();
+    void SendMessage(Message*);
 private:
     boost::asio::ip::tcp::socket* _socket;
 };

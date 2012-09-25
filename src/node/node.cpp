@@ -23,19 +23,19 @@ namespace libap2p
 /* Constructor, initializes a node object.
  *
  */
-node::node()
+Node::Node()
 {
-    this->_node_connection = NULL;
+    this->_nodeConnection = NULL;
 }
 /** Constructs a new node with a known connection.
  *  @param nc   A node connection.
  */
-node::node(node_connection* nc)
+Node::Node(NodeConnection* nc)
 {
-    this->_node_connection = nc;
-    if(!nc->Connected)
+    this->_nodeConnection = nc;
+    if(!nc->connected)
     {
-        nc->onConnected.connect(boost::bind(&node::Connected, this));
+        nc->onConnected.connect(boost::bind(&Node::Connected, this));
     }
     else
     {
@@ -46,23 +46,23 @@ node::node(node_connection* nc)
 /** Runs the node connections.
  *  Will start separate thread.
  */
-void node::run()
+void Node::Run()
 {
-    this->runner = new boost::thread(boost::bind(&libap2p::node::_run, this)); 
+    this->_runner = new boost::thread(boost::bind(&libap2p::Node::_Run, this)); 
 }
 /** Actual runner.
  *  Runs in thread started by node::run();
  */
-void node::_run()
+void Node::_Run()
 {
     while(true)
     {
-        if(this->_node_connection == NULL)
+        if(this->_nodeConnection == NULL)
         {
             this->onDisconnected(this);
             break;
         }
-        message* msg = this->_node_connection->fetch_message();
+        Message* msg = this->_nodeConnection->FetchMessage();
         if(msg == NULL)
         {
             std::cerr << "fetch_message failed" << std::endl;
@@ -77,23 +77,23 @@ void node::_run()
 /** Send a libap2p::message object to another node.
  *  @param msg  A message object to be send
  */
-void node::send_message(message* msg)
+void Node::SendMessage(Message* msg)
 {
-    this->_node_connection->send_message(msg); // Well, this is simple...
+    this->_nodeConnection->SendMessage(msg); // Well, this is simple...
 }
 
-void node::Connected()
+void Node::Connected()
 {
-    this->run();
-    message* init_msg = new message(MESSAGE_HELLO, ""); //@todo: add identification params (pubid)
-    this->send_message(init_msg);
+    this->Run();
+    Message* init_msg = new Message(MESSAGE_HELLO, ""); //@todo: add identification params (pubid)
+    this->SendMessage(init_msg);
 
     this->onConnected(this /* Sender */ );
 }
 
-node::~node()
+Node::~Node()
 {
-    delete this->_node_connection;
+    delete this->_nodeConnection;
     // Runner thread will end and destruct automatically, no need to destroy
 }
 }

@@ -28,51 +28,51 @@
 
 namespace libap2p
 {
-class server;
+class Server;
 enum connection_status { CONNECTED, CONNECTING, DISCONNECTED, ERROR};
 
 
 /** The main class which gives access to the whole network.
  * 
  */
-class network
+class Network
 {
 public:
-    network(configuration*);
-    void connect();
-    void close();
+    Network(Configuration*);
+    void Connect();
+    void Close();
 
-    void add_node(node*);
+    void AddNode(Node*);
 /** Used to check the current connection status. Can be libap2p{connection_status
   * {CONNECTED, CONNECTING, DISCONNECTED or ERROR}};
   *
   */
-    connection_status status() const {return this->_connection_status;};
+    connection_status Status() const {return this->_connectionStatus;};
 
     // Signals
 
     /** Signal that is called when a new node is added.
      *  
      */
-    boost::signal<void (node*)> onNodeAdded;
+    boost::signal<void (Node*)> onNodeAdded;
     /** Signal called when a new node connects to the network
      */
-    boost::signal<void (node*)> onNodeConnect;
+    boost::signal<void (Node*)> onNodeConnect;
 
-    boost::signal<void (message*, node*)> onReceiveMessage;
+    boost::signal<void (Message*, Node*)> onReceiveMessage;
 
-    void ReceivedMessage(message*, node*);
-    void ServerNodeConnected(node *);
-    void NodeConnected(node *);
+    void ReceivedMessage(Message*, Node*);
+    void ServerNodeConnected(Node *);
+    void NodeConnected(Node *);
 
 private:
-    connection_status _connection_status;
+    connection_status _connectionStatus;
 
-    libap2p::server* _server;
+    libap2p::Server* _server;
 
-    std::vector<node*> _nodes;
+    std::vector<Node*> _nodes;
     Identity* _localIdentity;
-    configuration* _cfg;
+    Configuration* _cfg;
     boost::thread* _runner;
 };
 }

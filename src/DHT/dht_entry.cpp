@@ -25,7 +25,7 @@ namespace libap2p
 *
 * @param std::string as local filename for dht_entry to load.
 */
-dht_entry::dht_entry(std::string filename)
+DHTEntry::DHTEntry(std::string filename)
 {
 }
 

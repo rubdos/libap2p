@@ -29,39 +29,39 @@ namespace libap2p
  *  @param ip_adress    the ip_adress to connect to.
  *  @param port         the port to use for the connection
  */
-client_node_connection::client_node_connection(std::string ip_adress, std::string port)
+ClientNodeConnection::ClientNodeConnection(std::string ip_adress, std::string port)
 {
     // We didn't yet connect.
-    this->Connected = false;
+    this->connected = false;
 
     // Construct a socket using the io_service;
-    this->_socket = new boost::asio::ip::tcp::socket(this->_io_service);
+    this->_socket = new boost::asio::ip::tcp::socket(this->_ioService);
     // Let's search the node...
-    boost::asio::ip::tcp::resolver resolver(this->_io_service);
+    boost::asio::ip::tcp::resolver resolver(this->_ioService);
     boost::asio::ip::tcp::resolver::query query(ip_adress, port, boost::asio::ip::tcp::resolver::query::all_matching);
     // Set the iterator by solving the ip_query
-    this->_endpoint_iterator = resolver.resolve(query);
+    this->_endpointIterator = resolver.resolve(query);
     // Connect
 }
 
-void client_node_connection::connect()
+void ClientNodeConnection::Connect()
 {
-    this->_connector_thread = new boost::thread(&libap2p::client_node_connection::_connect, this); // Try connecting to the server
+    this->_connectorThread = new boost::thread(&libap2p::ClientNodeConnection::_Connect, this); // Try connecting to the server
 }
 
 /** Tries to connect to the server specified in this->_endpoint_iterator.
  *  @note: internally called!
  *  @note: blocking, use on a separte thread!
  */
-void client_node_connection::_connect()
+void ClientNodeConnection::_Connect()
 {
     boost::asio::ip::tcp::resolver::iterator end;
     boost::system::error_code error = boost::asio::error::host_not_found;
     
-    while(error && this->_endpoint_iterator != end)
+    while(error && this->_endpointIterator != end)
     {
         this->_socket->close();
-        this->_socket->connect(*(this->_endpoint_iterator++), error);
+        this->_socket->connect(*(this->_endpointIterator++), error);
         if(error && error != boost::asio::error::host_not_found)
         {
             //@TODO: throw some error
@@ -69,7 +69,7 @@ void client_node_connection::_connect()
     }
     if(!error)
     {
-        this->Connected = true;
+        this->connected = true;
         this->onConnected();
     }
 }
@@ -77,29 +77,29 @@ void client_node_connection::_connect()
 /** Sends a message to this node_connection.
  *
  */
-void client_node_connection::send_message(message* msg)
+void ClientNodeConnection::SendMessage(Message* msg)
 {
-    if(! this->Connected) // Only send messages if we're connected
+    if(! this->connected) // Only send messages if we're connected
     {
         return;
     }
     //@TODO: same code as in server connected. Should be abstracted in node.cpp 
-    msg->prepare();
+    msg->Prepare();
     
-    header* hdr = msg->get_header();
+    Header* hdr = msg->GetHeader();
     
-    int64_t l_hdr = hdr->get_encoded();
+    int64_t l_hdr = hdr->GetEncoded();
     
     boost::system::error_code ignored_error;
     
     boost::asio::write(*(this->_socket), boost::asio::buffer(&l_hdr, 8), boost::asio::transfer_all(), ignored_error); // Send message header
     
-    boost::asio::write(*(this->_socket), msg->get_encoded()->data(), boost::asio::transfer_all(), ignored_error); // Send message itself
+    boost::asio::write(*(this->_socket), msg->GetEncoded()->data(), boost::asio::transfer_all(), ignored_error); // Send message itself
 }
-message* client_node_connection::fetch_message()
+Message* ClientNodeConnection::FetchMessage()
 {
     // No messages to read when not connected
-    if(! this->Connected )
+    if(! this->connected )
     {
         return NULL;
     }
@@ -117,11 +117,11 @@ message* client_node_connection::fetch_message()
 
     if(error)
     {
-        this->Connected = false;
+        this->connected = false;
         return NULL;
     }
     
-    header *hdr = new header(*hdr_int);
+    Header *hdr = new Header(*hdr_int);
     
     // Prepare message retrieval
     boost::asio::streambuf message_raw;
@@ -129,15 +129,15 @@ message* client_node_connection::fetch_message()
     size_t bytes = boost::asio::read( 
             *(this->_socket), 
             message_raw, 
-            boost::asio::transfer_at_least(hdr->message_length),
+            boost::asio::transfer_at_least(hdr->messageLength),
             error);
     if(error)
     {
-        this->Connected = false;
+        this->connected = false;
         return NULL;
     }
     
     // Make up message object and return
-    return new message(&message_raw, hdr);
+    return new Message(&message_raw, hdr);
 }
 }
