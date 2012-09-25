@@ -20,11 +20,18 @@
 
 namespace libap2p
 {
-class identity
+class Identity
 {
 public:
-    identity();
-    void load_local();
+    Identity();
+    /** Loads a locally stored identity.
+     * Will load the identity stored on the default place on the harddisk
+     */
+    void LoadLocal();
+    /** Generates a local RSA key.
+     *  
+     */
+    void GenerateLocal();
 };
 }
 

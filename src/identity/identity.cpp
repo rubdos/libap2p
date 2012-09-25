@@ -17,18 +17,23 @@
 
 #include "libap2p/identity/identity.hpp"
 
+#include <cryptopp/rsa.h>
+
 namespace libap2p
 {
-identity::identity()
+Identity::Identity()
 {
     
-    //!todo: stub
+    //@TODO: stub
+}
+void Identity::GenerateLocal()
+{
 }
 /** Loads a locally stored identity.
  * Will load the identity stored on the default place on the harddisk
  *
  */
-void identity::load_local()
+void Identity::LoadLocal()
 {
     
 }
