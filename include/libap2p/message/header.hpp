@@ -32,6 +32,12 @@ enum message_types
     MESSAGE_HELLO               = 0,    /**<Send a hello to the peer, included public key.*/
     MESSAGE_IDENTIFY_REQUEST    = 1,    /**<Ask the peer to identify itself.*/
     MESSAGE_IDENTIFY_RESPONSE   = 2,    /**<Return a signed version of the identification request.*/
+    
+    MESSAGE_NODES_REQUEST       = 3,    /**<Ask the corresponding node to send it's node list. */
+    MESSAGE_NODES_RESPONSE      = 4,    /**<Data contains a list with nodes. */
+    MESSAGE_NODE_INFO_REQUEST   = 5,    /**<Request info about a node. */
+    MESSAGE_NODE_INFO_RESPONSE  = 6,    /**<Data contains pk, ip, port of the node. */
+    
     MESSAGE_DATA                = 10,   /**<Send a message with data 
                                          * (library does not catch this, it's "end-user" data. */
 };
