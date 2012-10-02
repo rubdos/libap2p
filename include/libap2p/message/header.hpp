@@ -29,10 +29,10 @@ enum compression_flags {
 
 enum message_types
 {
-    MESSAGE_HELLO               = 0,    /** Send a hello to the peer, included public key.*/
-    MESSAGE_IDENTIFY_REQUEST    = 1,    /** Ask the peer to identify itself.*/
-    MESSAGE_IDENTIFY_RESPONSE   = 2,    /** Return a signed version of the identification request.*/
-    MESSAGE_DATA                = 10,   /** Send a message with data 
+    MESSAGE_HELLO               = 0,    /**<Send a hello to the peer, included public key.*/
+    MESSAGE_IDENTIFY_REQUEST    = 1,    /**<Ask the peer to identify itself.*/
+    MESSAGE_IDENTIFY_RESPONSE   = 2,    /**<Return a signed version of the identification request.*/
+    MESSAGE_DATA                = 10,   /**<Send a message with data 
                                          * (library does not catch this, it's "end-user" data. */
 };
 /** Represents the message header.
