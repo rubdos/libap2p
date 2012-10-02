@@ -43,7 +43,16 @@ public:
      */
     void GenerateLocal(std::string filename);
 
+    /** Checks wether the keys used are safe.
+     *  @warning    Can take a while.
+     *  @return     True when loaded key is methematically safe, false when it isn't.
+     */
     bool ValidateKeys();
+
+    /** Returns the Identities fingerprint.
+     *  @return     The fingerprint of the associated public key
+     */
+    std::string GetFingerprint();
 private:
     /** Returns the default filename for a key on this system.
      *
@@ -53,6 +62,8 @@ private:
 
     CryptoPP::RSA::PrivateKey* _privateKey;
     CryptoPP::RSA::PublicKey*  _publicKey;
+
+    std::string _publicKeyFingerprint;
 };
 }
 

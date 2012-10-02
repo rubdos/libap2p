@@ -20,6 +20,8 @@
 #include <cryptopp/rsa.h>
 #include <cryptopp/osrng.h>
 #include <cryptopp/files.h>
+#include <cryptopp/base64.h>
+#include <cryptopp/hex.h>
 
 #include <stdio.h>
 #include <stdlib.h> // For getenv
@@ -107,6 +109,29 @@ void Identity::LoadLocal()
         // Generate it;
         this->GenerateLocal();
     }
+    std::clog << "Loaded RSA key: " << this->GetFingerprint() << std::endl;
+}
+std::string Identity::GetFingerprint()
+{
+    if(this->_publicKeyFingerprint.compare("") == 0)
+    {
+        if(this->_publicKey == NULL)
+        {
+            return "";
+        }
+        
+        // Load the keys fingerprint (=sha256(pk))
+        CryptoPP::SHA256 hash;
+        std::string pk;
+
+        this->_publicKey->Save(CryptoPP::StringSink(pk).Ref());
+
+        CryptoPP::StringSource pkss(pk, true,
+                new CryptoPP::HashFilter(hash,
+                    new CryptoPP::HexEncoder (
+                        new CryptoPP::StringSink(this->_publicKeyFingerprint), true, 2, ":")));
+    }
+    return this->_publicKeyFingerprint;
 }
 void Identity::_LoadLocal()
 {
