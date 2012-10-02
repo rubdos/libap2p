@@ -20,6 +20,9 @@
 
 #include <string>
 
+#include <cryptopp/rsa.h>
+
+
 namespace libap2p
 {
 class Identity
@@ -39,11 +42,17 @@ public:
      *  Saves the key at specified filename.
      */
     void GenerateLocal(std::string filename);
+
+    bool ValidateKeys();
 private:
     /** Returns the default filename for a key on this system.
      *
      */
     std::string _GetDefaultKeyFilename();
+    void _LoadLocal();
+
+    CryptoPP::RSA::PrivateKey* _privateKey;
+    CryptoPP::RSA::PublicKey*  _publicKey;
 };
 }
 

@@ -37,6 +37,22 @@ Identity::Identity()
     
     //@TODO: stub
 }
+bool Identity::ValidateKeys()
+{
+    // Open a random generator
+    CryptoPP::AutoSeededRandomPool rng;
+
+    if(this->_privateKey == NULL || this->_publicKey == NULL)
+    {
+        return false;
+    }
+    
+    return (
+            this->_privateKey->Validate(rng, 3) // 3 = high security level.
+            &&
+            this->_publicKey->Validate(rng, 3) // Idem
+            );
+}
 void Identity::GenerateLocal()
 {
     // Create the directory containing the ap2p configuration if not exists.
@@ -56,19 +72,26 @@ void Identity::GenerateLocal(std::string filename)
     // Open a random generator
     CryptoPP::AutoSeededRandomPool rng;
 
-    // Generate Parameters
-    CryptoPP::InvertibleRSAFunction params;
-    params.GenerateRandomWithKeySize(rng, 3072);
+    while(!this->ValidateKeys())
+    {
+        // Generate Parameters
+        CryptoPP::InvertibleRSAFunction params;
+        params.GenerateRandomWithKeySize(rng, 3072);
 
-    // Create Keys
-    CryptoPP::RSA::PrivateKey privateKey(params);
-    CryptoPP::RSA::PublicKey publicKey(params);
+        // Create Keys
+        this->_privateKey = new CryptoPP::RSA::PrivateKey(params);
+        this->_publicKey  = new CryptoPP::RSA::PublicKey(params);
+
+        std::clog << "Validating security of the keypair" << std::endl;
+    }
 
     CryptoPP::FileSink pubfile( (filename + ".pub").c_str() );
     CryptoPP::FileSink privfile( (filename + ".prv").c_str() );
 
-    publicKey.Save(pubfile);
-    privateKey.Save(privfile);
+    this->_publicKey->Save(pubfile);
+    this->_privateKey->Save(privfile);
+
+    std::clog << "Saved the keys" << std::endl;
 }
 void Identity::LoadLocal()
 {
@@ -77,12 +100,17 @@ void Identity::LoadLocal()
             )
     {
         // Load it;
+        this->_LoadLocal();
     }
     else
     {
         // Generate it;
         this->GenerateLocal();
     }
+}
+void Identity::_LoadLocal()
+{
+    
 }
 std::string Identity::_GetDefaultKeyFilename()
 {
