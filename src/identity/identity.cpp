@@ -39,6 +39,12 @@ Identity::Identity()
 }
 void Identity::GenerateLocal()
 {
+    // Create the directory containing the ap2p configuration if not exists.
+    // @TODO: Move to libap2p::Configuration
+    if(!fs::is_directory( std::string(getenv("HOME")) + "/.libap2p" ))
+    {
+        fs::create_directory(std::string(getenv("HOME")) + "/.libap2p");
+    }
     this->GenerateLocal( std::string(getenv("HOME")) + "/.libap2p/default_key" );
     //@TODO: X-Platform; linux only
 }
