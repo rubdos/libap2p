@@ -45,7 +45,7 @@ void Identity::GenerateLocal()
     {
         fs::create_directory(std::string(getenv("HOME")) + "/.libap2p");
     }
-    this->GenerateLocal( std::string(getenv("HOME")) + "/.libap2p/default_key" );
+    this->GenerateLocal( this->_GetDefaultKeyFilename() );
     //@TODO: X-Platform; linux only
 }
 void Identity::GenerateLocal(std::string filename)
