@@ -18,6 +18,17 @@
 #include "libap2p/identity/identity.hpp"
 
 #include <cryptopp/rsa.h>
+#include <cryptopp/osrng.h>
+#include <cryptopp/files.h>
+
+#include <stdio.h>
+#include <stdlib.h> // For getenv
+
+#include <iostream>
+
+#include <boost/filesystem.hpp>
+
+namespace fs = boost::filesystem;
 
 namespace libap2p
 {
@@ -28,13 +39,47 @@ Identity::Identity()
 }
 void Identity::GenerateLocal()
 {
+    this->GenerateLocal( std::string(getenv("HOME")) + "/.libap2p/default_key" );
+    //@TODO: X-Platform; linux only
 }
-/** Loads a locally stored identity.
- * Will load the identity stored on the default place on the harddisk
- *
- */
+void Identity::GenerateLocal(std::string filename)
+{
+    std::clog << "Generating a new 3072 bit keypair, this can take a minute or two." << std::endl;
+    std::clog << "Speed up the process by moving the mouse and generating general randomness" << std::endl;
+
+    // Open a random generator
+    CryptoPP::AutoSeededRandomPool rng;
+
+    // Generate Parameters
+    CryptoPP::InvertibleRSAFunction params;
+    params.GenerateRandomWithKeySize(rng, 3072);
+
+    // Create Keys
+    CryptoPP::RSA::PrivateKey privateKey(params);
+    CryptoPP::RSA::PublicKey publicKey(params);
+
+    CryptoPP::FileSink pubfile( (filename + ".pub").c_str() );
+    CryptoPP::FileSink privfile( (filename + ".prv").c_str() );
+
+    publicKey.Save(pubfile);
+    privateKey.Save(privfile);
+}
 void Identity::LoadLocal()
 {
-    
+    if(fs::exists(this->_GetDefaultKeyFilename() + ".pub") &&
+            fs::exists(this->_GetDefaultKeyFilename() + ".prv")
+            )
+    {
+        // Load it;
+    }
+    else
+    {
+        // Generate it;
+        this->GenerateLocal();
+    }
+}
+std::string Identity::_GetDefaultKeyFilename()
+{
+    return std::string(getenv("HOME")) + "/.libap2p/default_key";
 }
 }

@@ -18,6 +18,8 @@
 #ifndef CLASS_IDENTITY
 #define CLASS_IDENTITY
 
+#include <string>
+
 namespace libap2p
 {
 class Identity
@@ -25,13 +27,23 @@ class Identity
 public:
     Identity();
     /** Loads a locally stored identity.
-     * Will load the identity stored on the default place on the harddisk
+     *  Will load the identity stored on the default place on the harddisk.
+     *  If no key is found on the default location, a new one is generated. See Identity::GenerateLocal()
      */
     void LoadLocal();
     /** Generates a local RSA key.
-     *  
+     *  Generates a local RSA 3072 key at default location: $HOME/.libap2p/default_key.
      */
     void GenerateLocal();
+    /** Generates a local RSA key.
+     *  Saves the key at specified filename.
+     */
+    void GenerateLocal(std::string filename);
+private:
+    /** Returns the default filename for a key on this system.
+     *
+     */
+    std::string _GetDefaultKeyFilename();
 };
 }
 
