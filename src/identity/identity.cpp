@@ -36,7 +36,8 @@ namespace libap2p
 {
 Identity::Identity()
 {
-    
+    this->_publicKey = NULL;
+    this->_privateKey = NULL;
     //@TODO: stub
 }
 bool Identity::ValidateKeys()
