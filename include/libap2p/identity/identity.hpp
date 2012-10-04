@@ -55,6 +55,7 @@ public:
     std::string GetFingerprint();
 
     /** Signs the message with the PrivateKey if available.
+     *  Signs with PSS and SHA256, returns base64 encoded.
      *  @return     A signature of the message.
      */
     std::string Sign(std::string message);

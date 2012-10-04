@@ -135,14 +135,24 @@ std::string Identity::GetFingerprint()
     }
     return this->_publicKeyFingerprint;
 }
-std::string Identity::Sign(std::string)
+std::string Identity::Sign(std::string message)
 {
     if(this->_privateKey == NULL)
     {
         return ""; //@TODO Make some error system that throws some stuff around.
     }
+    std::string signature;
+    CryptoPP::AutoSeededRandomPool rng;
 
     CryptoPP::RSASS<CryptoPP::PSS, CryptoPP::SHA256>::Signer signer(*(this->_privateKey));
+    CryptoPP::StringSource(message, true, 
+            new CryptoPP::SignerFilter(rng, signer,
+                new CryptoPP::Base64Encoder(
+                    new CryptoPP::StringSink(signature)
+                    )
+                ) // SignerFilter
+            ); // StringSource
+    return signature;
 }
 void Identity::_LoadLocal()
 {
