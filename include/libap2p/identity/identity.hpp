@@ -59,6 +59,11 @@ public:
      *  @return     A signature of the message.
      */
     std::string Sign(std::string message);
+
+    /** Verifies the message with the provided signature.
+     *
+     */
+    bool Verify(std::string message, std::string signature);
 private:
     /** Returns the default filename for a key on this system.
      *

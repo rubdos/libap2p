@@ -154,6 +154,38 @@ std::string Identity::Sign(std::string message)
             ); // StringSource
     return signature;
 }
+bool Identity::Verify(std::string message, std::string signature)
+{
+    if(this->_publicKey == NULL)
+    {
+        return false;
+    }
+    CryptoPP::RSASS<CryptoPP::PSS, CryptoPP::SHA256>::Verifier verifier(*(this->_publicKey));
+
+    std::string recovered, _signature;
+
+    // Recover base64
+    CryptoPP::StringSource decstrsrc(signature, true,
+            new CryptoPP::Base64Decoder(
+                new CryptoPP::StringSink(_signature)
+                )
+            );
+
+    CryptoPP::StringSource(message+_signature, true,
+            new CryptoPP::SignatureVerificationFilter(
+                verifier,
+                new CryptoPP::StringSink(recovered),
+                CryptoPP::SignatureVerificationFilter::THROW_EXCEPTION |
+                CryptoPP::SignatureVerificationFilter::PUT_MESSAGE
+                ) // SignatureVerificationFilter
+            ); // StringSource
+    if(recovered.compare(message) == 0)
+    {
+        return true;
+    }
+    std::cout << recovered;
+    return false;
+}
 void Identity::_LoadLocal()
 {
     CryptoPP::FileSource pubk( (this->_GetDefaultKeyFilename() + ".pub").c_str(), true);

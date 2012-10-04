@@ -11,7 +11,7 @@ int main()
     libap2p::Identity id;
     id.LoadLocal();
 
-    std::string plaintext = "Hello World. Libap2p now does encryption.",
+    std::string plaintext = "Hello World. Libap2p now does some RSA.",
         signature, cyphertext;
 
 
@@ -21,6 +21,16 @@ int main()
 
     std::cout << "Signature:" << std::endl << signature << std::endl;
 
+    bool verify = id.Verify(plaintext, signature);
+
+    if(verify)
+    {
+        std::cout << "Signature verification OK" << std::endl;
+    }
+    else
+    {
+        std::cout << "Signature verification failed" << std::endl;
+    }
 
     return 0;
 }
