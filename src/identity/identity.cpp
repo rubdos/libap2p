@@ -22,6 +22,7 @@
 #include <cryptopp/files.h>
 #include <cryptopp/base64.h>
 #include <cryptopp/hex.h>
+#include <cryptopp/pssr.h>
 
 #include <stdio.h>
 #include <stdlib.h> // For getenv
@@ -134,9 +135,25 @@ std::string Identity::GetFingerprint()
     }
     return this->_publicKeyFingerprint;
 }
+std::string Identity::Sign(std::string)
+{
+    if(this->_privateKey == NULL)
+    {
+        return ""; //@TODO Make some error system that throws some stuff around.
+    }
+
+    CryptoPP::RSASS<CryptoPP::PSS, CryptoPP::SHA256>::Signer signer(*(this->_privateKey));
+}
 void Identity::_LoadLocal()
 {
-    
+    CryptoPP::FileSource pubk( (this->_GetDefaultKeyFilename() + ".pub").c_str(), true);
+    CryptoPP::FileSource prvk( (this->_GetDefaultKeyFilename() + ".prv").c_str(), true);
+
+    this->_publicKey = new CryptoPP::RSA::PublicKey;
+    this->_privateKey = new CryptoPP::RSA::PrivateKey;
+
+    this->_publicKey->Load(pubk);
+    this->_privateKey->Load(prvk);
 }
 std::string Identity::_GetDefaultKeyFilename()
 {

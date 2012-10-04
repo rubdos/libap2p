@@ -53,6 +53,11 @@ public:
      *  @return     The fingerprint of the associated public key
      */
     std::string GetFingerprint();
+
+    /** Signs the message with the PrivateKey if available.
+     *  @return     A signature of the message.
+     */
+    std::string Sign(std::string message);
 private:
     /** Returns the default filename for a key on this system.
      *
