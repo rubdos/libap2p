@@ -87,8 +87,10 @@ void Network::ReceivedMessage(Message* msg, Node* sender)
         case MESSAGE_HELLO:
             std::cout << "Received a hello message" << std::endl;
             break;
+        default:
+            this->onReceiveMessage(msg, sender);
+            break;
     }
-    this->onReceiveMessage(msg, sender);
 }
 void Network::ServerNodeConnected(Node* nd)
 {
