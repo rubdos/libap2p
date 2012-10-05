@@ -74,8 +74,11 @@ void Network::AddNode(Node* _node)
     this->_nodes.push_back(_node);
 }
 void Network::NodeConnected(Node* nd)
-{
-    
+{    
+    std::stringstream id_params;
+    id_params << this->_localIdentity->GetPublicKey();
+    Message* init_msg = new Message(MESSAGE_HELLO, id_params.str());
+    nd->SendMessage(init_msg);
 }
 void Network::ReceivedMessage(Message* msg, Node* sender)
 {
@@ -89,10 +92,7 @@ void Network::ReceivedMessage(Message* msg, Node* sender)
 }
 void Network::ServerNodeConnected(Node* nd)
 {
-    std::stringstream id_params;
-    Message* init_msg = new Message(MESSAGE_HELLO, "");
-    nd->SendMessage(init_msg);
-
+    this->NodeConnected(nd);
     this->onNodeConnect(nd);
 }
 }
