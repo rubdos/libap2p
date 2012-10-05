@@ -84,9 +84,6 @@ void Network::ReceivedMessage(Message* msg, Node* sender)
 {
     switch (msg->GetMessageType())
     {
-        case MESSAGE_HELLO:
-            std::cout << "Received a hello message" << std::endl;
-            break;
         default:
             this->onReceiveMessage(msg, sender);
             break;

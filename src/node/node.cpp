@@ -70,6 +70,21 @@ void Node::_Run()
             this->onDisconnected(this);
             break;
         }
+        // Received a message
+
+        switch(msg->GetMessageType())
+        {
+            case MESSAGE_HELLO:
+                try
+                {
+                    this->_id.LoadPublicKey(msg->GetData());
+                }
+                catch(...)
+                {
+                    // Node data was probably messed up. @TODO: Catch this stuff!
+                }
+                break;
+        }
         this->onReceiveMessage(msg, this /* sender */);
     }
 }
