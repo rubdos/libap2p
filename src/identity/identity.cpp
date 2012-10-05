@@ -135,6 +135,32 @@ std::string Identity::GetFingerprint()
     }
     return this->_publicKeyFingerprint;
 }
+std::string Identity::GetPublicKey()
+{
+    std::string pk, pk_encoded;
+    this->_publicKey->Save(CryptoPP::StringSink(pk).Ref());
+
+    CryptoPP::StringSource pkss(pk, true,
+            new CryptoPP::Base64Encoder(
+                new CryptoPP::StringSink(
+                    pk_encoded
+                    )
+                )
+            );
+    return pk_encoded;
+}
+void Identity::LoadPublicKey(std::string pk_encoded)
+{
+    std::string pk;
+    this->_publicKey = new CryptoPP::RSA::PublicKey();
+
+    CryptoPP::StringSource pkss(pk_encoded, true,
+            new CryptoPP::Base64Decoder(
+                new CryptoPP::StringSink(pk)
+                )
+            );
+    this->_publicKey->Load(CryptoPP::StringSource(pk, true).Ref());
+}
 std::string Identity::Sign(std::string message)
 {
     if(this->_privateKey == NULL)

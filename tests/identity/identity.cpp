@@ -19,9 +19,14 @@ int main()
 
     signature = id.Sign(plaintext);
 
+    std::cout << "Copying public key" << std::endl;
+
+    libap2p::Identity id2;
+    id2.LoadPublicKey(id.GetPublicKey());
+
     std::cout << "Signature:" << std::endl << signature << std::endl;
 
-    bool verify = id.Verify(plaintext, signature);
+    bool verify = id2.Verify(plaintext, signature);
 
     if(verify)
     {
