@@ -54,6 +54,16 @@ public:
      */
     std::string GetFingerprint();
 
+    /** Returns the base64 encoded public key.
+     *  To be imported with CryptoPP::RSA::PrivateKey::Load();
+     */
+    std::string GetPublicKey();
+
+    /** Loads a base64 encoded public key.
+     *
+     */
+    void LoadPublicKey(std::string pk);
+
     /** Signs the message with the PrivateKey if available.
      *  Signs with PSS and SHA256, returns base64 encoded.
      *  @return     A signature of the message.
