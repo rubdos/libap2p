@@ -18,6 +18,9 @@
 #include "libap2p/network/server.hpp"
 #include "libap2p/network/network.hpp"
 
+#include <string>
+#include <sstream>
+
 namespace libap2p
 {
 
@@ -86,6 +89,10 @@ void Network::ReceivedMessage(Message* msg, Node* sender)
 }
 void Network::ServerNodeConnected(Node* nd)
 {
+    std::stringstream id_params;
+    Message* init_msg = new Message(MESSAGE_HELLO, "");
+    nd->SendMessage(init_msg);
+
     this->onNodeConnect(nd);
 }
 }

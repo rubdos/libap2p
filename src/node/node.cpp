@@ -85,9 +85,7 @@ void Node::SendMessage(Message* msg)
 void Node::Connected()
 {
     this->Run();
-    Message* init_msg = new Message(MESSAGE_HELLO, ""); //@todo: add identification params (pubid)
-    this->SendMessage(init_msg);
-
+    
     this->onConnected(this /* Sender */ );
 }
 
