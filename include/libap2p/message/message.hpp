@@ -43,6 +43,10 @@ public:
     std::string GetXml();
     Header *GetHeader();
     boost::asio::streambuf* GetEncoded();
+    /** Get the data stored in the message
+     *
+     */
+    std::string GetData();
 private:
     void _Init();
     void _Init(std::string /* xml */);

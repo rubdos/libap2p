@@ -130,7 +130,10 @@ message_types Message::GetMessageType()
 {
     return this->_messageType;
 }
-
+std::string Message::GetData()
+{
+    return this->_messageData;
+}
 void Message::Prepare()
 {
     this->_Compress();
