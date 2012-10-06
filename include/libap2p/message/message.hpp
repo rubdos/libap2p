@@ -25,6 +25,7 @@
 #include <boost/asio.hpp>
 
 #include "libap2p/message/header.hpp"
+#include "libap2p/identity/identity.hpp"
 
 namespace libap2p
 {
@@ -37,6 +38,12 @@ public:
     Message(boost::asio::streambuf* /* message compressed */, Header*);
 
     void Prepare();
+    /** Prepares the message and generates a corresponding signature.
+     */
+    void Prepare(Identity* id_from);
+    /** Prepares the message, encrypts and signs it.
+     */
+    void Prepare(Identity* id_from, Identity* id_to);
 
     message_types GetMessageType();
     

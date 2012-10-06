@@ -136,6 +136,26 @@ void Message::Prepare()
     this->_Compress();
 }
 
+void Message::Prepare(Identity* id_from)
+{
+    if(!id_from)
+    {
+        this->Prepare();
+        return;
+    }
+    //@TODO Now sign the stuff right here.
+}
+
+void Message::Prepare(Identity* id_from, Identity* id_to)
+{
+    this->Prepare(id_from);
+    if(!id_to)
+    {
+        return;
+    }
+    //@TODO Now encrypt the stuff right here.
+}
+
 void Message::_Compress()
 {
     std::stringstream xml;
