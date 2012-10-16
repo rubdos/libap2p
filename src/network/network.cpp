@@ -85,6 +85,14 @@ void Network::ReceivedMessage(Message* msg, Node* sender)
 {
     switch (msg->GetMessageType())
     {
+        case MESSAGE_HELLO:
+            {
+                // Ask for nodes
+                Message* discovery_msg = new Message(MESSAGE_NODES_REQUEST, "");
+                discovery_msg->Sign(this->_localIdentity);
+                sender->SendMessage(discovery_msg);
+                break;
+            }
         default:
             this->onReceiveMessage(msg, sender);
             break;
