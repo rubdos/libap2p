@@ -134,6 +134,10 @@ std::string Message::GetData()
 {
     return this->_messageData;
 }
+void Message::Sign(Identity* id)
+{
+    this->_messageSignature = id->Sign(this->_messageData);
+}
 void Message::Prepare()
 {
     this->_Compress();

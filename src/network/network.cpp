@@ -78,6 +78,7 @@ void Network::NodeConnected(Node* nd)
     std::stringstream id_params;
     id_params << this->_localIdentity->GetPublicKey();
     Message* init_msg = new Message(MESSAGE_HELLO, id_params.str());
+    init_msg->Sign(this->_localIdentity);
     nd->SendMessage(init_msg);
 }
 void Network::ReceivedMessage(Message* msg, Node* sender)
