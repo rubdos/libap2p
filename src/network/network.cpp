@@ -93,6 +93,22 @@ void Network::ReceivedMessage(Message* msg, Node* sender)
                 sender->SendMessage(discovery_msg);
                 break;
             }
+        case MESSAGE_NODES_REQUEST:
+            {
+                // Make node list.
+                std::stringstream nodes;
+                for(std::vector<Node*>::iterator nit = this->_nodes.begin();
+                        nit != this->_nodes.end();
+                        nit++)
+                {
+                    if((*nit) != sender) // Don't return the sender. Would be stupid, right?
+                    {
+                        nodes << (*nit)->GetFingerprint() << std::endl;
+                    }
+                }
+                std::cout << nodes.str();
+                break;
+            }
         default:
             this->onReceiveMessage(msg, sender);
             break;

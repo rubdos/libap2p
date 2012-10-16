@@ -97,6 +97,11 @@ void Node::SendMessage(Message* msg)
     this->_nodeConnection->SendMessage(msg); // Well, this is simple...
 }
 
+std::string Node::GetFingerprint()
+{
+    return this->_id.GetFingerprint();
+}
+
 void Node::Connected()
 {
     this->Run();

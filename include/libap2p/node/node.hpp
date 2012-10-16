@@ -50,6 +50,7 @@ public:
     ~Node();
 
     void SendMessage(Message*);
+    std::string GetFingerprint();
 
     void Run();
     void _Run();
