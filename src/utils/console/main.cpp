@@ -24,6 +24,8 @@ void show_help()
         << "?\t\tShow this help" << std::endl
         << "help \t\tShow this help" << std::endl
         << "listen [port]\tSet the listening port" << std::endl
+        << "start\t\tStart the network" << std::endl
+        << "stop\t\tStop the network" << std::endl
         << "quit\t\tQuit the application" << std::endl
         << "exit\t\tSynonym to quit" << std::endl << std::endl;
 }
@@ -55,6 +57,34 @@ int parse(std::vector<std::string> cmd)
         cfg->put("server.port", cmd[1]);
         std::cout << "Listening on " << cmd[1] << std::endl;
     }
+    else if(cmd[0].compare("start") == 0)
+    {
+        if(conn)
+        {
+            std::cerr << "Already connected" << std::endl;
+        }
+        else
+        {
+            conn = new libap2p::Network(cfg);
+            conn->Connect();
+
+            std::cout << "Started network" << std::endl;
+        }
+    }
+    else if(cmd[0].compare("stop") == 0)
+    {
+        if(!conn)
+        {
+            std::cerr << "Already stopped" << std::endl;
+        }
+        else
+        {
+            conn->Close();
+            delete conn;
+            conn = NULL;
+            std::cout << "Stopped network" << std::endl;
+        }
+    }
     else
     {
         std::cerr << "Command '" << cmd[0] << "' not recognized." << std::endl;
@@ -81,6 +111,7 @@ int main(int argc, char** argv)
 {
     // Initialize ap2p
     cfg = new libap2p::Configuration();
+    conn = NULL;
 
     char *buf;
 
