@@ -10,6 +10,12 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/split.hpp>
 
+#include <libap2p/network/network.hpp>
+#include <libap2p/configuration/configuration.hpp>
+
+libap2p::Configuration* cfg;
+libap2p::Network* conn;
+
 void show_help()
 {
     std::cout
@@ -17,6 +23,7 @@ void show_help()
         << "#### libap2p console version 0.0.0 GIT ####" << std::endl
         << "?\t\tShow this help" << std::endl
         << "help \t\tShow this help" << std::endl
+        << "listen [port]\tSet the listening port" << std::endl
         << "quit\t\tQuit the application" << std::endl
         << "exit\t\tSynonym to quit" << std::endl << std::endl;
 }
@@ -34,6 +41,19 @@ int parse(std::vector<std::string> cmd)
             cmd[0].compare("?") == 0)
     {
         show_help();
+    }
+    else if(cmd[0].compare("listen") == 0)
+    {
+        // Set listen port
+        if(cmd.size() != 2)
+        {
+            std::cerr << "Syntax:" << std::endl
+                << "listen [port]"
+                << std::endl;
+            return 1;
+        }
+        cfg->put("server.port", cmd[1]);
+        std::cout << "Listening on " << cmd[1] << std::endl;
     }
     else
     {
@@ -59,6 +79,9 @@ int parse(std::string cmd)
 
 int main(int argc, char** argv)
 {
+    // Initialize ap2p
+    cfg = new libap2p::Configuration();
+
     char *buf;
 
     rl_initialize();
