@@ -26,6 +26,7 @@ void show_help()
         << "listen [port]\tSet the listening port" << std::endl
         << "start\t\tStart the network" << std::endl
         << "stop\t\tStop the network" << std::endl
+        << "add [host] [port]\tAdd a connection via a client_node_connection" << std::endl
         << "quit\t\tQuit the application" << std::endl
         << "exit\t\tSynonym to quit" << std::endl << std::endl;
 }
@@ -84,6 +85,19 @@ int parse(std::vector<std::string> cmd)
             conn = NULL;
             std::cout << "Stopped network" << std::endl;
         }
+    }
+    else if(cmd[0].compare("add") == 0)
+    {
+        if(cmd.size() != 3)
+        {
+            std::cerr << "Syntax:" << std::endl <<
+                "add [host] [port]" << std::endl;
+            return 1;
+        }
+        // Add a client node connection to the network.
+        libap2p::NodeConnection* nc = new libap2p::ClientNodeConnection(cmd[1], cmd[2]);
+        libap2p::Node* n = new libap2p::Node(nc);
+        conn->AddNode(n);
     }
     else
     {
