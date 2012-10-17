@@ -22,6 +22,7 @@
 #include "libap2p/node/server_node_connection.hpp"
 #include "libap2p/node/client_node_connection.hpp"
 #include "libap2p/message/message.hpp"
+#include "libap2p/identity/identity.hpp"
 
 #include <stdlib.h>
 #include <iostream>
@@ -49,6 +50,7 @@ public:
     ~Node();
 
     void SendMessage(Message*);
+    std::string GetFingerprint();
 
     void Run();
     void _Run();
@@ -62,6 +64,8 @@ private:
     NodeConnection* _nodeConnection;
 
     boost::thread* _runner;
+
+    Identity _id;
 };
 }
 #endif

@@ -70,6 +70,21 @@ void Node::_Run()
             this->onDisconnected(this);
             break;
         }
+        // Received a message
+
+        switch(msg->GetMessageType())
+        {
+            case MESSAGE_HELLO:
+                try
+                {
+                    this->_id.LoadPublicKey(msg->GetData());
+                }
+                catch(...)
+                {
+                    // Node data was probably messed up. @TODO: Catch this stuff!
+                }
+                break;
+        }
         this->onReceiveMessage(msg, this /* sender */);
     }
 }
@@ -82,12 +97,15 @@ void Node::SendMessage(Message* msg)
     this->_nodeConnection->SendMessage(msg); // Well, this is simple...
 }
 
+std::string Node::GetFingerprint()
+{
+    return this->_id.GetFingerprint();
+}
+
 void Node::Connected()
 {
     this->Run();
-    Message* init_msg = new Message(MESSAGE_HELLO, ""); //@todo: add identification params (pubid)
-    this->SendMessage(init_msg);
-
+    
     this->onConnected(this /* Sender */ );
 }
 

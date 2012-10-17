@@ -18,6 +18,9 @@
 #include "libap2p/network/server.hpp"
 #include "libap2p/network/network.hpp"
 
+#include <string>
+#include <sstream>
+
 namespace libap2p
 {
 
@@ -71,21 +74,49 @@ void Network::AddNode(Node* _node)
     this->_nodes.push_back(_node);
 }
 void Network::NodeConnected(Node* nd)
-{
-    
+{    
+    std::stringstream id_params;
+    id_params << this->_localIdentity->GetPublicKey();
+    Message* init_msg = new Message(MESSAGE_HELLO, id_params.str());
+    init_msg->Sign(this->_localIdentity);
+    nd->SendMessage(init_msg);
 }
 void Network::ReceivedMessage(Message* msg, Node* sender)
 {
     switch (msg->GetMessageType())
     {
         case MESSAGE_HELLO:
-            std::cout << "Received a hello message" << std::endl;
+            {
+                // Ask for nodes
+                Message* discovery_msg = new Message(MESSAGE_NODES_REQUEST, "");
+                discovery_msg->Sign(this->_localIdentity);
+                sender->SendMessage(discovery_msg);
+                break;
+            }
+        case MESSAGE_NODES_REQUEST:
+            {
+                // Make node list.
+                std::stringstream nodes;
+                for(std::vector<Node*>::iterator nit = this->_nodes.begin();
+                        nit != this->_nodes.end();
+                        nit++)
+                {
+                    if((*nit) != sender) // Don't return the sender. Would be stupid, right?
+                    {
+                        nodes << (*nit)->GetFingerprint() << std::endl;
+                    }
+                }
+                std::cout << nodes.str();
+                break;
+            }
+        default:
+            this->onReceiveMessage(msg, sender);
             break;
     }
-    this->onReceiveMessage(msg, sender);
 }
 void Network::ServerNodeConnected(Node* nd)
 {
+    this->NodeConnected(nd);
     this->onNodeConnect(nd);
 }
 }
