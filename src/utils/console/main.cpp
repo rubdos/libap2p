@@ -99,6 +99,7 @@ int parse(std::vector<std::string> cmd)
         {
             std::cerr << "Syntax:" << std::endl
                 << "add [ip/host] [port]" << std::endl;
+            return 1;
         }
         libap2p::Node* n;
         libap2p::ClientNodeConnection* cnc;
