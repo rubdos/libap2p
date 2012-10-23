@@ -16,6 +16,12 @@
 libap2p::Configuration* cfg;
 libap2p::Network* conn;
 
+void _receiveMessage(libap2p::Message* m, libap2p::Node* n)
+{
+    std::cout << "Received message (type = " << m->GetMessageType() << ") "
+        << "from" << std::endl << "\t"
+        << n->GetFingerprint() << std::endl;
+}
 void show_help()
 {
     std::cout
@@ -68,6 +74,8 @@ int parse(std::vector<std::string> cmd)
             conn = new libap2p::Network(cfg);
             conn->Connect();
 
+            conn->onReceiveMessage.connect(_receiveMessage);
+
             std::cout << "Started network" << std::endl;
         }
     }
@@ -84,6 +92,21 @@ int parse(std::vector<std::string> cmd)
             conn = NULL;
             std::cout << "Stopped network" << std::endl;
         }
+    }
+    else if(cmd[0].compare("add") == 0)
+    {
+        if(cmd.size() != 3)
+        {
+            std::cerr << "Syntax:" << std::endl
+                << "add [ip/host] [port]" << std::endl;
+        }
+        libap2p::Node* n;
+        libap2p::ClientNodeConnection* cnc;
+        cnc = new libap2p::ClientNodeConnection(cmd[1], cmd[2]);
+        n = new libap2p::Node(cnc);
+        cnc->Connect();
+        conn->AddNode(n);
+        std::cout << "Added node" << std::endl;
     }
     else
     {
