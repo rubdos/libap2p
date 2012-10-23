@@ -109,6 +109,10 @@ int parse(std::vector<std::string> cmd)
         conn->AddNode(n);
         std::cout << "Added node" << std::endl;
     }
+    else if (cmd[0].compare("") == 0)
+    {
+        return 1; // No command given; just return.
+    }
     else
     {
         std::cerr << "Command '" << cmd[0] << "' not recognized." << std::endl;
