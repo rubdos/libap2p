@@ -51,6 +51,7 @@ endif(Boost_FOUND)
 
 find_package (Threads REQUIRED)
 find_package (CryptoPP REQUIRED)
+find_package (Readline) #not required
 
 include_directories ("${PROJECT_SOURCE_DIR}/include")
 include_directories ("${CRYPTOPP_INCLUDE_DIRS}")

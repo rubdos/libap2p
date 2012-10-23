@@ -1,0 +1,9 @@
+set(CONSOLE_SRC
+    main.cpp
+)
+add_executable(ap2p-console
+        ${CONSOLE_SRC})
+target_link_libraries(ap2p-console
+    ap2p
+    ${READLINE_LIBRARY}
+)
