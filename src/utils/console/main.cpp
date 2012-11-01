@@ -32,6 +32,7 @@ void show_help()
         << "listen [port]\tSet the listening port" << std::endl
         << "start\t\tStart the network" << std::endl
         << "stop\t\tStop the network" << std::endl
+        << "add [host] [port]\tAdd a connection via a client_node_connection" << std::endl
         << "quit\t\tQuit the application" << std::endl
         << "exit\t\tSynonym to quit" << std::endl << std::endl;
 }
