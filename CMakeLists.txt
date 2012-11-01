@@ -61,7 +61,8 @@ add_subdirectory(tests)
 # INSTALL
 
 foreach(file ${INCLUDE_FILES})
-    install(FILES ${file} DESTINATION ${file})
+    string(REGEX MATCH "(.*)[/\\]" DIR ${file})
+    install(FILES ${file} DESTINATION ${DIR})
 endforeach()
 
 IF( CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64" )
