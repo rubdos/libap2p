@@ -19,14 +19,16 @@
 
 namespace libap2p
 {
-
-/**
- * @brief Constructor.
- *
- * @param std::string as local filename for dht_entry to load.
- */
-DHTEntry::DHTEntry(std::string filename)
+DHTEntry::DHTEntry(std::string name, 
+        std::string contents, 
+        TagList tl, 
+        unsigned long ttl,
+        Identity* owner)
 {
+    this->name = name;
+    this->data = contents;
+    this->tags = tl;
+    this->timeToLive = ttl;
 }
 
 }

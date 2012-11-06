@@ -21,16 +21,33 @@
 #include <string>
 #include <vector>
 
+#include "libap2p/identity/identity.hpp"
+
 namespace libap2p
 {
 typedef std::vector<std::string> TagList;
 class DHTEntry
 {
 public:
-    DHTEntry(std::string);
+    /** Creates a new DHTEntry object in a network.
+     *  @param name         The name of the DHTEntry
+     *  @param contents     The contents of the DHTEntry
+     *  @param taglist      A list with Tags associated with the object
+     *  @param ttl          The time to live for the object: give the unix timestamp to die.
+     *  @param owner        The owner/creator of the DHTEntry.
+     */
+    DHTEntry(std::string name,
+            std::string contents,
+            TagList taglist,
+            unsigned long ttl,
+            Identity* owner);
 
 
     TagList tags;
+    std::string name;
+    std::string data;
+    unsigned long timeToLive;
+    std::string signature;
 };
 }
 
