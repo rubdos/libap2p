@@ -109,6 +109,36 @@ void Network::ReceivedMessage(Message* msg, Node* sender)
                 std::cout << nodes.str();
                 break;
             }
+        case MESSAGE_DHT_SEARCH:
+            {
+                // Construct a DHT_SEARCH_RESULT
+                break;
+            }
+        case MESSAGE_DHT_INFO:
+            {
+                // Construct a DHT_INFO_RESULT
+                break;
+            }
+        case MESSAGE_DHT_FETCH:
+            {
+                // Construct a DHT_PUSH
+                break;
+            }
+        case MESSAGE_DHT_SEARCH_RESULT:
+            {
+                // Received a list of DHTEntry objects.
+                break;
+            }
+        case MESSAGE_DHT_INFO_RESULT:
+            {
+                // Received a DHT info request
+                break;
+            }
+        case MESSAGE_DHT_PUSH:
+            {
+                // Received a DHT object
+                break;
+            }
         default:
             this->onReceiveMessage(msg, sender);
             break;
