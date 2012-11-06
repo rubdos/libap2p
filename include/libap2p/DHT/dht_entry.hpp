@@ -19,13 +19,18 @@
 #define CLASS_DHT_ENTRY
 
 #include <string>
+#include <vector>
 
 namespace libap2p
 {
+typedef std::vector<std::string> TagList;
 class DHTEntry
 {
 public:
     DHTEntry(std::string);
+
+
+    TagList tags;
 };
 }
 
