@@ -21,10 +21,10 @@ namespace libap2p
 {
 
 /**
-* @brief Constructor.
-*
-* @param std::string as local filename for dht_entry to load.
-*/
+ * @brief Constructor.
+ *
+ * @param std::string as local filename for dht_entry to load.
+ */
 DHTEntry::DHTEntry(std::string filename)
 {
 }
