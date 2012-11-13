@@ -82,6 +82,10 @@ void Network::AddNode(Node* _node)
     this->onNodeAdded(_node);
     this->_nodes.push_back(_node);
 }
+NodeList Network::GetNodes()
+{
+    return this->_nodes;
+}
 void Network::NodeConnected(Node* nd)
 {    
     std::stringstream id_params;
