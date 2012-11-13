@@ -119,7 +119,7 @@ void Network::ReceivedMessage(Message* msg, Node* sender)
                         nodes << (*nit)->GetFingerprint() << std::endl;
                     }
                 }
-                std::cout << nodes.str();
+                // Now send the message
                 break;
             }
         default:
