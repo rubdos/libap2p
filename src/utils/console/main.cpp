@@ -15,6 +15,7 @@
 
 libap2p::Configuration* cfg;
 libap2p::Network* conn;
+libap2p::Identity* id;
 
 void _receiveMessage(libap2p::Message* m, libap2p::Node* n)
 {
@@ -30,6 +31,7 @@ void show_help()
         << "?\t\tShow this help" << std::endl
         << "help \t\tShow this help" << std::endl
         << "listen [port]\tSet the listening port" << std::endl
+        << "set-id [ID-name]\tSet the id corresponding to this name" << std::endl
         << "start\t\tStart the network" << std::endl
         << "stop\t\tStop the network" << std::endl
         << "quit\t\tQuit the application" << std::endl
@@ -71,7 +73,7 @@ int parse(std::vector<std::string> cmd)
         }
         else
         {
-            conn = new libap2p::Network(cfg);
+            conn = new libap2p::Network(cfg, id);
             conn->Connect();
 
             conn->onReceiveMessage.connect(_receiveMessage);
@@ -109,6 +111,16 @@ int parse(std::vector<std::string> cmd)
         conn->AddNode(n);
         std::cout << "Added node" << std::endl;
     }
+    else if (cmd[0].compare("set-id") == 0)
+    {
+        if(cmd.size() != 2)
+        {
+            std::cerr << "Syntax:" << std::endl
+                << "set-id [id-name]" << std::endl;
+            return 1;
+        }
+        id->LoadKey(cmd[1]);
+    }
     else if (cmd[0].compare("") == 0)
     {
         return 1; // No command given; just return.
@@ -140,6 +152,8 @@ int main(int argc, char** argv)
     // Initialize ap2p
     cfg = new libap2p::Configuration();
     conn = NULL;
+    id = new libap2p::Identity();
+    id->LoadLocal();
 
     char *buf;
 

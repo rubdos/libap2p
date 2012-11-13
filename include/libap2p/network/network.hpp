@@ -39,6 +39,7 @@ class Network
 {
 public:
     Network(Configuration*);
+    Network(Configuration*, Identity* id);
     void Connect();
     void Close();
 

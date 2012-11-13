@@ -34,6 +34,15 @@ Network::Network(Configuration* cfg)
     this->_localIdentity = new Identity();
     this->_localIdentity->LoadLocal();
 }
+/** Constructor. Initializes network structure.
+ *
+ */
+Network::Network(Configuration* cfg, Identity* id)
+{
+    this->_cfg = cfg;
+    this->_connectionStatus = DISCONNECTED;
+    this->_localIdentity = id;
+}
 /** Called to connect to the ap2p network. When called, ap2p connects to other
   * nodes specified with add_node() and fetches more from them. It will async
   * build up connections. The progress can be followed in network::status.
