@@ -31,13 +31,15 @@ public:
     Identity();
     /** Loads a locally stored identity.
      *  Will load the identity stored on the default place on the harddisk.
-     *  If no key is found on the default location, a new one is generated. See Identity::GenerateLocal()
+     *  If no key is found on the default location, a new one is generated.
+     *  cfr. Identity::GenerateLocal(std::string id)
      */
     void LoadLocal();
-    /** Generates a local RSA key.
-     *  Generates a local RSA 3072 key at default location: $HOME/.libap2p/default_key.
+
+    /** Loads a key by its name.
+     *
      */
-    void GenerateLocal();
+    void LoadKey(std::string);
     /** Generates a local RSA key.
      *  Saves the key at specified filename.
      */
@@ -79,7 +81,10 @@ private:
      *
      */
     std::string _GetDefaultKeyFilename();
-    void _LoadLocal();
+    /** Returns the folder with keys stored.
+     *
+     */
+    std::string _GetKeyFolder();
 
     CryptoPP::RSA::PrivateKey* _privateKey;
     CryptoPP::RSA::PublicKey*  _publicKey;
