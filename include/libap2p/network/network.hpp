@@ -71,7 +71,7 @@ private:
 
     libap2p::Server* _server;
 
-    std::vector<Node*> _nodes;
+    NodeList _nodes;
     Identity* _localIdentity;
     Configuration* _cfg;
     boost::thread* _runner;

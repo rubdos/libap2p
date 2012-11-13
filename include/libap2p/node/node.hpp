@@ -67,5 +67,6 @@ private:
 
     Identity _id;
 };
+typedef std::vector<Node*> NodeList;
 }
 #endif

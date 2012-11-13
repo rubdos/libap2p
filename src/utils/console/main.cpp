@@ -122,6 +122,12 @@ int parse(std::vector<std::string> cmd)
         }
         id->LoadKey(cmd[1]);
     }
+    else if (cmd[0].compare("list") == 0)
+    {
+        // List all connected nodes.
+
+        return 1;
+    }
     else if (cmd[0].compare("") == 0)
     {
         return 1; // No command given; just return.
