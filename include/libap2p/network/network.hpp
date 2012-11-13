@@ -44,10 +44,10 @@ public:
     void Close();
 
     void AddNode(Node*);
-/** Used to check the current connection status. Can be libap2p{connection_status
-  * {CONNECTED, CONNECTING, DISCONNECTED or ERROR}};
-  *
-  */
+    /** Used to check the current connection status. Can be libap2p{connection_status
+     * {CONNECTED, CONNECTING, DISCONNECTED or ERROR}};
+     *
+     */
     connection_status Status() const {return this->_connectionStatus;};
 
     // Signals
@@ -61,6 +61,10 @@ public:
     boost::signal<void (Node*)> onNodeConnect;
 
     boost::signal<void (Message*, Node*)> onReceiveMessage;
+
+    /** Returns the nodes currently connected to.
+     */
+    NodeList GetNodes();
 
     void ReceivedMessage(Message*, Node*);
     void ServerNodeConnected(Node *);

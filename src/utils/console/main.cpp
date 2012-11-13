@@ -12,10 +12,13 @@
 
 #include <libap2p/network/network.hpp>
 #include <libap2p/configuration/configuration.hpp>
+#include <libap2p/node/node.hpp>
 
 libap2p::Configuration* cfg;
 libap2p::Network* conn;
 libap2p::Identity* id;
+
+using libap2p::NodeList;
 
 void _receiveMessage(libap2p::Message* m, libap2p::Node* n)
 {
@@ -32,6 +35,7 @@ void show_help()
         << "help \t\tShow this help" << std::endl
         << "listen [port]\tSet the listening port" << std::endl
         << "set-id [ID-name]\tSet the id corresponding to this name" << std::endl
+        << "list\tList connected nodes" << std::endl
         << "start\t\tStart the network" << std::endl
         << "stop\t\tStop the network" << std::endl
         << "add [host] [port]\tAdd a connection via a client_node_connection" << std::endl
@@ -124,9 +128,25 @@ int parse(std::vector<std::string> cmd)
     }
     else if (cmd[0].compare("list") == 0)
     {
-        // List all connected nodes.
-
-        return 1;
+        if(conn != NULL)
+        {
+            // List all connected nodes.
+            NodeList nl = conn->GetNodes();
+            std::cout << "Connected nodes:" << std::endl;
+            for(NodeList::iterator nit = nl.begin();
+                    nit != nl.end();
+                    ++nit)
+            {
+                libap2p::Node* n = *nit;
+                std::cout << n->GetFingerprint() << std::endl;
+            }
+            return 1;
+        }
+        else
+        {
+            std::cerr << "Not connected" << std::endl;
+            return 1;
+        }
     }
     else if (cmd[0].compare("") == 0)
     {
