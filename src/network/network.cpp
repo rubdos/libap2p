@@ -116,12 +116,16 @@ void Network::ReceivedMessage(Message* msg, Node* sender)
                 {
                     if((*nit) != sender) // Don't return the sender. Would be stupid, right?
                     {
-                        nodes << (*nit)->GetFingerprint() << std::endl;
+                        nodes << (*nit)->GetConnectionString() << " " << (*nit)->GetFingerprint() << std::endl;
                     }
                 }
                 // Now send the message
+                Message* nd_resp = new Message(MESSAGE_NODES_RESPONSE, nodes.str());
+                nd_resp->Sign(this->_localIdentity);
+                sender->SendMessage(nd_resp);
                 break;
             }
+        case MESSAGE_NODES_RESPONSE:
         default:
             this->onReceiveMessage(msg, sender);
             break;

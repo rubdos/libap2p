@@ -102,6 +102,11 @@ std::string Node::GetFingerprint()
     return this->_id.GetFingerprint();
 }
 
+std::string Node::GetConnectionString()
+{
+    return this->_nodeConnection->GetConnectionString();
+}
+
 void Node::Connected()
 {
     this->Run();

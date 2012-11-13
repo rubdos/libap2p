@@ -15,35 +15,12 @@
 * 
 */
 
-#ifndef CLASS_NODE_CONNECTION
-#define CLASS_NODE_CONNECTION
-
-#include "libap2p/message/message.hpp"
-
-#include <boost/signal.hpp>
+#include "libap2p/node/node_connection.hpp"
 
 namespace libap2p
 {
-/**  Abstract class providing the connection with a node. Implemented
-  *  by server_node_connection or client_node_connection.
-  */
-class NodeConnection
-{
-public:
-    /** Send a message object. 
-	*/
-	virtual void SendMessage(Message * ) = 0;
-    virtual Message* FetchMessage() = 0;
-
-    boost::signal<void ()> onConnected;
-
-    /** Returns the connectionstring in host:port format.
-     */
-    std::string GetConnectionString();
-
-    bool connected;
-protected:
-    std::string _connectionString;
-};
+    std::string NodeConnection::GetConnectionString()
+    {
+        return this->_connectionString;
+    }
 }
-#endif

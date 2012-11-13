@@ -50,6 +50,10 @@ public:
     ~Node();
 
     void SendMessage(Message*);
+    /** Returns the connectionstring in host:port format.
+     *
+     */
+    std::string GetConnectionString();
     std::string GetFingerprint();
 
     void Run();
