@@ -21,6 +21,9 @@
 #include <string>
 #include <sstream>
 
+#include <boost/algorithm/string/split.hpp>
+#include <boost/algorithm/string.hpp>
+
 namespace libap2p
 {
 
@@ -126,6 +129,16 @@ void Network::ReceivedMessage(Message* msg, Node* sender)
                 break;
             }
         case MESSAGE_NODES_RESPONSE:
+            {
+                // Received a list of nodes. Try to connect to each one of them.
+                std::string data = msg->GetData();
+                std::vector<std::string> nodes_response;
+                boost::algorithm::split(nodes_response,
+                        data,
+                        boost::algorithm::is_any_of("\n\r"),
+                        boost::algorithm::token_compress_on);
+                break;
+            }
         default:
             this->onReceiveMessage(msg, sender);
             break;
