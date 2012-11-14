@@ -25,12 +25,15 @@ API documentation can be found here:
 CAUTION: not usable yet!
 
 ## Requirements:
+
 * cryptopp
 * boost libraries (iostreams, filesystem, system, thread, signals)
 * cmake
 * make compatible
 * g++ compiler or compatible (mingw...)
+
 ## Compiling:
+
 1. $> mkdir build && cd build
 2. $> cmake ..
 3. $> make #(or make -j[threadcount])
