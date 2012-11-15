@@ -26,6 +26,7 @@
 
 #include <stdlib.h>
 #include <iostream>
+#include <queue>
 
 #include <boost/thread.hpp>
 #include <boost/bind.hpp>
@@ -70,6 +71,8 @@ private:
     boost::thread* _runner;
 
     Identity _id;
+    std::queue<Message*> _sendQueue;
+    bool _queueRunning;
 };
 typedef std::vector<Node*> NodeList;
 }
