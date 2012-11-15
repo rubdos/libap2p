@@ -66,13 +66,20 @@ Message::Message(std::string xml_str)
 Message::Message(boost::asio::streambuf *message_raw, Header* hdr)
 {
     std::stringstream xml;
-
-    boost::iostreams::filtering_streambuf<boost::iostreams::input> in;
-    in.push(boost::iostreams::gzip_decompressor());
-    in.push(*message_raw);
-    boost::iostreams::copy(in, xml);
     
-    this->_Init(xml.str());
+    try
+    {
+        boost::iostreams::filtering_streambuf<boost::iostreams::input> in;
+        in.push(boost::iostreams::gzip_decompressor());
+        in.push(*message_raw);
+        boost::iostreams::copy(in, xml);
+        
+        this->_Init(xml.str());
+    }
+    catch( boost::iostreams::gzip_error& e)
+    {
+        std::cerr << "GZIP error: " << e.error()  << "message length: " << hdr->messageLength << std::endl;
+    }
 }
 
 /** Initializes from xml data.

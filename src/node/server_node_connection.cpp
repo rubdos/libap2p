@@ -76,9 +76,19 @@ void ServerNodeConnection::SendMessage(Message* msg)
             boost::asio::buffer(&l_hdr, 8), 
             boost::asio::transfer_all(), ignored_error); // Send message header
     
+    if(ignored_error)
+    {
+        std::cout << "Error sending header" << std::endl;
+    }
+
     boost::asio::write(
             *(this->_socket),
             msg->GetEncoded()->data(), 
             boost::asio::transfer_all(), ignored_error); // Send message itself
+
+    if(ignored_error)
+    {
+        std::cout << "Error sending message" << std::endl;
+    }
 }
 }
