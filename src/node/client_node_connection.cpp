@@ -42,6 +42,8 @@ ClientNodeConnection::ClientNodeConnection(std::string ip_adress, std::string po
     // Set the iterator by solving the ip_query
     this->_endpointIterator = resolver.resolve(query);
     // Connect
+
+    this->_connectionString = ip_adress + ":" + port;
 }
 
 void ClientNodeConnection::Connect()

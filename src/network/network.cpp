@@ -21,6 +21,9 @@
 #include <string>
 #include <sstream>
 
+#include <boost/algorithm/string/split.hpp>
+#include <boost/algorithm/string.hpp>
+
 namespace libap2p
 {
 
@@ -116,10 +119,89 @@ void Network::ReceivedMessage(Message* msg, Node* sender)
                 {
                     if((*nit) != sender) // Don't return the sender. Would be stupid, right?
                     {
-                        nodes << (*nit)->GetFingerprint() << std::endl;
+                        nodes << (*nit)->GetConnectionString() << " " << (*nit)->GetFingerprint() << std::endl;
                     }
                 }
-                std::cout << nodes.str();
+                // Now send the message
+                Message* nd_resp = new Message(MESSAGE_NODES_RESPONSE, nodes.str());
+                nd_resp->Sign(this->_localIdentity);
+                sender->SendMessage(nd_resp);
+                break;
+            }
+        case MESSAGE_NODES_RESPONSE:
+            {
+                // Received a list of nodes. Try to connect to each one of them.
+                std::string data = msg->GetData();
+                typedef std::vector<std::string> splitvec_t;
+                splitvec_t nodes_r;
+                boost::algorithm::split(nodes_r,
+                        data,
+                        boost::algorithm::is_any_of("\n\r"),
+                        boost::algorithm::token_compress_on);
+                
+                for(splitvec_t::iterator n_it = nodes_r.begin();
+                        n_it != nodes_r.end();
+                        ++n_it)
+                {
+                    /*
+                       Fields are declared as follows:
+                       0 -> ip:host
+                       1 -> sha256sum of the public key
+                       And splitted by \t or a space character
+                       */
+                    splitvec_t fields;
+                    boost::algorithm::split(fields,
+                            *n_it,
+                            boost::algorithm::is_any_of(" \t"),
+                            boost::algorithm::token_compress_on);
+                    if(fields.size() >= 2)
+                    {
+                        // We have a legit field
+                        std::string host_port   = fields[0];
+                        std::string sha256      = fields[1]; //TODO Check this sum?
+
+                        // Split the host from the port and add a node to the network.
+                        splitvec_t host_port_arr;
+                        boost::algorithm::split(host_port_arr,
+                                host_port,
+                                boost::algorithm::is_any_of(":"),
+                                boost::algorithm::token_compress_on);
+
+                        if(host_port_arr.size() != 2)
+                        {
+                            //TODO Throw an error?
+                        }
+                        else
+                        {
+                            // First check if we don't already have this node.
+                            bool found = false;
+                            for(NodeList::iterator known = this->_nodes.begin();
+                                    known != this->_nodes.end();
+                                    ++known)
+                            {
+                                if((*known)->GetFingerprint().compare(sha256) == 0)
+                                {
+                                    found = true;
+                                }
+                            }
+                            if(!found)
+                            {
+                                // We found a node in our network! Let's add it!
+                                Node* n;
+                                ClientNodeConnection* cnc;
+                                cnc = new ClientNodeConnection(host_port_arr[0], host_port_arr[1]);
+                                std::cout << "host:" << host_port_arr[0] << " port:" << host_port_arr[1];
+                                n = new Node(cnc);
+                                cnc->Connect();
+                                this->AddNode(n);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        //@TODO Throw an error!!!
+                    }
+                }
                 break;
             }
         default:
