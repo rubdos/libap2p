@@ -26,6 +26,7 @@
 
 #include <stdlib.h>
 #include <iostream>
+#include <queue>
 
 #include <boost/thread.hpp>
 #include <boost/bind.hpp>
@@ -50,6 +51,10 @@ public:
     ~Node();
 
     void SendMessage(Message*);
+    /** Returns the connectionstring in host:port format.
+     *
+     */
+    std::string GetConnectionString();
     std::string GetFingerprint();
 
     void Run();
@@ -66,6 +71,8 @@ private:
     boost::thread* _runner;
 
     Identity _id;
+    std::queue<Message*> _sendQueue;
+    bool _queueRunning;
 };
 typedef std::vector<Node*> NodeList;
 }

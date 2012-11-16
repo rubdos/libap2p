@@ -94,12 +94,28 @@ void Node::_Run()
  */
 void Node::SendMessage(Message* msg)
 {
-    this->_nodeConnection->SendMessage(msg); // Well, this is simple...
+    this->_sendQueue.push(msg);
+    
+    if(! this->_queueRunning)
+    {
+        this->_queueRunning = true;
+        while(!this->_sendQueue.empty())
+        {
+            this->_nodeConnection->SendMessage(this->_sendQueue.front()); // Well, this is simple...
+            this->_sendQueue.pop();
+        }
+        this->_queueRunning = false;
+    }
 }
 
 std::string Node::GetFingerprint()
 {
     return this->_id.GetFingerprint();
+}
+
+std::string Node::GetConnectionString()
+{
+    return this->_nodeConnection->GetConnectionString();
 }
 
 void Node::Connected()
