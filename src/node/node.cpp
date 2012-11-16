@@ -65,7 +65,6 @@ void Node::_Run()
         Message* msg = this->_nodeConnection->FetchMessage();
         if(msg == NULL)
         {
-            std::cerr << "fetch_message failed" << std::endl;
             // Disconnect node for now. @TODO: Try a reconnection.
             this->onDisconnected(this);
             break;
