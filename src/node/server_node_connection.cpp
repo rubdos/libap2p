@@ -38,9 +38,20 @@ ServerNodeConnection::ServerNodeConnection(boost::asio::ip::tcp::socket* sock)
 
 Message* ServerNodeConnection::FetchMessage()
 {
+    // Prepare error catching
+    boost::system::error_code error;
+
     // Read header to determine message length. Header is 8 bytes long.
     int64_t *hdr_int = new int64_t();
-    boost::asio::read(*(this->_socket), boost::asio::buffer(hdr_int, 8), boost::asio::transfer_at_least(8));
+    boost::asio::read(*(this->_socket), 
+            boost::asio::buffer(hdr_int, 8), 
+            boost::asio::transfer_at_least(8),
+            error);
+
+    if(error)
+    {
+        return NULL;
+    }
     
     Header *hdr = new Header(*hdr_int);
     
@@ -50,8 +61,13 @@ Message* ServerNodeConnection::FetchMessage()
     size_t bytes = boost::asio::read(
             *(this->_socket), 
             message_raw, 
-            boost::asio::transfer_at_least(hdr->messageLength)
-            );
+            boost::asio::transfer_at_least(hdr->messageLength),
+            error);
+
+    if(error)
+    {
+        return NULL;
+    }
     
     // Make up message object and return
     return new Message(&message_raw, hdr);
