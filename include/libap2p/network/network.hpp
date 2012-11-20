@@ -66,12 +66,12 @@ public:
      */
     NodeList GetNodes();
 
-    void ReceivedMessage(Message*, Node*);
-    void ServerNodeConnected(Node *);
-    void NodeConnected(Node *);
 
 private:
     void _OnNodeDisconnectHandler(Node* sender);
+    void _OnNodeReceivedMessageHandler(Message*, Node*);
+    void _OnServerNodeConnectedHandler(Node *);
+    void _OnNodeConnectedHandler(Node *);
 
     connection_status _connectionStatus;
 

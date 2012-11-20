@@ -57,7 +57,13 @@ void Network::Connect()
     this->_connectionStatus = CONNECTING;
     // Construct the libap2p::server object
     this->_server = new Server(this, this->_cfg);
-    this->_server->onNodeConnect.connect(boost::bind(&Network::ServerNodeConnected, this, _1));
+    this->_server->onNodeConnect.connect(
+            boost::bind(
+                &Network::_OnServerNodeConnectedHandler, 
+                this, 
+                _1)
+            );
+
     if(this->_nodes.size() == 0)
     {
         // No nodes added, just start the server. Networks can be joined togheter later on.
@@ -80,8 +86,19 @@ void Network::Close()
  */
 void Network::AddNode(Node* _node)
 {
-    _node->onReceiveMessage.connect(boost::bind(&Network::ReceivedMessage, this, _1, _2));
-    _node->onConnected.connect(boost::bind(&Network::NodeConnected, this, _1));
+    _node->onReceiveMessage.connect(
+            boost::bind(
+                &Network::_OnNodeReceivedMessageHandler, 
+                this, 
+                _1, 
+                _2)
+            );
+    _node->onConnected.connect(
+            boost::bind(
+                &Network::_OnNodeConnectedHandler, 
+                this, 
+                _1)
+            );
     _node->onDisconnected.connect(
             boost::bind(
                 &Network::_OnNodeDisconnectHandler, 
@@ -95,7 +112,7 @@ NodeList Network::GetNodes()
 {
     return this->_nodes;
 }
-void Network::NodeConnected(Node* nd)
+void Network::_OnNodeConnectedHandler(Node* nd)
 {    
     std::stringstream id_params;
     id_params << this->_localIdentity->GetPublicKey();
@@ -103,7 +120,7 @@ void Network::NodeConnected(Node* nd)
     init_msg->Sign(this->_localIdentity);
     nd->SendMessage(init_msg);
 }
-void Network::ReceivedMessage(Message* msg, Node* sender)
+void Network::_OnNodeReceivedMessageHandler(Message* msg, Node* sender)
 {
     switch (msg->GetMessageType())
     {
@@ -229,9 +246,9 @@ void Network::_OnNodeDisconnectHandler(Node* sender)
     }
     delete sender;
 }
-void Network::ServerNodeConnected(Node* nd)
+void Network::_OnServerNodeConnectedHandler(Node* nd)
 {
-    this->NodeConnected(nd);
+    this->_OnNodeConnectedHandler(nd);
     this->onNodeConnect(nd);
 }
 }
