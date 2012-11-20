@@ -23,6 +23,8 @@
 
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string.hpp>
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/xml_parser.hpp>
 
 namespace libap2p
 {
@@ -126,7 +128,28 @@ void Network::_OnNodeReceivedMessageHandler(Message* msg, Node* sender)
     {
         case MESSAGE_HELLO:
             {
-                // Ask for nodes
+                // Ask for more info on the node
+                Message* info_req = new Message(MESSAGE_NODE_INFO_REQUEST, "");
+                info_req->Sign(this->_localIdentity);
+                sender->SendMessage(info_req);
+                break;
+            }
+        case MESSAGE_NODE_INFO_REQUEST:
+            {
+                boost::property_tree::ptree pt; // Where to store the node-info
+                std::stringstream response; 
+
+                pt.put("connectionstring","wip");
+                write_xml(response, pt);
+
+                Message* info_ans = new Message(MESSAGE_NODE_INFO_RESPONSE, response.str());
+                info_ans->Sign(this->_localIdentity);
+                sender->SendMessage(info_ans);
+                break;
+            }
+        case MESSAGE_NODE_INFO_RESPONSE:
+            {
+                // Ask for other nodes
                 Message* discovery_msg = new Message(MESSAGE_NODES_REQUEST, "");
                 discovery_msg->Sign(this->_localIdentity);
                 sender->SendMessage(discovery_msg);

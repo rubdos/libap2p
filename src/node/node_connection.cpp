@@ -23,4 +23,8 @@ namespace libap2p
     {
         return this->_connectionString;
     }
+    void NodeConnection::SetConnectionString(std::string cs)
+    {
+        this->_connectionString = cs;
+    }
 }

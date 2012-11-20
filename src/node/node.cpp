@@ -74,15 +74,34 @@ void Node::_Run()
         switch(msg->GetMessageType())
         {
             case MESSAGE_HELLO:
-                try
                 {
-                    this->_id.LoadPublicKey(msg->GetData());
+                    try
+                    {
+                        this->_id.LoadPublicKey(msg->GetData());
+                    }
+                    catch(...)
+                    {
+                        // Node data was probably messed up. @TODO: Catch this stuff!
+                    }
+                    break;
                 }
-                catch(...)
+            case MESSAGE_NODE_INFO_RESPONSE:
                 {
-                    // Node data was probably messed up. @TODO: Catch this stuff!
+                    boost::property_tree::ptree pt;
+                    std::stringstream in;
+
+                    in << msg->GetData();
+                    read_xml(in, pt);
+
+                    std::string cs = pt.get<std::string>("connectionstring");
+
+                    if(cs.compare("wip") != 0)
+                    {
+                        this->_nodeConnection->SetConnectionString(cs);
+                    }
+
+                    break;
                 }
-                break;
         }
         this->onReceiveMessage(msg, this /* sender */);
     }

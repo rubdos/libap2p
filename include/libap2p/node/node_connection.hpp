@@ -40,6 +40,9 @@ public:
     /** Returns the connectionstring in host:port format.
      */
     std::string GetConnectionString();
+    /** Sets the connectionstring in host:port format.
+     */
+    void SetConnectionString(std::string cs);
 
     bool connected;
 protected:
