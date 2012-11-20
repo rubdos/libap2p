@@ -190,7 +190,6 @@ void Network::ReceivedMessage(Message* msg, Node* sender)
                                 Node* n;
                                 ClientNodeConnection* cnc;
                                 cnc = new ClientNodeConnection(host_port_arr[0], host_port_arr[1]);
-                                std::cout << "host:" << host_port_arr[0] << " port:" << host_port_arr[1];
                                 n = new Node(cnc);
                                 cnc->Connect();
                                 this->AddNode(n);
