@@ -71,6 +71,8 @@ public:
     void NodeConnected(Node *);
 
 private:
+    void _OnNodeDisconnectHandler(Node* sender);
+
     connection_status _connectionStatus;
 
     libap2p::Server* _server;

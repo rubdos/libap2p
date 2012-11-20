@@ -82,6 +82,12 @@ void Network::AddNode(Node* _node)
 {
     _node->onReceiveMessage.connect(boost::bind(&Network::ReceivedMessage, this, _1, _2));
     _node->onConnected.connect(boost::bind(&Network::NodeConnected, this, _1));
+    _node->onDisconnected.connect(
+            boost::bind(
+                &Network::_OnNodeDisconnectHandler, 
+                this, 
+                _1)
+            );
     this->onNodeAdded(_node);
     this->_nodes.push_back(_node);
 }
@@ -207,6 +213,21 @@ void Network::ReceivedMessage(Message* msg, Node* sender)
             this->onReceiveMessage(msg, sender);
             break;
     }
+}
+void Network::_OnNodeDisconnectHandler(Node* sender)
+{
+    // delete and remove the node
+    for(NodeList::iterator nit = this->_nodes.begin();
+            nit != this->_nodes.end();
+            nit++)
+    {
+        if(*nit == sender)
+        {
+            this->_nodes.erase(nit);
+            break;
+        }
+    }
+    delete sender;
 }
 void Network::ServerNodeConnected(Node* nd)
 {
