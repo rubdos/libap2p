@@ -108,6 +108,11 @@ int parse(std::vector<std::string> cmd)
                 << "add [ip/host] [port]" << std::endl;
             return 1;
         }
+        if(!conn)
+        {
+            std::cerr << "Not connected" << std::endl;
+            return 1;
+        }
         libap2p::Node* n;
         libap2p::ClientNodeConnection* cnc;
         cnc = new libap2p::ClientNodeConnection(cmd[1], cmd[2]);
