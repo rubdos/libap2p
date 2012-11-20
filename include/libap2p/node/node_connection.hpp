@@ -40,9 +40,14 @@ public:
     /** Returns the connectionstring in host:port format.
      */
     std::string GetConnectionString();
+
     /** Sets the connectionstring in host:port format.
      */
     void SetConnectionString(std::string cs);
+
+    /** Returns the ip connected to.
+     */
+    virtual std::string GetIp() = 0;
 
     bool connected;
 protected:

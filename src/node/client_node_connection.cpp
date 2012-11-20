@@ -152,4 +152,8 @@ Message* ClientNodeConnection::FetchMessage()
     // Make up message object and return
     return new Message(&message_raw, hdr);
 }
+std::string ClientNodeConnection::GetIp()
+{
+    return this->_socket->remote_endpoint().address().to_string();
+}
 }

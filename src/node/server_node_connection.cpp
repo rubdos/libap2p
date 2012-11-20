@@ -107,4 +107,8 @@ void ServerNodeConnection::SendMessage(Message* msg)
         std::cout << "Error sending message" << std::endl;
     }
 }
+std::string ServerNodeConnection::GetIp()
+{
+    return this->_socket->remote_endpoint().address().to_string();
+}
 }

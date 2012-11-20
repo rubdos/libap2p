@@ -56,6 +56,9 @@ public:
      */
     std::string GetConnectionString();
     std::string GetFingerprint();
+    /** Returns the IP of the node connected.
+     */
+    std::string GetIp();
 
     void Run();
     void _Run();

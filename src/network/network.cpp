@@ -139,7 +139,9 @@ void Network::_OnNodeReceivedMessageHandler(Message* msg, Node* sender)
                 boost::property_tree::ptree pt; // Where to store the node-info
                 std::stringstream response; 
 
-                pt.put("connectionstring","wip");
+                std::string port = this->_cfg->get<std::string>("server.port", "12011");
+
+                pt.put("listenport", port);
                 write_xml(response, pt);
 
                 Message* info_ans = new Message(MESSAGE_NODE_INFO_RESPONSE, response.str());

@@ -40,6 +40,8 @@ public:
     /** Connect using the ip/port combination from constructor
      */
     void Connect();
+
+    std::string GetIp();
 private:
     void _Connect();
 

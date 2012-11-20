@@ -26,6 +26,7 @@ namespace libap2p
 Node::Node()
 {
     this->_nodeConnection = NULL;
+    this->_queueRunning = false;
 }
 /** Constructs a new node with a known connection.
  *  @param nc   A node connection.
@@ -33,6 +34,7 @@ Node::Node()
 Node::Node(NodeConnection* nc)
 {
     this->_nodeConnection = nc;
+    this->_queueRunning = false;
     if(!nc->connected)
     {
         nc->onConnected.connect(boost::bind(&Node::Connected, this));
@@ -41,6 +43,11 @@ Node::Node(NodeConnection* nc)
     {
         this->Connected();
     }
+}
+
+std::string Node::GetIp()
+{
+    return this->_nodeConnection->GetIp();
 }
 
 /** Runs the node connections.
@@ -93,12 +100,9 @@ void Node::_Run()
                     in << msg->GetData();
                     read_xml(in, pt);
 
-                    std::string cs = pt.get<std::string>("connectionstring");
+                    std::string listenport = pt.get<std::string>("listenport", "12011");
 
-                    if(cs.compare("wip") != 0)
-                    {
-                        this->_nodeConnection->SetConnectionString(cs);
-                    }
+                    this->_nodeConnection->SetConnectionString(this->GetIp() + ":" + listenport);
 
                     break;
                 }
