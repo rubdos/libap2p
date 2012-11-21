@@ -68,6 +68,10 @@ public:
     boost::signal<void (Node* /* sender */)> onDisconnected;
 
     void Connected();
+
+    /** Disconnects and destroys the connection.
+     */
+    void Disconnect(); 
 private:    
     NodeConnection* _nodeConnection;
 

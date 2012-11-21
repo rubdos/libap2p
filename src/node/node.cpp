@@ -147,9 +147,15 @@ void Node::Connected()
     this->onConnected(this /* Sender */ );
 }
 
+void Node::Disconnect()
+{
+    this->onDisconnected(this);
+}
+
 Node::~Node()
 {
     delete this->_nodeConnection;
+    delete this->_runner;
     // Runner thread will end and destruct automatically, no need to destroy
 }
 }

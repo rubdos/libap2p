@@ -128,6 +128,30 @@ void Network::_OnNodeReceivedMessageHandler(Message* msg, Node* sender)
     {
         case MESSAGE_HELLO:
             {
+                // Check for double connections!
+
+                for(NodeList::iterator nit = this->_nodes.begin();
+                        nit != this->_nodes.end();
+                        ++nit)
+                {
+                    if(
+                            (*nit) != sender // Different connection
+                            && // But
+                            (*nit)->GetFingerprint().compare(sender->GetFingerprint()) == 0 // Same node
+                            )
+                    {
+                        sender->Disconnect();
+                    }
+                }
+
+                // Check for loopback connections!
+                if(this->_localIdentity->GetFingerprint().compare(sender->GetFingerprint()) == 0)
+                {
+                    // Houston, we've got a problem. Delete the node, it's ourself
+                    sender->Disconnect();
+                    break;
+                }
+
                 // Ask for more info on the node
                 Message* info_req = new Message(MESSAGE_NODE_INFO_REQUEST, "");
                 info_req->Sign(this->_localIdentity);
