@@ -143,7 +143,7 @@ int parse(std::vector<std::string> cmd)
                     ++nit)
             {
                 libap2p::Node* n = *nit;
-                std::cout << n->GetFingerprint() << std::endl;
+                std::cout << n->GetFingerprint() << " (" << n->GetConnectionString() << ")" << std::endl;
             }
             return 1;
         }
@@ -190,9 +190,11 @@ int main(int argc, char** argv)
     char *buf;
 
     rl_initialize();
- 
+
+    std::stringstream linename;
+    linename << "ap2p-console (nc)> ";
      
-    while((buf = readline("ap2p-console> "))!=NULL)
+    while((buf = readline(linename.str().c_str()))!=NULL)
     {
         //enable auto-complete
         rl_bind_key('\t',rl_complete);
@@ -204,6 +206,15 @@ int main(int argc, char** argv)
         if (buf[0]!=0)
         {
                add_history(buf);
+        }
+        linename.str("");
+        if(conn)
+        {
+            linename << "ap2p-console (" << conn->GetNodes().size() << ")> ";
+        }
+        else
+        {
+            linename << "ap2p-console (nc)> ";
         }
     }
          
