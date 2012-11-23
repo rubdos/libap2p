@@ -129,7 +129,6 @@ void Network::SendMessage(Message* msg, Node* to)
 }
 void Network::_OnNodeReceivedMessageHandler(Message* msg, Node* sender)
 {
-    std::cout << "Received a message: " << msg->GetMessageType() << std::endl;
     switch (msg->GetMessageType())
     {
         case MESSAGE_HELLO:
