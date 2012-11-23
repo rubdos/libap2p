@@ -36,6 +36,7 @@ void show_help()
         << "listen [port]\tSet the listening port" << std::endl
         << "set-id [ID-name]\tSet the id corresponding to this name" << std::endl
         << "list\tList connected nodes" << std::endl
+        << "discover\tSend a discovery request to all nodes" << std::endl
         << "start\t\tStart the network" << std::endl
         << "stop\t\tStop the network" << std::endl
         << "add [host] [port]\tAdd a connection via a client_node_connection" << std::endl
@@ -53,8 +54,9 @@ int parse(std::vector<std::string> cmd)
     }
     else if(cmd[0].compare("discover") == 0)
     {
-        for(NodeList::iterator nit = conn->GetNodes().begin();
-                nit != conn->GetNodes().end();
+        NodeList nodes = conn->GetNodes();
+        for(NodeList::iterator nit = nodes.begin();
+                nit != nodes.end();
                 ++nit)
         {
             std::cout << "Requesting from: " << (*nit)->GetFingerprint();
