@@ -21,6 +21,7 @@
 #include "libap2p/message/message.hpp"
 
 #include <boost/signal.hpp>
+#include <boost/thread.hpp>
 
 namespace libap2p
 {
@@ -37,7 +38,23 @@ public:
 
     boost::signal<void ()> onConnected;
 
+    /** Returns the connectionstring in host:port format.
+     */
+    std::string GetConnectionString();
+
+    /** Sets the connectionstring in host:port format.
+     */
+    void SetConnectionString(std::string cs);
+
+    /** Returns the ip connected to.
+     */
+    virtual std::string GetIp() = 0;
+
     bool connected;
+protected:
+    std::string _connectionString;
+
+    boost::mutex _socketLock;
 };
 }
 #endif

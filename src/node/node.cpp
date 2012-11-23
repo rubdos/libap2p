@@ -26,6 +26,7 @@ namespace libap2p
 Node::Node()
 {
     this->_nodeConnection = NULL;
+    this->_queueRunning = false;
 }
 /** Constructs a new node with a known connection.
  *  @param nc   A node connection.
@@ -33,6 +34,7 @@ Node::Node()
 Node::Node(NodeConnection* nc)
 {
     this->_nodeConnection = nc;
+    this->_queueRunning = false;
     if(!nc->connected)
     {
         nc->onConnected.connect(boost::bind(&Node::Connected, this));
@@ -41,6 +43,11 @@ Node::Node(NodeConnection* nc)
     {
         this->Connected();
     }
+}
+
+std::string Node::GetIp()
+{
+    return this->_nodeConnection->GetIp();
 }
 
 /** Runs the node connections.
@@ -65,7 +72,6 @@ void Node::_Run()
         Message* msg = this->_nodeConnection->FetchMessage();
         if(msg == NULL)
         {
-            std::cerr << "fetch_message failed" << std::endl;
             // Disconnect node for now. @TODO: Try a reconnection.
             this->onDisconnected(this);
             break;
@@ -75,15 +81,31 @@ void Node::_Run()
         switch(msg->GetMessageType())
         {
             case MESSAGE_HELLO:
-                try
                 {
-                    this->_id.LoadPublicKey(msg->GetData());
+                    try
+                    {
+                        this->_id.LoadPublicKey(msg->GetData());
+                    }
+                    catch(...)
+                    {
+                        // Node data was probably messed up. @TODO: Catch this stuff!
+                    }
+                    break;
                 }
-                catch(...)
+            case MESSAGE_NODE_INFO_RESPONSE:
                 {
-                    // Node data was probably messed up. @TODO: Catch this stuff!
+                    boost::property_tree::ptree pt;
+                    std::stringstream in;
+
+                    in << msg->GetData();
+                    read_xml(in, pt);
+
+                    std::string listenport = pt.get<std::string>("listenport", "12011");
+
+                    this->_nodeConnection->SetConnectionString(this->GetIp() + ":" + listenport);
+
+                    break;
                 }
-                break;
         }
         this->onReceiveMessage(msg, this /* sender */);
     }
@@ -94,12 +116,28 @@ void Node::_Run()
  */
 void Node::SendMessage(Message* msg)
 {
-    this->_nodeConnection->SendMessage(msg); // Well, this is simple...
+    this->_sendQueue.push(msg);
+    
+    if(! this->_queueRunning)
+    {
+        this->_queueRunning = true;
+        while(!this->_sendQueue.empty())
+        {
+            this->_nodeConnection->SendMessage(this->_sendQueue.front()); // Well, this is simple...
+            this->_sendQueue.pop();
+        }
+        this->_queueRunning = false;
+    }
 }
 
 std::string Node::GetFingerprint()
 {
     return this->_id.GetFingerprint();
+}
+
+std::string Node::GetConnectionString()
+{
+    return this->_nodeConnection->GetConnectionString();
 }
 
 void Node::Connected()
@@ -109,9 +147,15 @@ void Node::Connected()
     this->onConnected(this /* Sender */ );
 }
 
+void Node::Disconnect()
+{
+    this->onDisconnected(this);
+}
+
 Node::~Node()
 {
     delete this->_nodeConnection;
+    delete this->_runner;
     // Runner thread will end and destruct automatically, no need to destroy
 }
 }

@@ -15,20 +15,16 @@
 * 
 */
 
-libap2p aims to become an advanced cross platform peer to peer library.
-API documentation can be found here:
-HTML doxygen pages: http://rubdos.github.com/libap2p/doxygen_html
-LaTeX doxygen: http://rubdos.github.com/libap2p/doxygen_latex
+#include "libap2p/node/node_connection.hpp"
 
-CAUTION: not usable yet!
-
-*Requirements:
-    -cryptopp
-    -boost libraries (iostreams, filesystem, system, thread, signals)
-    -cmake
-    -make compatible
-    -g++ compiler or compatible (mingw...)
-*Compiling:
-    $> mkdir build && cd build
-    $> cmake ..
-    $> make #(or make -j[threadcount])
+namespace libap2p
+{
+    std::string NodeConnection::GetConnectionString()
+    {
+        return this->_connectionString;
+    }
+    void NodeConnection::SetConnectionString(std::string cs)
+    {
+        this->_connectionString = cs;
+    }
+}

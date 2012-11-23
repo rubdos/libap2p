@@ -23,6 +23,7 @@ int main()
 {
     // Create a new message
     libap2p::Message* msg = new libap2p::Message(libap2p::MESSAGE_HELLO, "Test content<as>you see, xml content can be set as data!</as>");
+    msg->Prepare();
     // Print the XML data constructed in the message
     std::cout << "XML:" << std::endl << msg->GetXml() << std::endl << std::endl;
 

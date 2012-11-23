@@ -39,14 +39,15 @@ class Network
 {
 public:
     Network(Configuration*);
+    Network(Configuration*, Identity* id);
     void Connect();
     void Close();
 
     void AddNode(Node*);
-/** Used to check the current connection status. Can be libap2p{connection_status
-  * {CONNECTED, CONNECTING, DISCONNECTED or ERROR}};
-  *
-  */
+    /** Used to check the current connection status. Can be libap2p{connection_status
+     * {CONNECTED, CONNECTING, DISCONNECTED or ERROR}};
+     *
+     */
     connection_status Status() const {return this->_connectionStatus;};
 
     // Signals
@@ -61,16 +62,25 @@ public:
 
     boost::signal<void (Message*, Node*)> onReceiveMessage;
 
-    void ReceivedMessage(Message*, Node*);
-    void ServerNodeConnected(Node *);
-    void NodeConnected(Node *);
+    /** Returns the nodes currently connected to.
+     */
+    NodeList GetNodes();
+
+    /** Sends a message to the specified Node.
+     */
+    void SendMessage(Message* msg, Node* to);
 
 private:
+    void _OnNodeDisconnectHandler(Node* sender);
+    void _OnNodeReceivedMessageHandler(Message*, Node*);
+    void _OnServerNodeConnectedHandler(Node *);
+    void _OnNodeConnectedHandler(Node *);
+
     connection_status _connectionStatus;
 
     libap2p::Server* _server;
 
-    std::vector<Node*> _nodes;
+    NodeList _nodes;
     Identity* _localIdentity;
     Configuration* _cfg;
     boost::thread* _runner;

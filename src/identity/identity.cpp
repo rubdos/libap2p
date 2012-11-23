@@ -39,6 +39,7 @@ Identity::Identity()
 {
     this->_publicKey = NULL;
     this->_privateKey = NULL;
+    this->_publicKeyFingerprint = "";
     //@TODO: stub
 }
 bool Identity::ValidateKeys()
@@ -57,7 +58,7 @@ bool Identity::ValidateKeys()
             this->_publicKey->Validate(rng, 3) // Idem
             );
 }
-void Identity::GenerateLocal()
+void Identity::GenerateLocal(std::string filename)
 {
     // Create the directory containing the ap2p configuration if not exists.
     // @TODO: Move to libap2p::Configuration
@@ -65,17 +66,12 @@ void Identity::GenerateLocal()
     {
         fs::create_directory(std::string(getenv("HOME")) + "/.libap2p");
     }
-    this->GenerateLocal( this->_GetDefaultKeyFilename() );
-    //@TODO: X-Platform; linux only
-}
-void Identity::GenerateLocal(std::string filename)
-{
     std::clog << "Generating a new 3072 bit keypair, this can take a minute or two." << std::endl;
     std::clog << "Speed up the process by moving the mouse and generating general randomness" << std::endl;
 
     // Open a random generator
     CryptoPP::AutoSeededRandomPool rng;
-
+    
     while(!this->ValidateKeys())
     {
         // Generate Parameters
@@ -99,19 +95,42 @@ void Identity::GenerateLocal(std::string filename)
 }
 void Identity::LoadLocal()
 {
-    if(fs::exists(this->_GetDefaultKeyFilename() + ".pub") &&
-            fs::exists(this->_GetDefaultKeyFilename() + ".prv")
+    this->LoadKey("default_key");
+    std::clog << "Loaded RSA key: " << this->GetFingerprint() << std::endl;
+}
+void Identity::LoadKey(std::string id)
+{
+    // Remove previous keys from the memory
+    delete this->_publicKey;
+    delete this->_privateKey;
+    this->_publicKey = NULL;
+    this->_privateKey = NULL;
+    // Delete key fingerprint from cache
+    this->_publicKeyFingerprint = "";
+    
+    // Check if the file exists. If not, GenerateLocal()
+    if(fs::exists(this->_GetKeyFolder() + id + ".pub") &&
+            fs::exists(this->_GetKeyFolder() + id + ".prv")
             )
     {
         // Load it;
-        this->_LoadLocal();
+        CryptoPP::FileSource pubk( (this->_GetKeyFolder()
+                    + id + ".pub").c_str(), true);
+        CryptoPP::FileSource prvk( (this->_GetKeyFolder()
+                    + id + ".prv").c_str(), true);
+
+        this->_publicKey = new CryptoPP::RSA::PublicKey;
+        this->_privateKey = new CryptoPP::RSA::PrivateKey;
+    
+        this->_publicKey->Load(pubk);
+        this->_privateKey->Load(prvk);
+        std::cout << this->GetFingerprint() << std::endl;
     }
     else
     {
         // Generate it;
-        this->GenerateLocal();
+        this->GenerateLocal(this->_GetKeyFolder() + id);
     }
-    std::clog << "Loaded RSA key: " << this->GetFingerprint() << std::endl;
 }
 std::string Identity::GetFingerprint()
 {
@@ -212,19 +231,13 @@ bool Identity::Verify(std::string message, std::string signature)
     std::cout << recovered;
     return false;
 }
-void Identity::_LoadLocal()
-{
-    CryptoPP::FileSource pubk( (this->_GetDefaultKeyFilename() + ".pub").c_str(), true);
-    CryptoPP::FileSource prvk( (this->_GetDefaultKeyFilename() + ".prv").c_str(), true);
-
-    this->_publicKey = new CryptoPP::RSA::PublicKey;
-    this->_privateKey = new CryptoPP::RSA::PrivateKey;
-
-    this->_publicKey->Load(pubk);
-    this->_privateKey->Load(prvk);
-}
 std::string Identity::_GetDefaultKeyFilename()
 {
-    return std::string(getenv("HOME")) + "/.libap2p/default_key";
+    return std::string(this->_GetKeyFolder() +"default_key");
+}
+std::string Identity::_GetKeyFolder()
+{
+    //@TODO Windows compatibility, move to Configuration?
+    return std::string(getenv("HOME")) + "/.libap2p/";
 }
 }

@@ -26,6 +26,7 @@
 
 #include <stdlib.h>
 #include <iostream>
+#include <queue>
 
 #include <boost/thread.hpp>
 #include <boost/bind.hpp>
@@ -50,7 +51,14 @@ public:
     ~Node();
 
     void SendMessage(Message*);
+    /** Returns the connectionstring in host:port format.
+     *
+     */
+    std::string GetConnectionString();
     std::string GetFingerprint();
+    /** Returns the IP of the node connected.
+     */
+    std::string GetIp();
 
     void Run();
     void _Run();
@@ -60,12 +68,19 @@ public:
     boost::signal<void (Node* /* sender */)> onDisconnected;
 
     void Connected();
+
+    /** Disconnects and destroys the connection.
+     */
+    void Disconnect(); 
 private:    
     NodeConnection* _nodeConnection;
 
     boost::thread* _runner;
 
     Identity _id;
+    std::queue<Message*> _sendQueue;
+    bool _queueRunning;
 };
+typedef std::vector<Node*> NodeList;
 }
 #endif

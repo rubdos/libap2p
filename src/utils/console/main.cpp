@@ -12,9 +12,13 @@
 
 #include <libap2p/network/network.hpp>
 #include <libap2p/configuration/configuration.hpp>
+#include <libap2p/node/node.hpp>
 
 libap2p::Configuration* cfg;
 libap2p::Network* conn;
+libap2p::Identity* id;
+
+using libap2p::NodeList;
 
 void _receiveMessage(libap2p::Message* m, libap2p::Node* n)
 {
@@ -30,6 +34,9 @@ void show_help()
         << "?\t\tShow this help" << std::endl
         << "help \t\tShow this help" << std::endl
         << "listen [port]\tSet the listening port" << std::endl
+        << "set-id [ID-name]\tSet the id corresponding to this name" << std::endl
+        << "list\tList connected nodes" << std::endl
+        << "discover\tSend a discovery request to all nodes" << std::endl
         << "start\t\tStart the network" << std::endl
         << "stop\t\tStop the network" << std::endl
         << "add [host] [port]\tAdd a connection via a client_node_connection" << std::endl
@@ -44,6 +51,18 @@ int parse(std::vector<std::string> cmd)
             cmd[0].compare("exit") == 0)
     {
         return 0;
+    }
+    else if(cmd[0].compare("discover") == 0)
+    {
+        NodeList nodes = conn->GetNodes();
+        for(NodeList::iterator nit = nodes.begin();
+                nit != nodes.end();
+                ++nit)
+        {
+            std::cout << "Requesting from: " << (*nit)->GetFingerprint();
+            libap2p::Message* msg = new libap2p::Message(libap2p::MESSAGE_NODES_REQUEST, "");
+            conn->SendMessage(msg, *nit);
+        }
     }
     else if(cmd[0].compare("help") == 0
             ||
@@ -72,7 +91,7 @@ int parse(std::vector<std::string> cmd)
         }
         else
         {
-            conn = new libap2p::Network(cfg);
+            conn = new libap2p::Network(cfg, id);
             conn->Connect();
 
             conn->onReceiveMessage.connect(_receiveMessage);
@@ -102,6 +121,11 @@ int parse(std::vector<std::string> cmd)
                 << "add [ip/host] [port]" << std::endl;
             return 1;
         }
+        if(!conn)
+        {
+            std::cerr << "Not connected" << std::endl;
+            return 1;
+        }
         libap2p::Node* n;
         libap2p::ClientNodeConnection* cnc;
         cnc = new libap2p::ClientNodeConnection(cmd[1], cmd[2]);
@@ -109,6 +133,38 @@ int parse(std::vector<std::string> cmd)
         cnc->Connect();
         conn->AddNode(n);
         std::cout << "Added node" << std::endl;
+    }
+    else if (cmd[0].compare("set-id") == 0)
+    {
+        if(cmd.size() != 2)
+        {
+            std::cerr << "Syntax:" << std::endl
+                << "set-id [id-name]" << std::endl;
+            return 1;
+        }
+        id->LoadKey(cmd[1]);
+    }
+    else if (cmd[0].compare("list") == 0)
+    {
+        if(conn != NULL)
+        {
+            // List all connected nodes.
+            NodeList nl = conn->GetNodes();
+            std::cout << "Connected nodes:" << std::endl;
+            for(NodeList::iterator nit = nl.begin();
+                    nit != nl.end();
+                    ++nit)
+            {
+                libap2p::Node* n = *nit;
+                std::cout << n->GetFingerprint() << " (" << n->GetConnectionString() << ")" << std::endl;
+            }
+            return 1;
+        }
+        else
+        {
+            std::cerr << "Not connected" << std::endl;
+            return 1;
+        }
     }
     else if (cmd[0].compare("") == 0)
     {
@@ -141,13 +197,17 @@ int main(int argc, char** argv)
     // Initialize ap2p
     cfg = new libap2p::Configuration();
     conn = NULL;
+    id = new libap2p::Identity();
+    id->LoadLocal();
 
     char *buf;
 
     rl_initialize();
- 
+
+    std::stringstream linename;
+    linename << "ap2p-console (nc)> ";
      
-    while((buf = readline("ap2p-console> "))!=NULL)
+    while((buf = readline(linename.str().c_str()))!=NULL)
     {
         //enable auto-complete
         rl_bind_key('\t',rl_complete);
@@ -159,6 +219,15 @@ int main(int argc, char** argv)
         if (buf[0]!=0)
         {
                add_history(buf);
+        }
+        linename.str("");
+        if(conn)
+        {
+            linename << "ap2p-console (" << conn->GetNodes().size() << ")> ";
+        }
+        else
+        {
+            linename << "ap2p-console (nc)> ";
         }
     }
          

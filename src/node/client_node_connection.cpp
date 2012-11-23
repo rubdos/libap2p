@@ -42,6 +42,8 @@ ClientNodeConnection::ClientNodeConnection(std::string ip_adress, std::string po
     // Set the iterator by solving the ip_query
     this->_endpointIterator = resolver.resolve(query);
     // Connect
+
+    this->_connectionString = ip_adress + ":" + port;
 }
 
 void ClientNodeConnection::Connect()
@@ -91,10 +93,26 @@ void ClientNodeConnection::SendMessage(Message* msg)
     int64_t l_hdr = hdr->GetEncoded();
     
     boost::system::error_code ignored_error;
+
+    // Get the socket lock
+
+    this->_socketLock.lock();
     
     boost::asio::write(*(this->_socket), boost::asio::buffer(&l_hdr, 8), boost::asio::transfer_all(), ignored_error); // Send message header
+
+    if(ignored_error)
+    {
+        std::cout << "Error sending header" << std::endl;
+    }
     
     boost::asio::write(*(this->_socket), msg->GetEncoded()->data(), boost::asio::transfer_all(), ignored_error); // Send message itself
+
+    if(ignored_error)
+    {
+        std::cout << "Error sending message" << std::endl;
+    }
+
+    this->_socketLock.unlock();
 }
 Message* ClientNodeConnection::FetchMessage()
 {
@@ -124,13 +142,15 @@ Message* ClientNodeConnection::FetchMessage()
     Header *hdr = new Header(*hdr_int);
     
     // Prepare message retrieval
-    boost::asio::streambuf message_raw;
+    std::vector<char> message_raw;
+    message_raw.resize(hdr->messageLength);
     
     size_t bytes = boost::asio::read( 
             *(this->_socket), 
-            message_raw, 
+            boost::asio::buffer(message_raw, hdr->messageLength), 
             boost::asio::transfer_at_least(hdr->messageLength),
             error);
+
     if(error)
     {
         this->connected = false;
@@ -138,6 +158,10 @@ Message* ClientNodeConnection::FetchMessage()
     }
     
     // Make up message object and return
-    return new Message(&message_raw, hdr);
+    return new Message(message_raw, hdr);
+}
+std::string ClientNodeConnection::GetIp()
+{
+    return this->_socket->remote_endpoint().address().to_string();
 }
 }

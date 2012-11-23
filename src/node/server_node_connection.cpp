@@ -38,23 +38,40 @@ ServerNodeConnection::ServerNodeConnection(boost::asio::ip::tcp::socket* sock)
 
 Message* ServerNodeConnection::FetchMessage()
 {
+    // Prepare error catching
+    boost::system::error_code error;
+
     // Read header to determine message length. Header is 8 bytes long.
     int64_t *hdr_int = new int64_t();
-    boost::asio::read(*(this->_socket), boost::asio::buffer(hdr_int, 8), boost::asio::transfer_at_least(8));
+    boost::asio::read(*(this->_socket), 
+            boost::asio::buffer(hdr_int, 8), 
+            boost::asio::transfer_at_least(8),
+            error);
+
+    if(error)
+    {
+        return NULL;
+    }
     
     Header *hdr = new Header(*hdr_int);
     
     // Prepare message retrieval
-    boost::asio::streambuf message_raw; 
+    std::vector<char> message_raw; 
+    message_raw.resize(hdr->messageLength);
 
     size_t bytes = boost::asio::read(
             *(this->_socket), 
-            message_raw, 
-            boost::asio::transfer_at_least(hdr->messageLength)
-            );
+            boost::asio::buffer(message_raw, hdr->messageLength), 
+            boost::asio::transfer_at_least(hdr->messageLength),
+            error);
+
+    if(error)
+    {
+        return NULL;
+    }
     
     // Make up message object and return
-    return new Message(&message_raw, hdr);
+    return new Message(message_raw, hdr);
 }
 
 /** Sends a message to this node_connection.
@@ -70,15 +87,33 @@ void ServerNodeConnection::SendMessage(Message* msg)
     int64_t l_hdr = hdr->GetEncoded();
     
     boost::system::error_code ignored_error;
+
+    this->_socketLock.lock();
     
     boost::asio::write(
             *(this->_socket), 
             boost::asio::buffer(&l_hdr, 8), 
             boost::asio::transfer_all(), ignored_error); // Send message header
     
+    if(ignored_error)
+    {
+        std::cout << "Error sending header" << std::endl;
+    }
+
     boost::asio::write(
             *(this->_socket),
             msg->GetEncoded()->data(), 
             boost::asio::transfer_all(), ignored_error); // Send message itself
+
+    if(ignored_error)
+    {
+        std::cout << "Error sending message" << std::endl;
+    }
+
+    this->_socketLock.unlock();
+}
+std::string ServerNodeConnection::GetIp()
+{
+    return this->_socket->remote_endpoint().address().to_string();
 }
 }

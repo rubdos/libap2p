@@ -36,6 +36,7 @@ public:
     ServerNodeConnection(boost::asio::ip::tcp::socket*);
     Message* FetchMessage();
     void SendMessage(Message*);
+    std::string GetIp();
 private:
     boost::asio::ip::tcp::socket* _socket;
 };

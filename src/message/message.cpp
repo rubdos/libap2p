@@ -28,6 +28,9 @@
 #include <boost/iostreams/copy.hpp>
 #include <boost/iostreams/filter/gzip.hpp>
 
+#include <cryptopp/gzip.h>
+#include <cryptopp/filters.h>
+
 namespace libap2p
 {
 
@@ -63,16 +66,33 @@ Message::Message(std::string xml_str)
 /** Constructor from compressed xml data and header.
  *
  */
-Message::Message(boost::asio::streambuf *message_raw, Header* hdr)
+Message::Message(std::vector<char> message_raw, Header* hdr)
 {
-    std::stringstream xml;
+    std::string xml;
+    std::stringstream compressed;
 
-    boost::iostreams::filtering_streambuf<boost::iostreams::input> in;
-    in.push(boost::iostreams::gzip_decompressor());
-    in.push(*message_raw);
-    boost::iostreams::copy(in, xml);
+    std::copy(message_raw.begin(), 
+            message_raw.end(),
+            std::ostream_iterator<char>(
+                compressed
+                )
+            );
     
-    this->_Init(xml.str());
+    try
+    {
+        CryptoPP::StringSource ss(compressed.str(),
+            true, //pumpAll
+            new CryptoPP::Gunzip (
+                new CryptoPP::StringSink(xml)
+            )
+        );
+        
+        this->_Init(xml);
+    }
+    catch( boost::iostreams::gzip_error& e)
+    {
+        std::cerr << "GZIP error: " << e.error()  << "message length: " << hdr->messageLength << std::endl;
+    }
 }
 
 /** Initializes from xml data.
@@ -145,14 +165,20 @@ void Message::Prepare()
 
 void Message::_Compress()
 {
-    std::stringstream xml;
-    std::ostream tempstream(&this->_compressedBuf);
-    xml << this->GetXml();
+    std::string compressed;
+    CryptoPP::StringSource ss(this->GetXml(),
+        true, // pumpAll
+        new CryptoPP::Gzip (
+            new CryptoPP::StringSink(compressed),
+            5 // Compression level between 1 (fast) and 9 (compact)
+        )
+    );
 
-    boost::iostreams::filtering_streambuf<boost::iostreams::input> in;
-    in.push(boost::iostreams::gzip_compressor());
-    in.push(xml);
-    boost::iostreams::copy(in, tempstream);
+    std::ostream compressed_buffer(&this->_compressedBuf);
+
+    compressed_buffer << compressed << std::flush;
+
+    this->_compressedBuf.commit(compressed.size());
 }
 
 Header* Message::GetHeader()
