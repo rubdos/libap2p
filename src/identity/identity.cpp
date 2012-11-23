@@ -39,6 +39,7 @@ Identity::Identity()
 {
     this->_publicKey = NULL;
     this->_privateKey = NULL;
+    this->_publicKeyFingerprint = "";
     //@TODO: stub
 }
 bool Identity::ValidateKeys()

@@ -66,11 +66,17 @@ Message::Message(std::string xml_str)
 /** Constructor from compressed xml data and header.
  *
  */
-Message::Message(boost::asio::streambuf *message_raw, Header* hdr)
+Message::Message(std::vector<char> message_raw, Header* hdr)
 {
     std::string xml;
     std::stringstream compressed;
-    compressed << message_raw;
+
+    std::copy(message_raw.begin(), 
+            message_raw.end(),
+            std::ostream_iterator<char>(
+                compressed
+                )
+            );
     
     try
     {

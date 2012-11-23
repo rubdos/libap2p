@@ -20,6 +20,7 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/asio.hpp>
@@ -35,7 +36,7 @@ public:
     Message();
     Message(message_types /* message type */, std::string /* data */);
     Message(std::string /* xml */);
-    Message(boost::asio::streambuf* /* message compressed */, Header*);
+    Message(std::vector<char> /* message compressed */, Header*);
 
     /** Sign the message data before sending.
      *  @note   Call before Prepare()

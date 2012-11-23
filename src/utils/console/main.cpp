@@ -51,6 +51,17 @@ int parse(std::vector<std::string> cmd)
     {
         return 0;
     }
+    else if(cmd[0].compare("discover") == 0)
+    {
+        for(NodeList::iterator nit = conn->GetNodes().begin();
+                nit != conn->GetNodes().end();
+                ++nit)
+        {
+            std::cout << "Requesting from: " << (*nit)->GetFingerprint();
+            libap2p::Message* msg = new libap2p::Message(libap2p::MESSAGE_NODES_REQUEST, "");
+            conn->SendMessage(msg, *nit);
+        }
+    }
     else if(cmd[0].compare("help") == 0
             ||
             cmd[0].compare("?") == 0)

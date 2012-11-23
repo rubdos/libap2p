@@ -21,6 +21,7 @@
 #include "libap2p/message/message.hpp"
 
 #include <boost/signal.hpp>
+#include <boost/thread.hpp>
 
 namespace libap2p
 {
@@ -52,6 +53,8 @@ public:
     bool connected;
 protected:
     std::string _connectionString;
+
+    boost::mutex _socketLock;
 };
 }
 #endif

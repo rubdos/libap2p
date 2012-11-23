@@ -56,11 +56,12 @@ Message* ServerNodeConnection::FetchMessage()
     Header *hdr = new Header(*hdr_int);
     
     // Prepare message retrieval
-    boost::asio::streambuf message_raw; 
+    std::vector<char> message_raw; 
+    message_raw.resize(hdr->messageLength);
 
     size_t bytes = boost::asio::read(
             *(this->_socket), 
-            message_raw, 
+            boost::asio::buffer(message_raw, hdr->messageLength), 
             boost::asio::transfer_at_least(hdr->messageLength),
             error);
 
@@ -70,7 +71,7 @@ Message* ServerNodeConnection::FetchMessage()
     }
     
     // Make up message object and return
-    return new Message(&message_raw, hdr);
+    return new Message(message_raw, hdr);
 }
 
 /** Sends a message to this node_connection.
@@ -86,6 +87,8 @@ void ServerNodeConnection::SendMessage(Message* msg)
     int64_t l_hdr = hdr->GetEncoded();
     
     boost::system::error_code ignored_error;
+
+    this->_socketLock.lock();
     
     boost::asio::write(
             *(this->_socket), 
@@ -106,6 +109,8 @@ void ServerNodeConnection::SendMessage(Message* msg)
     {
         std::cout << "Error sending message" << std::endl;
     }
+
+    this->_socketLock.unlock();
 }
 std::string ServerNodeConnection::GetIp()
 {

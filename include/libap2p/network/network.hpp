@@ -66,6 +66,9 @@ public:
      */
     NodeList GetNodes();
 
+    /** Sends a message to the specified Node.
+     */
+    void SendMessage(Message* msg, Node* to);
 
 private:
     void _OnNodeDisconnectHandler(Node* sender);

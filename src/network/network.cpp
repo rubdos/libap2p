@@ -122,8 +122,14 @@ void Network::_OnNodeConnectedHandler(Node* nd)
     init_msg->Sign(this->_localIdentity);
     nd->SendMessage(init_msg);
 }
+void Network::SendMessage(Message* msg, Node* to)
+{
+    msg->Sign(this->_localIdentity);
+    to->SendMessage(msg);
+}
 void Network::_OnNodeReceivedMessageHandler(Message* msg, Node* sender)
 {
+    std::cout << "Received a message: " << msg->GetMessageType() << std::endl;
     switch (msg->GetMessageType())
     {
         case MESSAGE_HELLO:
