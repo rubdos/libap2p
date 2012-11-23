@@ -17,6 +17,8 @@
 
 #include "libap2p/configuration/configuration.hpp"
 
+#include <stdlib.h>
+
 namespace libap2p
 {
 
