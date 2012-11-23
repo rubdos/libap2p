@@ -21,14 +21,20 @@
 #include "libap2p/DHT/dht_entry.hpp"
 
 #include <string>
+#include <vector>
 
 namespace libap2p
 {
+typedef std::vector<DHTEntry*> DHTEntryList;
 class DHT
 {
 public:
     DHT();
-    DHTEntry* Fetch();
+    DHTEntry* Fetch(std::string sha256sum);
+
+    void AddEntry(DHTEntry* entry, bool check_consistency = true);
+private:
+    DHTEntryList _entries;
 };
 }
 #endif

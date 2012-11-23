@@ -11,11 +11,13 @@ int main(int argc, char** argv)
         return -1;
     }
     libap2p::TagList tl;
-    libap2p::DHTEntry de("testentry",
+    libap2p::DHT dht;
+    libap2p::DHTEntry* de = new libap2p::DHTEntry("testentry",
             std::string(argv[1]),
             tl,
             0,
             NULL, // No owner yet.
             1024*1024);
+    dht.AddEntry(de, true);
     return 0;
 }

@@ -23,8 +23,10 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <sstream>
 
 #include <boost/filesystem.hpp>
+#include <boost/property_tree/ptree.hpp>
 
 namespace fs=boost::filesystem;
 
@@ -59,11 +61,17 @@ DHTEntry::DHTEntry(std::string name,
     {
         fs::create_directory(dhtdirectory);
     }
+    if(!fs::is_directory(dhtdirectory + "data"))
+    {
+        fs::create_directory(dhtdirectory + "data");
+    }
 
     fs::create_directory(dhtdirectory + "tmp");
     
     std::ofstream index;
     index.open((dhtdirectory + "tmp/index").c_str());
+
+    std::stringstream serialized_parts;
     
     while(total_read < file_length)
     {
@@ -93,7 +101,9 @@ DHTEntry::DHTEntry(std::string name,
         encoder.Attach(new CryptoPP::StringSink(sha));
         encoder.Put(sub_digest, sizeof(sub_digest));
         encoder.MessageEnd();
-        part_file.open((dhtdirectory + "tmp/" + sha).c_str());
+        part_file.open((dhtdirectory + "data/" + sha).c_str());
+        
+        serialized_parts << sha << new_bytes_read << std::endl;
 
         part_file.write(buffer, new_bytes_read);
         part_file.close();
@@ -125,5 +135,23 @@ DHTEntry::DHTEntry(std::string name,
     }
     index.close();
     file.close();
+
+    // Safe the info.
+
+    boost::property_tree::ptree info;
+    info.put("hash", this->hash);
+    info.put("ttl", this->timeToLive);
+    info.put("name", this->name);
+    info.put("parts", (byte *) serialized_parts.str().c_str());
+
+    std::ofstream properties_xml;
+    properties_xml.open((entrydir + "properties.xml").c_str());
+
+    write_xml(properties_xml, info);
+    properties_xml.close();
+}
+bool DHTEntry::CheckConsistency()
+{
+    return true;
 }
 }

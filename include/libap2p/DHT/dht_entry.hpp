@@ -43,6 +43,7 @@ public:
             Identity* owner,
             unsigned int part_length = 65536);
 
+    bool CheckConsistency();
 
     TagList tags;
     std::string name;
