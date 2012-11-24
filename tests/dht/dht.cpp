@@ -19,5 +19,6 @@ int main(int argc, char** argv)
             NULL, // No owner yet.
             1024*1024);
     dht.AddEntry(de, true);
+    de = new libap2p::DHTEntry(de->hash);
     return 0;
 }

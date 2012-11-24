@@ -43,6 +43,11 @@ public:
             Identity* owner,
             unsigned int part_length = 65536);
 
+    /** Get a dhtentry by hash.
+     *
+     */
+    DHTEntry(std::string hash);
+
     bool CheckConsistency();
 
     TagList tags;
@@ -50,6 +55,8 @@ public:
     std::string hash;
     unsigned long timeToLive;
     std::string signature;
+private:
+    bool _consistent;
 };
 }
 

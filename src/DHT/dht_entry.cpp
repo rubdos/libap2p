@@ -27,11 +27,61 @@
 
 #include <boost/filesystem.hpp>
 #include <boost/property_tree/ptree.hpp>
+#include <boost/algorithm/string.hpp>
 
 namespace fs=boost::filesystem;
 
 namespace libap2p
 {
+DHTEntry::DHTEntry(std::string hash)
+{
+    this->hash = hash;
+    this->_consistent = true;
+    std::string dhtdirectory = std::string(getenv("HOME")) + "/.libap2p/dht/";
+    if(fs::is_directory(dhtdirectory + hash))
+    {
+        if(!fs::exists(dhtdirectory + hash + "/properties.xml"))
+            return;
+
+        // Load it
+        const unsigned int part_length = 200;
+        std::ifstream properties;
+        properties.open((dhtdirectory + hash + "/properties.xml").c_str());
+
+        properties.seekg(0, std::ios::end);
+        unsigned int filelength = properties.tellg();
+        properties.seekg(0, std::ios::beg);
+
+        boost::property_tree::ptree properties_xml;
+        read_xml(properties, properties_xml);
+
+        std::string buffer = properties_xml.get<std::string>("parts");
+        std::vector<std::string> splitVec;
+
+        boost::algorithm::split(splitVec, 
+                buffer, 
+                boost::algorithm::is_any_of("\n\r"),
+                boost::algorithm::token_compress_on);
+        for(std::vector<std::string>::iterator line_it = splitVec.begin();
+                line_it != splitVec.end();
+                ++line_it)
+        {
+            std::string partial_hash = line_it->substr(0, 64);
+            if(!fs::exists(dhtdirectory + "data/" + partial_hash))
+            {
+                this->_consistent = false;
+            }
+        }
+        this->hash = properties_xml.get<std::string>("hash");
+        this->timeToLive = properties_xml.get<unsigned int>("ttl");
+        this->name = properties_xml.get<std::string>("name");
+    }
+    else
+    {
+        // Create the directory and hope we'll find something on the network
+        fs::create_directory(dhtdirectory + hash);
+    }
+}
 DHTEntry::DHTEntry(std::string name, 
         std::string filename, 
         TagList tl, 
@@ -79,7 +129,7 @@ DHTEntry::DHTEntry(std::string name,
         unsigned int to_read = (file_length - total_read > part_length) ?
                 part_length
                 :
-                file_length - total_read;
+                (file_length - total_read);
         char* buffer = new char[to_read];
         file.read(buffer, to_read);
         total_read += to_read;
