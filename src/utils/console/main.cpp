@@ -38,6 +38,7 @@ void show_help()
         << "list\tList connected nodes" << std::endl
         << "discover\tSend a discovery request to all nodes" << std::endl
         << "start\t\tStart the network" << std::endl
+        << "search\t\tSearch (aka. flood) the network and search for a tag." << std::endl
         << "stop\t\tStop the network" << std::endl
         << "add [host] [port]\tAdd a connection via a client_node_connection" << std::endl
         << "quit\t\tQuit the application" << std::endl
@@ -164,6 +165,26 @@ int parse(std::vector<std::string> cmd)
         {
             std::cerr << "Not connected" << std::endl;
             return 1;
+        }
+    }
+    else if (cmd[0].compare("search") == 0)
+    {
+        if(cmd.size() != 2)
+        {
+            std::cerr << "Syntax:" << std::endl << 
+                "search [tag]" << std::endl;
+            return 1;
+        }
+        // Flood the network...
+        NodeList nl = conn->GetNodes(); 
+        for(NodeList::iterator nit = nl.begin();
+                nit != nl.end();
+                ++nit)
+        {
+            libap2p::Node* n = *nit;
+            std::cout << "Asking node " << n->GetFingerprint() << std::endl;
+            libap2p::Message* searchmsg = new libap2p::Message(libap2p::MESSAGE_DHT_SEARCH,
+                    "<tag>" + cmd[1] + "</tag>");
         }
     }
     else if (cmd[0].compare("") == 0)
