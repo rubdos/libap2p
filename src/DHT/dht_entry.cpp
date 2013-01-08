@@ -37,6 +37,7 @@ DHTEntry::DHTEntry(std::string hash)
 {
     this->hash = hash;
     this->_consistent = true;
+    this->_partCount = 0;
     std::string dhtdirectory = std::string(getenv("HOME")) + "/.libap2p/dht/";
     if(fs::is_directory(dhtdirectory + hash))
     {
@@ -67,6 +68,10 @@ DHTEntry::DHTEntry(std::string hash)
                 ++line_it)
         {
             std::string partial_hash = line_it->substr(0, 64);
+
+            this->_partList.push_back(partial_hash);
+            this->_partCount++;
+
             if(!fs::exists(dhtdirectory + "data/" + partial_hash))
             {
                 this->_consistent = false;
@@ -82,6 +87,12 @@ DHTEntry::DHTEntry(std::string hash)
         fs::create_directory(dhtdirectory + hash);
     }
 }
+DHTEntrySpec DHTEntry::GetDHTEntrySpec()
+{
+    DHTEntrySpec des;
+    des.partCount = this->_partCount;
+    des.parts = this->_partList;
+}
 DHTEntry::DHTEntry(std::string name, 
         std::string filename, 
         TagList tl, 
@@ -92,6 +103,7 @@ DHTEntry::DHTEntry(std::string name,
     this->name = name;
     this->tags = tl;
     this->timeToLive = ttl;
+    this->_partCount = 0;
 
     CryptoPP::SHA256 total_hash;
 
@@ -157,6 +169,9 @@ DHTEntry::DHTEntry(std::string name,
 
         part_file.write(buffer, new_bytes_read);
         part_file.close();
+
+        this->_partList.push_back(sha);
+        this->_partCount++;
 
         delete[] buffer;
     }

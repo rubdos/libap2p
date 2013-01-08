@@ -26,6 +26,12 @@
 namespace libap2p
 {
 typedef std::vector<std::string> TagList;
+typedef std::vector<std::string> PartList;
+struct DHTEntrySpec
+{
+    unsigned int partCount;
+    PartList parts;
+};
 class DHTEntry
 {
 public:
@@ -50,13 +56,18 @@ public:
 
     bool CheckConsistency();
 
+    DHTEntrySpec GetDHTEntrySpec();
+
     TagList tags;
     std::string name;
     std::string hash;
     unsigned long timeToLive;
     std::string signature;
+
 private:
     bool _consistent;
+    unsigned int _partCount;
+    PartList _partList;
 };
 }
 
