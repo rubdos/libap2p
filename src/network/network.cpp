@@ -293,6 +293,12 @@ void Network::_OnNodeReceivedMessageHandler(Message* msg, Node* sender)
         case MESSAGE_DHT_FETCH:
             {
                 // Construct a DHT_PUSH
+                std::cout << "Received a FETCH request:" << std::endl;
+
+                std::string data = msg->GetData();
+                std::cout << data << std::endl;
+
+                //Message* msg = new Message(MESSAGE_DHT_PUSH, "<sha>" + "</sha>");
                 break;
             }
         case MESSAGE_DHT_SEARCH_RESULT:
