@@ -44,4 +44,25 @@ void DHT::AddEntry(DHTEntry* entry, bool check_consistency)
         entry->CheckConsistency();
     }
 }
+DHTSearchResult DHT::LocalSearch(std::string tag)
+{
+    DHTSearchResult dsr;
+    for (DHTEntryList::iterator e_it = this->_entries.begin();
+            e_it != this->_entries.end();
+            ++e_it)
+    {
+        DHTEntry* e = *e_it;
+        for (TagList::iterator et_it = e->tags.begin();
+                et_it != e->tags.end();
+                ++et_it)
+        {
+            if(tag.compare(*et_it) == 0)
+            {
+                // Houston, we've got a match!
+                dsr.push_back(e->GetDHTEntrySpec());
+            }
+        }
+    }
+    return dsr;
+}
 }

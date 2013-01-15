@@ -26,6 +26,7 @@
 namespace libap2p
 {
 typedef std::vector<DHTEntry*> DHTEntryList;
+typedef std::vector<DHTEntrySpec> DHTSearchResult;
 class DHT
 {
 public:
@@ -33,6 +34,7 @@ public:
     DHTEntry* Fetch(std::string sha256sum);
 
     void AddEntry(DHTEntry* entry, bool check_consistency = true);
+    DHTSearchResult LocalSearch(std::string);
 private:
     DHTEntryList _entries;
 };
