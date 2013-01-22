@@ -92,6 +92,8 @@ DHTEntrySpec DHTEntry::GetDHTEntrySpec()
     DHTEntrySpec des;
     des.partCount = this->_partCount;
     des.parts = this->_partList;
+    des.hash = this->hash;
+    return des;
 }
 DHTEntry::DHTEntry(std::string name, 
         std::string filename, 

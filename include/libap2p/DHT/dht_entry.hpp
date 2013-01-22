@@ -29,6 +29,7 @@ typedef std::vector<std::string> TagList;
 typedef std::vector<std::string> PartList;
 struct DHTEntrySpec
 {
+    std::string hash;
     unsigned int partCount;
     PartList parts;
 };
