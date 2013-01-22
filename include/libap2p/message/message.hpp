@@ -48,6 +48,7 @@ public:
     message_types GetMessageType();
     
     std::string GetXml();
+    boost::property_tree::ptree GetMessageTree();
     Header *GetHeader();
     boost::asio::streambuf* GetEncoded();
     /** Get the data stored in the message
@@ -67,6 +68,7 @@ private:
     std::string _messageData;
     std::string _messageSignature;
     std::string _messageSignatureType;
+    boost::property_tree::ptree _pt;
 };
 }
 #endif

@@ -95,6 +95,11 @@ Message::Message(std::vector<char> message_raw, Header* hdr)
     }
 }
 
+boost::property_tree::ptree Message::GetMessageTree()
+{
+    return this->_pt;
+}
+
 /** Initializes from xml data.
  *
  */
@@ -104,15 +109,14 @@ void Message::_Init(std::string xml)
     std::stringstream in;
     in << xml;
 
-    boost::property_tree::ptree pt;
+    read_xml(in, this->_pt);
 
-    read_xml(in, pt);
-
-    this->_messageVersion = pt.get<std::string>("libap2p.version");
-    this->_messageData = pt.get<std::string>("libap2p.message.data");
-    this->_messageType = (message_types) pt.get<unsigned int>("libap2p.message.type");
-    this->_messageSignature = pt.get<std::string>("libap2p.signature.signature");
-    this->_messageSignatureType = pt.get<std::string>("libap2p.signature.type");
+    this->_messageVersion = this->_pt.get<std::string>("libap2p.version");
+    this->_messageData = this->_pt.get<std::string>("libap2p.message.data");
+    this->_messageType = (message_types) 
+        this->_pt.get<unsigned int>("libap2p.message.type");
+    this->_messageSignature = this->_pt.get<std::string>("libap2p.signature.signature");
+    this->_messageSignatureType = this->_pt.get<std::string>("libap2p.signature.type");
 }
 
 /** Initializes the message with default values. Internally and privately called
@@ -132,16 +136,15 @@ void Message::_Init()
 */
 std::string Message::GetXml()
 {
-    boost::property_tree::ptree pt;
     std::stringstream out;
 
-    pt.put("libap2p.version", "0.0.1");
-    pt.put("libap2p.message.type", this->_messageType);
-    pt.put("libap2p.message.data", this->_messageData);
-    pt.put("libap2p.signature.signature", this->_messageSignature); //!todo: Check signature before sending?
-    pt.put("libap2p.signature.type", this->_messageSignatureType);
+    this->_pt.put("libap2p.version", "0.0.1");
+    this->_pt.put("libap2p.message.type", this->_messageType);
+    this->_pt.put("libap2p.message.data", this->_messageData);
+    this->_pt.put("libap2p.signature.signature", this->_messageSignature); //!todo: Check signature before sending?
+    this->_pt.put("libap2p.signature.type", this->_messageSignatureType);
     
-    write_xml(out, pt);
+    write_xml(out, this->_pt);
     
     return out.str();
 }
@@ -157,10 +160,12 @@ std::string Message::GetData()
 void Message::Sign(Identity* id)
 {
     this->_messageSignature = id->Sign(this->_messageData);
+    this->GetXml(); // Update the pt;
 }
 void Message::Prepare()
 {
     this->_Compress();
+    this->GetXml(); // Update the pt;
 }
 
 void Message::_Compress()
@@ -179,6 +184,7 @@ void Message::_Compress()
     compressed_buffer << compressed << std::flush;
 
     this->_compressedBuf.commit(compressed.size());
+    this->GetXml(); // Update the pt;
 }
 
 Header* Message::GetHeader()
