@@ -185,6 +185,7 @@ int parse(std::vector<std::string> cmd)
             std::cout << "Asking node " << n->GetFingerprint() << std::endl;
             libap2p::Message* searchmsg = new libap2p::Message(libap2p::MESSAGE_DHT_SEARCH,
                     "<tag>" + cmd[1] + "</tag>");
+            n->SendMessage(searchmsg);
         }
     }
     else if (cmd[0].compare("") == 0)

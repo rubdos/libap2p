@@ -289,8 +289,12 @@ void Network::_OnNodeReceivedMessageHandler(Message* msg, Node* sender)
                 // Construct a DHT_SEARCH_RESULT
                 // Let's search Houston!
 
+                boost::property_tree::ptree pt;
+                std::stringstream stream;
+                stream << msg->GetData();
+                read_xml(stream, pt);
                 DHTSearchResult dsr = this->_dht->LocalSearch(
-                        msg->GetMessageTree().get<std::string>("tag") /* one tag */
+                        pt.get<std::string>("tag") /* one tag */
                         );
 
                 std::stringstream data;
