@@ -19,13 +19,56 @@
 #define CLASS_DHT_ENTRY
 
 #include <string>
+#include <vector>
+
+#include "libap2p/identity/identity.hpp"
 
 namespace libap2p
 {
+typedef std::vector<std::string> TagList;
+typedef std::vector<std::string> PartList;
+struct DHTEntrySpec
+{
+    std::string hash;
+    unsigned int partCount;
+    PartList parts;
+};
 class DHTEntry
 {
 public:
-    DHTEntry(std::string);
+    /** Creates a new DHTEntry object in a network.
+     *  @param name         The name of the DHTEntry
+     *  @param filename     Where to find the contents of the DHTEntry
+     *  @param taglist      A list with Tags associated with the object
+     *  @param ttl          The time to live for the object: give the unix timestamp to die.
+     *  @param owner        The owner/creator of the DHTEntry.
+     */
+    DHTEntry(std::string name,
+            std::string filename,
+            TagList taglist,
+            unsigned long ttl,
+            Identity* owner,
+            unsigned int part_length = 65536);
+
+    /** Get a dhtentry by hash.
+     *
+     */
+    DHTEntry(std::string hash);
+
+    bool CheckConsistency();
+
+    DHTEntrySpec GetDHTEntrySpec();
+
+    TagList tags;
+    std::string name;
+    std::string hash;
+    unsigned long timeToLive;
+    std::string signature;
+
+private:
+    bool _consistent;
+    unsigned int _partCount;
+    PartList _partList;
 };
 }
 

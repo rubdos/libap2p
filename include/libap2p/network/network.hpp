@@ -21,6 +21,8 @@
 #include "libap2p/identity/identity.hpp"
 #include "libap2p/node/node.hpp"
 #include "libap2p/configuration/configuration.hpp"
+#include "libap2p/DHT/dht.hpp"
+#include "libap2p/DHT/dht_entry.hpp"
 
 #include <vector>
 
@@ -84,6 +86,7 @@ private:
     Identity* _localIdentity;
     Configuration* _cfg;
     boost::thread* _runner;
+    DHT* _dht;
 };
 }
 #endif

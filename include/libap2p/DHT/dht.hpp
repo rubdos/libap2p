@@ -21,14 +21,38 @@
 #include "libap2p/DHT/dht_entry.hpp"
 
 #include <string>
+#include <vector>
 
 namespace libap2p
 {
+typedef std::vector<DHTEntry*> DHTEntryList;
+typedef std::vector<DHTEntrySpec> DHTSearchResult;
+/** Represents the hash table of the Network connected to.
+ *  
+ */
 class DHT
 {
 public:
+    /** Constructor.
+     *
+     */
     DHT();
-    DHTEntry* Fetch();
+    /** Fetches the DHT object from the local cache.
+     *  It is not garantueed that after the function call, 
+     *  the contents can be displayed
+     */
+    DHTEntry* Fetch(std::string sha256sum);
+
+    /** Adds an Entry to the DHT and annouces it to the network.
+     *
+     */
+    void AddEntry(DHTEntry* entry, bool check_consistency = true);
+    /** Searches on the local disk for DHTEntry s by tag.
+     *  @param  tag A tag on which will be searched.
+     */
+    DHTSearchResult LocalSearch(std::string);
+private:
+    DHTEntryList _entries;
 };
 }
 #endif

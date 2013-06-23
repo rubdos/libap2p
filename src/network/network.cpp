@@ -17,6 +17,8 @@
 
 #include "libap2p/network/server.hpp"
 #include "libap2p/network/network.hpp"
+#include "libap2p/DHT/dht.hpp"
+#include "libap2p/DHT/dht_entry.hpp"
 
 #include <string>
 #include <sstream>
@@ -38,6 +40,7 @@ Network::Network(Configuration* cfg)
     this->_connectionStatus = DISCONNECTED;
     this->_localIdentity = new Identity();
     this->_localIdentity->LoadLocal();
+    this->_dht = new DHT();
 }
 /** Constructor. Initializes network structure.
  *
@@ -47,6 +50,7 @@ Network::Network(Configuration* cfg, Identity* id)
     this->_cfg = cfg;
     this->_connectionStatus = DISCONNECTED;
     this->_localIdentity = id;
+    this->_dht = new DHT();
 }
 /** Called to connect to the ap2p network. When called, ap2p connects to other
   * nodes specified with add_node() and fetches more from them. It will async
@@ -278,6 +282,70 @@ void Network::_OnNodeReceivedMessageHandler(Message* msg, Node* sender)
                         //@TODO Throw an error!!!
                     }
                 }
+                break;
+            }
+        case MESSAGE_DHT_SEARCH:
+            {
+                // Construct a DHT_SEARCH_RESULT
+                // Let's search Houston!
+
+                boost::property_tree::ptree pt;
+                std::stringstream stream;
+                stream << msg->GetData();
+                read_xml(stream, pt);
+                DHTSearchResult dsr = this->_dht->LocalSearch(
+                        pt.get<std::string>("tag") /* one tag */
+                        );
+
+                std::stringstream data;
+                data << "<entries_count>"
+                    << dsr.size()
+                    << "</entries_count>";
+                unsigned int i = 0;
+                for(DHTSearchResult::iterator dsrit = dsr.begin();
+                        dsrit != dsr.end();
+                        ++dsrit)
+                {
+                    data << "<entry_" << i << ">" <<
+                        dsrit->hash << "</entry_" << i << ">";
+                    ++i;
+                }
+
+                Message* search_resp = new Message(MESSAGE_DHT_SEARCH_RESULT, data.str());
+                sender->SendMessage(search_resp);
+                break;
+            }
+        case MESSAGE_DHT_INFO:
+            {
+                // Construct a DHT_INFO_RESULT
+                break;
+            }
+        case MESSAGE_DHT_FETCH:
+            {
+                // Construct a DHT_PUSH
+                std::cout << "Received a FETCH request:" << std::endl;
+
+                std::string data = msg->GetData();
+                std::cout << data << std::endl;
+
+                //Message* msg = new Message(MESSAGE_DHT_PUSH, "<sha>" + "</sha>");
+                break;
+            }
+        case MESSAGE_DHT_SEARCH_RESULT:
+            {
+                // Received a list of DHTEntry objects.
+                // debugging purpose: #FIXME
+                std::cout << msg->GetData();
+                break;
+            }
+        case MESSAGE_DHT_INFO_RESULT:
+            {
+                // Received a DHT info request
+                break;
+            }
+        case MESSAGE_DHT_PUSH:
+            {
+                // Received a DHT object
                 break;
             }
         default:

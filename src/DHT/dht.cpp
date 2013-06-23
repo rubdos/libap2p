@@ -17,4 +17,52 @@
 #include "libap2p/DHT/dht.hpp"
 namespace libap2p
 {
+DHT::DHT()
+{
+    // We're lazy. Don't do anything!
+}
+DHTEntry* DHT::Fetch(std::string sha256sum)
+{
+    if(sha256sum.length() != 64) return NULL; // All sha256sums are 32byte/64nibbles
+    for(DHTEntryList::iterator de_it = this->_entries.begin();
+            de_it != this->_entries.end();
+            ++de_it)
+    {
+        if((*de_it)->hash.compare(sha256sum) == 0)
+        {
+            return *de_it;
+        }
+    }
+}
+void DHT::AddEntry(DHTEntry* entry, bool check_consistency)
+{
+    if(entry == NULL) return;
+    this->_entries.push_back(entry);
+
+    if(check_consistency)
+    {
+        entry->CheckConsistency();
+    }
+}
+DHTSearchResult DHT::LocalSearch(std::string tag)
+{
+    DHTSearchResult dsr;
+    for (DHTEntryList::iterator e_it = this->_entries.begin();
+            e_it != this->_entries.end();
+            ++e_it)
+    {
+        DHTEntry* e = *e_it;
+        for (TagList::iterator et_it = e->tags.begin();
+                et_it != e->tags.end();
+                ++et_it)
+        {
+            if(tag.compare(*et_it) == 0)
+            {
+                // Houston, we've got a match!
+                dsr.push_back(e->GetDHTEntrySpec());
+            }
+        }
+    }
+    return dsr;
+}
 }

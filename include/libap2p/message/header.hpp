@@ -41,6 +41,13 @@ enum message_types
     
     MESSAGE_DATA                = 10,   /**<Send a message with data 
                                          * (library does not catch this, it's "end-user" data. */
+
+    MESSAGE_DHT_SEARCH          = 21,    /**<Searches the Node for a DHTEntry with the tags*/
+    MESSAGE_DHT_INFO            = 22,    /**<Fetches info about a DHTEntry object */
+    MESSAGE_DHT_FETCH           = 23,    /**<Fetches the DHTEntry object part */
+    MESSAGE_DHT_SEARCH_RESULT   = 24,    /**<Returns the result of a DHT_SEARCH */
+    MESSAGE_DHT_INFO_RESULT     = 25,    /**<Returns the result of an info request */
+    MESSAGE_DHT_PUSH            = 26,    /**<The answer on a DHT_FETCH */
 };
 /** Represents the message header.
  *  Internally called.
